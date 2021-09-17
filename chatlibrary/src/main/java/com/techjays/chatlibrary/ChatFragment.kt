@@ -18,6 +18,7 @@ private const val ARG_PARAM1 = "message"
  */
 class ChatFragment : Fragment() {
     private var message: String? = null
+    private lateinit var textView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +33,8 @@ class ChatFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_chat, container, false)
-        val text = view.findViewById<TextView>(R.id.message)
-        text.text = message
+//        textView = view.findViewById<TextView>(R.id.message)
+//        textView.text = message
         return view;
     }
 
