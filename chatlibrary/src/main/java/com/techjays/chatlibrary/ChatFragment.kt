@@ -39,9 +39,9 @@ class ChatFragment : Fragment() {
         return mView;
     }
 
-    private fun init(view: View?) {
-        if (view != null) {
-            textView = view.findViewById<TextView>(R.id.message)
+    private fun init(aView: View?) {
+        if (mView != null) {
+            textView = mView.findViewById<TextView>(R.id.message)
             textView.text = message
         }
     }
