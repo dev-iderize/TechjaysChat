@@ -14,10 +14,14 @@ class ChatActivity : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.activity_chat, container, false)
+        return view;
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val bundle = this.arguments
         val myValue = bundle!!.getString("message")
         val text: TextView = view.findViewById(R.id.text)
         text.text = myValue
-        return view;
     }
 }
