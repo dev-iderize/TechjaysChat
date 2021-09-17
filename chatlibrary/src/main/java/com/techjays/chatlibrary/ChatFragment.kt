@@ -19,6 +19,7 @@ private const val ARG_PARAM1 = "message"
 class ChatFragment : Fragment() {
     private var message: String? = null
     private lateinit var textView: TextView
+    private lateinit var mView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +33,16 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_chat, container, false)
-//        textView = view.findViewById<TextView>(R.id.message)
-//        textView.text = message
+        mView = inflater.inflate(R.layout.fragment_chat, container, false)
+        init(mView)
         return view;
+    }
+
+    private fun init(view: View?) {
+        if (view != null) {
+            textView = view.findViewById<TextView>(R.id.message)
+            textView.text = message
+        }
     }
 
     companion object {
