@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import com.techjays.chatlibrary.R as r;
 
 
 class ChatActivity : Fragment() {
@@ -14,7 +13,7 @@ class ChatActivity : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(r.layout.activity_chat, container, false)
+        val view = inflater.inflate(R.layout.activity_chat, container, false)
         return view;
     }
 
@@ -24,7 +23,7 @@ class ChatActivity : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val bundle = this.arguments
         val myValue = bundle!!.getString("message")
-        val text: TextView = view.findViewById(r.id.text)
+        val text: TextView = view.findViewById(R.id.text)
         text.text = myValue
     }
 }
