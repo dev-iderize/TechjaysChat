@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name=".ChatActivity"
+            android:name=".ChatListActivity"
             android:exported="true" />
     </application>
 

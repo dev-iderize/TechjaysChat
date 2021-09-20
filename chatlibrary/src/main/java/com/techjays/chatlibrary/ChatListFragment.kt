@@ -6,24 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.techjays.chatlibrary.R
 
 private const val ARG_PARAM1 = "message"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ChatFragment.newInstance] factory method to
+ * Use the [ChatListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatFragment : Fragment() {
-    private var message: String? = null
-    private lateinit var textView: TextView
-    private lateinit var mView: View
+class ChatListFragment : Fragment() {
+    private var param1: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            message = it.getString(ARG_PARAM1)
+            param1 = it.getString(ARG_PARAM1)
         }
     }
 
@@ -32,22 +29,19 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_chat, container, false)
-        init(mView)
-        return mView;
+        return inflater.inflate(R.layout.fragment_chat_list, container, false)
     }
 
-    private fun init(aView: View?) {
-        if (mView != null) {
-            textView = mView.findViewById<TextView>(R.id.message)
-            textView.text = message
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val text = view.findViewById<TextView>(R.id.text_fragment);
+        text.text = param1;
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String) =
-            ChatFragment().apply {
+            ChatListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                 }
