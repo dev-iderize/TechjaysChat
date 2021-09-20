@@ -31,55 +31,13 @@ class AppServices {
         // API Case's
         // User
         const val API_URL = ""
-        const val sign_in = "users/signin/"
-        const val social_login = "users/social-login/"
-        const val employee_sign_up = "users/employer-signup/"
-        const val job_seeker_sign_up = "users/jobseeker-signup/"
-        const val upload_impression_videos = "vidhire-app/impression-videos/"
-
-        const val forgot_password = "users/forgot-password/"
-        const val logout = "users/logout/"
-        const val update_token = "users/notification-id/update/"
-        const val resend_otp = "users/resend-otp/"
-        const val verify_otp = "users/verify-otp/"
-        const val update_resend_otp = "users/update-mobile-number/resend-otp/"
-        const val update_verify_otp = "users/update-mobile-number/verify-otp/"
-        const val update_mobile_number = "users/update-mobile-number/"
-        const val forgot_password_send_otp = "users/password-reset/send-otp/"
-        const val forgot_password_verify_otp = "users/password-reset/verify-otp/"
-        const val reset_password_submit = "users/password-reset/"
-        const val change_password_submit = "users/change-password/"
-        const val log_out = "users/logout/"
-        const val get_profile = "users/myprofile/"
-        const val update_profile = "users/myprofile/"
-        const val update_profile_pic = "users/upload_profile_pic/"
-
-
-        // Impression Video
-        const val get_videos = "vidhire-app/impression-videos/"
-        const val delete_videos = "vidhire-app/impression-videos/delete/"
-        const val get_shortlisted_videos = "vidhire-app/shortlisted-videos/"
-        const val get_jobSeeker_employee_details = "vidhire-app/jobseeker-employer-details/"
-        const val shortlisting = "shortlisting"
-        const val get_onboarding_video = "vidhire-app/onboarding-video/"
-
-        const val count = "users/user-stats-count/"
-
-        // Common
-        const val menus = "common/menus/"
-        const val industry_types = "common/industry-types/"
-        const val invite_to_fayvit = "common/invite-to-fayvit/"
-        const val give_feedback = "common/give-feedback/"
-        const val privacy_policy = "vidhire-app/privacy-policy/"
-        const val terms = "vidhire-app/terms-of-use/"
-        const val SUBMIT_FEEDBACK = "SUBMIT_FEEDBACK"
-        const val app_update = "common/check-app-update/"
-
 
         // Notification
         const val notifications = "notifications/"
-        const val NotificationCall = "users/call/"
-        const val chat_notification = "users/chat-notification/"
+
+        //Chat
+        const val get_chat_token ="chat/token/"
+        const val get_chat_message=""
 
     }
 
