@@ -1,27 +1,29 @@
 package com.techjays.chatlibrary
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 
-class ChatActivity : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.activity_chat, container, false)
-        return view;
-    }
+class ChatActivity : AppCompatActivity() {
+    lateinit var Text: TextView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val bundle = this.arguments
-        val myValue = bundle!!.getString("message")
-        val text: TextView = view.findViewById(R.id.text)
-        text.text = myValue
+        Text = findViewById(R.id.message)
+
+        try {
+            val data = intent
+            val name = data.getStringExtra("message").toString()
+            Text.text = name
+        } catch (e: Exception) {
+            Log.d("ex", e.toString())
+        }
     }
 }
