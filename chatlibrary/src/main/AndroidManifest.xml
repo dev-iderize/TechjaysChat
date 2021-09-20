@@ -7,4 +7,5 @@
             android:name=".ChatActivity"
             android:exported="true" />
     </application>
+
 </manifest>
