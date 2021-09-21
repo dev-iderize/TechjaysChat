@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.github.curioustechizen.ago.RelativeTimeTextView
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.Util.DateUtil
 import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.model.ChatMessages
 import java.text.SimpleDateFormat
@@ -43,6 +45,7 @@ class ChatAdapter(val mContext: FragmentActivity,
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
         holder.txtUserName.text = chatList.mMessage
+        holder.mChatTime.setReferenceTime(DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp))
         /*val format = SimpleDateFormat("yyyyMMddhhmmss")
         val date= format.parse(chatList.mTimeStamp)
         val newFormat = SimpleDateFormat("( hh:mm aa ) dd MMM yy")
@@ -56,7 +59,7 @@ class ChatAdapter(val mContext: FragmentActivity,
 
     open class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtUserName: TextView = view.findViewById(R.id.tvMessage)
-        val mTime: TextView = view.findViewById(R.id.time)
+        var mChatTime: RelativeTimeTextView = view.findViewById(R.id.chat_time)
 
     }
 
