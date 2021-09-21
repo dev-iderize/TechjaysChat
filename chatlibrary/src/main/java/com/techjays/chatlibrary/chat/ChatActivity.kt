@@ -1,6 +1,8 @@
 package com.techjays.chatlibrary.chat
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -104,6 +106,10 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapter.notifyDataSetChanged()
+                        if (mData.isNotEmpty())
+                            Handler(Looper.myLooper()!!).postDelayed({
+                                mRecyclerView.smoothScrollToPosition(mData.size - 1)
+                            }, 100)
                     } else {
                         AppDialogs.customOkAction(this, it.responseMessage)
                         AppDialogs.hideProgressDialog()
