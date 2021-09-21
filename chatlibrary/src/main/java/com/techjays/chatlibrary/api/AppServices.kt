@@ -6,11 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.Helper
 import com.techjays.chatlibrary.Util.Utility
-import com.techjays.chatlibrary.api.AppServices.API.API_URL
 import com.techjays.chatlibrary.constants.ProjectApplication
+import com.techjays.chatlibrary.model.ChatList
 import okhttp3.*
 import okhttp3.Response
 import retrofit2.Call
@@ -25,18 +26,17 @@ class AppServices {
     object API {
 
         fun constructUrl(urlKey: String): String {
-            return String.format("%s%s", API_URL, urlKey)
+            return String.format("%s%s", ChatLibrary.instance().base_url, urlKey)
         }
 
         // API Case's
-        // User
-        const val API_URL = ""
 
         // Notification
         const val notifications = "notifications/"
 
         //Chat
         const val get_chat_token ="chat/token/"
+        const val chat_list = "chat/chat-lists/"
         const val get_chat_message=""
 
     }
@@ -145,7 +145,7 @@ class AppServices {
 
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl(API_URL)
+                    .baseUrl(ChatLibrary.instance().base_url)
                     .client(okHttpClient!!)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
@@ -337,7 +337,32 @@ class AppServices {
          */
 
         private fun getAuthToken(c: Context): String {
-            return "Token "
+            return "Token ${ChatLibrary.instance().auth_token}"
+        }
+
+
+        /**
+         * Get Chat
+         * Method - GET
+         * Auth token needed
+         */
+
+        fun getChatList(c: Context, offset: Int, limit: Int, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.chat_list
+                val mURL = API.constructUrl(mHashCode)
+
+                val mParam = HashMap<String, String>()
+                mParam["offset"] = offset.toString()
+                mParam["limit"] = limit.toString()
+
+                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
+                initService(c, call, ChatList::class.java, mHashCode, listener)
+                Log.d("mParam --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

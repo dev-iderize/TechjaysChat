@@ -23,6 +23,9 @@ import androidx.core.text.color
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import com.techjays.chatlibrary.R
 import java.io.File
 import java.io.FileInputStream
@@ -226,4 +229,41 @@ object Utility {
         mLastClickTime = SystemClock.elapsedRealtime()
         return false
     }
+
+    fun loadUserImage(aURL: String?, image: ImageView, context: Context) {
+        val placeHolder: Int = R.drawable.ic_user_placeholder
+        loadUserImage(aURL, image, placeHolder)
+    }
+
+    /**
+     * Load images
+     */
+    fun loadUserImage(aURL: String?, image: ImageView, placeHolder: Int) {
+        try {
+            if (aURL.isNullOrEmpty()) {
+                image.setImageResource(placeHolder)
+            } else {
+                if (aURL.contains("http")) {
+                    Picasso.get().load(aURL)
+                        .placeholder(placeHolder)
+                        .error(placeHolder)
+                        .fit().centerCrop()
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .into(image)
+                } else {
+                    Picasso.get().load(File(aURL))
+                        .placeholder(placeHolder)
+                        .error(placeHolder)
+                        .fit().centerCrop()
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .into(image)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }

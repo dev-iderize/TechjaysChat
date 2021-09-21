@@ -52,4 +52,21 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="SubTitle">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="Title">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
