@@ -26,7 +26,7 @@ class AppServices {
     object API {
 
         fun constructUrl(urlKey: String): String {
-            return String.format("%s%s", ChatLibrary.instance().base_url, urlKey)
+            return String.format("%s%s", ChatLibrary.instance.base_url, urlKey)
         }
 
         // API Case's
@@ -145,7 +145,7 @@ class AppServices {
 
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl(ChatLibrary.instance().base_url)
+                    .baseUrl(ChatLibrary.instance.base_url)
                     .client(okHttpClient!!)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
@@ -337,7 +337,7 @@ class AppServices {
          */
 
         private fun getAuthToken(c: Context): String {
-            return "Token ${ChatLibrary.instance().auth_token}"
+            return "Token ${ChatLibrary.instance.auth_token}"
         }
 
 

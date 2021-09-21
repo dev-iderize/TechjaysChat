@@ -39,9 +39,9 @@ class ChatListActivity : BaseActivity() {
             val chat_token = data.getStringExtra("chat_token").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
 
-            ChatLibrary.instance().auth_token = auth_token
-            ChatLibrary.instance().chat_token = chat_token
-            ChatLibrary.instance().base_url = base_url
+            ChatLibrary.instance.auth_token = auth_token
+            ChatLibrary.instance.chat_token = chat_token
+            ChatLibrary.instance.base_url = base_url
         } catch (e: Exception) {
             Log.d("ex", e.toString())
             throw  e

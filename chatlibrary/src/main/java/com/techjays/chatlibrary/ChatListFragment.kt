@@ -48,9 +48,9 @@ class ChatListFragment : BaseFragment() {
             auth_token = it.getString(ARG_PARAM3)
 
             try {
-                ChatLibrary.instance().auth_token = auth_token!!
-                ChatLibrary.instance().chat_token = chat_token!!
-                ChatLibrary.instance().base_url = base_url!!
+                ChatLibrary.instance.auth_token = auth_token!!
+                ChatLibrary.instance.chat_token = chat_token!!
+                ChatLibrary.instance.base_url = base_url!!
             } catch (e: Exception) {
                 throw e
             }

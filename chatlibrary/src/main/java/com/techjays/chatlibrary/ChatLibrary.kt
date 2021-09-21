@@ -1,30 +1,18 @@
 package com.techjays.chatlibrary
 
-import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
 
-
-class ChatLibrary : Application() {
+/**
+ * Created by kishore on 21/Sep/2021.
+ */
+class ChatLibrary private constructor() {
 
     var base_url = ""
     var chat_token = ""
     var auth_token = ""
 
-    @SuppressLint("HardwareIds")
-    override fun onCreate() {
-        super.onCreate()
-        mContext = this
-
-    }
-
     companion object {
+        // Getter-Setters
+        var instance = ChatLibrary()
 
-        @SuppressLint("StaticFieldLeak")
-        private var mContext: Context? = null
-
-        fun instance(): ChatLibrary {
-            return mContext!!.applicationContext as ChatLibrary
-        }
     }
 }
