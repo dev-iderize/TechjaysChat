@@ -6,8 +6,19 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
+    android:background="@color/app_gray_"
     android:orientation="vertical"
     tools:context=".ChatListActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:text="@string/chats"
+        android:gravity="center_vertical"
+        android:layout_marginStart="34dp"
+        android:textSize="20sp"
+        android:letterSpacing="0.1"
+        android:textColor="@color/app_black"
+        android:textStyle="bold"
+        android:layout_height="?android:attr/actionBarSize"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/chat_swipe"

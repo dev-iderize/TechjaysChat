@@ -1,6 +1,7 @@
 package com.techjays.chatlibrary
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,8 @@ import java.util.*
 
 class ChatAdapter(
     val mContext: FragmentActivity,
-    val mData: ArrayList<ChatList>
+    val mData: ArrayList<ChatList>,
+    private var mCallback: ChatAdapter.Callback?
 ) : RecyclerView.Adapter<ChatAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -43,6 +45,9 @@ class ChatAdapter(
             holder.mUserImage,
             mContext
         )
+        holder.itemView.setOnClickListener {
+            mCallback?.initChatMessage(mData[position])
+        }
     }
 
 
@@ -55,6 +60,10 @@ class ChatAdapter(
         var mUserImage: CircleImageView = view.findViewById(R.id.user_image)
         var mChatName: TextView = view.findViewById(R.id.chat_name)
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
+    }
+
+    interface Callback{
+        fun initChatMessage(selectedChat:ChatList)
     }
 
 }

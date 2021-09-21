@@ -15,15 +15,15 @@ class ChatViewModel(private val mContext: Context) : ViewModel(), ResponseListen
 
     private var chat = MutableLiveData<Response>()
 
-//    fun sendNotification(mObject: JsonObject) {
-//        AppServices.sendNotification(mContext, mObject, this)
-//    }
-
     fun getChatList(offset: Int, limit: Int) {
         AppServices.getChatList(mContext, offset, limit, this)
     }
 
-    fun getChatListObserver(): MutableLiveData<Response> {
+    fun getChatMessage(offset: Int, limit: Int, userId:String) {
+        AppServices.getChatMessage(mContext, offset, limit,userId, this)
+    }
+
+    fun getChatObserver(): MutableLiveData<Response> {
         return chat
     }
 
@@ -32,6 +32,7 @@ class ChatViewModel(private val mContext: Context) : ViewModel(), ResponseListen
             if (r != null) {
                 when(r.requestType){
                     AppServices.API.chat_list.hashCode()-> chat.value = r!!
+                    AppServices.API.get_chat_message.hashCode()->chat.value =r!!
                 }
 
             }

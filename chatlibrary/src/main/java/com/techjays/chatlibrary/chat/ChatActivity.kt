@@ -1,72 +1,73 @@
-package com.techjays.chatlibrary
+package com.techjays.chatlibrary.chat
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.base.BaseActivity
-import com.techjays.chatlibrary.chat.ChatActivity
 import com.techjays.chatlibrary.model.ChatList
+import com.techjays.chatlibrary.model.ChatMessages
 import com.techjays.chatlibrary.view_model.ChatViewModel
-import java.util.ArrayList
+import java.util.*
 
-class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
+/**
+ * Created by Srinath on 21/09/21.
+ **/
+
+class ChatActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var mRecyclerView: RecyclerView
+    lateinit var mSelectedChatUser: ChatList
     var mOffset = 0
     var mLimit = 6
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
     private lateinit var mSwipe: SwipeRefreshLayout
+    private lateinit var imgBack: ImageView
+    private lateinit var txtName:TextView
     private lateinit var mChatViewModel: ChatViewModel
-    var mData = ArrayList<ChatList>()
+    var mData = ArrayList<ChatMessages>()
     private lateinit var mAdapter: ChatAdapter
 
-    @SuppressLint("SetTextI18n")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat_list)
-
-        try {
-            val data = intent
-            val base_url = data.getStringExtra("base_url").toString()
-            val chat_token = data.getStringExtra("chat_token").toString()
-            val auth_token = data.getStringExtra("auth_token").toString()
-
-            ChatLibrary.instance.auth_token = auth_token
-            ChatLibrary.instance.chat_token = chat_token
-            ChatLibrary.instance.base_url = base_url
-        } catch (e: Exception) {
-            Log.d("ex", e.toString())
-            throw  e
+        setContentView(R.layout.activity_chat)
+        if (intent != null) {
+            if (intent.extras?.containsKey("chat_user")!!) {
+                mSelectedChatUser = intent.extras?.get("chat_user") as ChatList
+            }
         }
-
         init()
     }
 
     override fun init() {
         mChatViewModel = ChatViewModel(this)
-        mRecyclerView = findViewById(R.id.recycler_chat_list)
+        mRecyclerView = findViewById(R.id.chatRecyclerView)
         mSwipe = findViewById(R.id.chat_swipe)
-        initRecycler()
-        getChatList(true)
+        imgBack = findViewById(R.id.imgBack)
+        txtName = findViewById(R.id.tvUserName)
         clickListener()
+        initRecycler()
+        initView()
+        getChatMessage(true)
+    }
+
+    private fun initView() {
+        txtName.text = "${mSelectedChatUser.mCompanyName}${mSelectedChatUser.mFirstName}"
     }
 
 
     private fun initRecycler() {
-
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapter = ChatAdapter(this, mData,this)
+        mAdapter = ChatAdapter(this, mData)
         mRecyclerView.adapter = mAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
@@ -74,10 +75,12 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
                 try {
                     if (isNextLink) {
                         mOffset += mLimit
-                        getChatList(false)
+                        getChatMessage(false)
                     }
                 } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
+                    e.printStackTrace(
+
+                    )
                 }
             }
         }
@@ -85,18 +88,18 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
 
     }
 
-    private fun getChatList(show: Boolean) {
+    private fun getChatMessage(show: Boolean) {
         mSwipe.isRefreshing = !checkInternet()
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
-            mChatViewModel.getChatList(mOffset, mLimit)
+            mChatViewModel.getChatMessage(mOffset, mLimit, mSelectedChatUser.mToUserId)
             if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
                 mChatViewModel.getChatObserver().observe(this, {
                     AppDialogs.hideProgressDialog()
                     mSwipe.isRefreshing = false
                     if (it.responseStatus!!) {
-                        isNextLink = (it as ChatList).mNextLink
+                        isNextLink = (it as ChatMessages).mNextLink
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
@@ -112,18 +115,22 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
 
     }
 
-
     override fun clickListener() {
         mSwipe.setOnRefreshListener {
             mListener.resetState()
             mOffset = 0
-            getChatList(false)
+            getChatMessage(false)
         }
+        imgBack.setOnClickListener(this)
     }
 
-    override fun initChatMessage(selectedChat: ChatList) {
-        val i = Intent(this, ChatActivity::class.java)
-        i.putExtra("chat_user", selectedChat)
-        startActivity(i)
+    override fun onClick(v: View?) {
+        when (v) {
+            imgBack -> {
+                onBackPressed()
+            }
+
+        }
+
     }
 }

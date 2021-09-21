@@ -12,6 +12,7 @@ import com.techjays.chatlibrary.Util.Helper
 import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.constants.ProjectApplication
 import com.techjays.chatlibrary.model.ChatList
+import com.techjays.chatlibrary.model.ChatMessages
 import okhttp3.*
 import okhttp3.Response
 import retrofit2.Call
@@ -37,7 +38,7 @@ class AppServices {
         //Chat
         const val get_chat_token ="chat/token/"
         const val chat_list = "chat/chat-lists/"
-        const val get_chat_message=""
+        const val get_chat_message="chat/chat-messages/"
 
     }
 
@@ -359,6 +360,25 @@ class AppServices {
 
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
                 initService(c, call, ChatList::class.java, mHashCode, listener)
+                Log.d("mParam --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun getChatMessage(c: Context, offset: Int, limit: Int,userId:String, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.get_chat_message
+                val mURL = API.constructUrl(mHashCode)
+
+                val mParam = HashMap<String, String>()
+                mParam["offset"] = offset.toString()
+                mParam["limit"] = limit.toString()
+                mParam["to_user_id"] = userId.toString()
+
+                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
+                initService(c, call, ChatMessages::class.java, mHashCode, listener)
                 Log.d("mParam --> ", mParam.toString())
             } catch (e: Exception) {
                 e.printStackTrace()

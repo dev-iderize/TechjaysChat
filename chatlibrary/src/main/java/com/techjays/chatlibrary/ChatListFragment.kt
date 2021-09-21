@@ -25,7 +25,7 @@ private const val ARG_PARAM3 = "auth_token"
  * Use the [ChatListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatListFragment : BaseFragment() {
+class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
     private var base_url: String? = null
     private var chat_token: String? = null
     private var auth_token: String? = null
@@ -79,7 +79,7 @@ class ChatListFragment : BaseFragment() {
 
         val layoutManager = LinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = layoutManager
-        mAdapter = ChatAdapter(requireActivity(), mData)
+        mAdapter = ChatAdapter(requireActivity(), mData,this)
         mRecyclerView.adapter = mAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
@@ -104,8 +104,8 @@ class ChatListFragment : BaseFragment() {
             if (show)
                 AppDialogs.showProgressDialog(requireActivity())
             mChatViewModel.getChatList(mOffset, mLimit)
-            if (!mChatViewModel.getChatListObserver().hasActiveObservers()) {
-                mChatViewModel.getChatListObserver().observe(requireActivity(), {
+            if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
+                mChatViewModel.getChatObserver().observe(requireActivity(), {
                     AppDialogs.hideProgressDialog()
                     mSwipe.isRefreshing = false
                     if (it.responseStatus!!) {
@@ -154,5 +154,9 @@ class ChatListFragment : BaseFragment() {
                     putString(ARG_PARAM3, auth_token)
                 }
             }
+    }
+
+    override fun initChatMessage(selectedChat: ChatList) {
+
     }
 }
