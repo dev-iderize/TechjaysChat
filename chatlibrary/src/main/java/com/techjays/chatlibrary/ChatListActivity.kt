@@ -89,9 +89,12 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
 
                     delete_chats.hashCode() -> {
                         if (it.responseStatus!!) {
-                            for (i in mData) {
-                                if (i.isChecked)
-                                    mData.remove(i)
+                            val iterator = mData.iterator()
+                            while(iterator.hasNext()){
+                                val item = iterator.next()
+                                if(item.isChecked){
+                                    iterator.remove()
+                                }
                             }
                             mAdapter.notifyDataSetChanged()
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
@@ -159,7 +162,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
             val id = ArrayList<String>()
             for (i in mData) {
                 if (i.isChecked)
-                    id.add(i.mMessageId)
+                    id.add(i.mToUserId)
             }
             if (id.isNotEmpty())
                 mChatViewModel.deleteChats(TextUtils.join(",", id))
