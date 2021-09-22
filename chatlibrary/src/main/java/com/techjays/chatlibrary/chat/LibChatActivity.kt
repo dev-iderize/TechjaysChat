@@ -93,8 +93,8 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
         mAdapterLib = LibChatAdapter(this, mData)
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
         mRecyclerView.adapter = mAdapterLib
 
 
@@ -137,7 +137,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
                              }, 100)*/
                     } else {
-                        AppDialogs.customOkAction(this, it?.responseMessage)
+                        AppDialogs.customOkAction(this, it.responseMessage)
                         AppDialogs.hideProgressDialog()
                         //mSwipe.isRefreshing = false
                     }
@@ -175,15 +175,12 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
 
     }
 
-    override fun onMessageReceive(chatMessage: String) {
-        if (chatMessage.isNotEmpty()) {
-            val receivedNewMessage = Gson().fromJson(chatMessage, ChatSocketMessages::class.java)
-            val newMessage = ChatMessages()
-            newMessage.mIsSentByMyself = false
-            newMessage.mMessage = receivedNewMessage.mMessage
-            newMessage.mTimeStamp = receivedNewMessage.mTimeStamp
-            mData.add(mData.size - 1, newMessage)
-            mAdapterLib.notifyDataSetChanged()
-        }
+    override fun onMessageReceive(receivedNewMessage: ChatSocketMessages) {
+        val newMessage = ChatMessages()
+        newMessage.mIsSentByMyself = false
+        newMessage.mMessage = receivedNewMessage.mMessage
+        newMessage.mTimeStamp = receivedNewMessage.mTimeStamp
+        mData.add(mData.size - 1, newMessage)
+        mAdapterLib.notifyDataSetChanged()
     }
 }
