@@ -21,8 +21,6 @@ import com.techjays.chatlibrary.view_model.ChatViewModel
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
-import okhttp3.WebSocketListener
-import okio.ByteString
 import okhttp3.OkHttpClient
 
 
@@ -75,7 +73,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
         mChatViewModel = ChatViewModel(this)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
-        mSwipe = findViewById(R.id.chat_swipe)
+        mSwipe = findViewById(R.id.chat_swipe_refresh)
         imgBack = findViewById(R.id.imgBack)
         sendButton = findViewById(R.id.btnSendMessage)
         chatEdit = findViewById(R.id.etMessage)

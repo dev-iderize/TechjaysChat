@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/chat_swipe"
+        android:id="@+id/chat_swipe_refresh"
         android:layout_above="@id/r1"
         android:layout_below="@id/l1"
         android:layout_marginStart="5dp"
