@@ -108,14 +108,14 @@ class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
                 mChatViewModel.getChatObserver().observe(requireActivity(), {
                     AppDialogs.hideProgressDialog()
                     mSwipe.isRefreshing = false
-                    if (it.responseStatus!!) {
+                    if (it?.responseStatus!!) {
                         isNextLink = (it as ChatList).mNextLink
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapter.notifyDataSetChanged()
                     } else {
-                        AppDialogs.customOkAction(requireActivity(), it.responseMessage)
+                        AppDialogs.customOkAction(requireActivity(), it?.responseMessage)
                         AppDialogs.hideProgressDialog()
                         mSwipe.isRefreshing = false
                     }

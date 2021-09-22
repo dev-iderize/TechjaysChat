@@ -3,7 +3,6 @@ package com.techjays.chatlibrary.api
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
@@ -14,7 +13,6 @@ import com.techjays.chatlibrary.constants.ProjectApplication
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.ChatMessages
 import okhttp3.*
-import okhttp3.Response
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,6 +37,7 @@ class AppServices {
         const val get_chat_token ="chat/token/"
         const val chat_list = "chat/chat-lists/"
         const val get_chat_message="chat/chat-messages/"
+        const val delete_chats="chat/delete-chat-list/"
 
     }
 
@@ -154,6 +153,70 @@ class AppServices {
             return retrofit as Retrofit
         }
 
+        /**
+         * Get Chat
+         * Method - GET
+         * Auth token needed
+         */
+
+        fun getChatList(c: Context, offset: Int, limit: Int, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.chat_list
+                val mURL = API.constructUrl(mHashCode)
+
+                val mParam = HashMap<String, String>()
+                mParam["offset"] = offset.toString()
+                mParam["limit"] = limit.toString()
+
+                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
+                initService(c, call, ChatList::class.java, mHashCode, listener)
+                Log.d("mParam --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun getChatMessage(c: Context, offset: Int, limit: Int,userId:String, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.get_chat_message
+                val mURL = API.constructUrl(mHashCode)
+
+                val mParam = HashMap<String, String>()
+                mParam["offset"] = offset.toString()
+                mParam["limit"] = limit.toString()
+                mParam["to_user_id"] = userId
+
+                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
+                initService(c, call, ChatMessages::class.java, mHashCode, listener)
+                Log.d("mParam --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        /**
+         * Delete Chat list - Multiple / Single
+         * Method - POST
+         */
+        fun deleteChats(c: Context, ids: String, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.delete_chats
+                val mURL = API.constructUrl(mHashCode)
+
+                val mObject = JsonObject()
+                mObject.addProperty("to_user_id",ids)
+
+                val call = apiService.POST(mURL, getAuthHeader(c), mObject)
+                initService(c, call, Response::class.java, mHashCode, listener)
+                Log.d("Param --> ", mObject.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
 // ################################################################################################
 
@@ -170,7 +233,7 @@ class AppServices {
          * return - Response
          */
 
-        private fun getErrorMsg(t: Throwable, hash: Int): com.techjays.chatlibrary.api.Response? {
+        private fun getErrorMsg(t: Throwable, hash: Int): Response? {
             val r = Response()
             r.responseStatus = false
             r.responseMessage = t.message!!
@@ -217,8 +280,8 @@ class AppServices {
             mResponse: retrofit2.Response<ResponseBody>,
             mSerializable: Type,
             mHashCode: String
-        ): com.techjays.chatlibrary.api.Response? {
-            val response: com.techjays.chatlibrary.api.Response?
+        ): Response? {
+            val response: Response?
 
             if (!Utility.isInternetAvailable(context)) {
                 okHttpClient?.dispatcher()?.cancelAll()
@@ -339,50 +402,6 @@ class AppServices {
 
         private fun getAuthToken(c: Context): String {
             return "Token ${ChatLibrary.instance.auth_token}"
-        }
-
-
-        /**
-         * Get Chat
-         * Method - GET
-         * Auth token needed
-         */
-
-        fun getChatList(c: Context, offset: Int, limit: Int, listener: ResponseListener) {
-            try {
-                val apiService = getClient().create(ApiInterface::class.java)
-                val mHashCode = API.chat_list
-                val mURL = API.constructUrl(mHashCode)
-
-                val mParam = HashMap<String, String>()
-                mParam["offset"] = offset.toString()
-                mParam["limit"] = limit.toString()
-
-                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
-                initService(c, call, ChatList::class.java, mHashCode, listener)
-                Log.d("mParam --> ", mParam.toString())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        fun getChatMessage(c: Context, offset: Int, limit: Int,userId:String, listener: ResponseListener) {
-            try {
-                val apiService = getClient().create(ApiInterface::class.java)
-                val mHashCode = API.get_chat_message
-                val mURL = API.constructUrl(mHashCode)
-
-                val mParam = HashMap<String, String>()
-                mParam["offset"] = offset.toString()
-                mParam["limit"] = limit.toString()
-                mParam["to_user_id"] = userId.toString()
-
-                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
-                initService(c, call, ChatMessages::class.java, mHashCode, listener)
-                Log.d("mParam --> ", mParam.toString())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 }

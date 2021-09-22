@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.Util.Utility
+import com.techjays.chatlibrary.api.AppServices.API.chat_list
+import com.techjays.chatlibrary.api.AppServices.API.delete_chats
 import com.techjays.chatlibrary.base.BaseActivity
 import com.techjays.chatlibrary.chat.ChatActivity
 import com.techjays.chatlibrary.model.ChatList
@@ -32,7 +35,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
     var mData = ArrayList<ChatList>()
     private lateinit var mAdapter: ChatAdapter
 
-    private lateinit var mTitle: TextView
+    private lateinit var mDelete: ImageView
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +63,42 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
         mChatViewModel = ChatViewModel(this)
         mRecyclerView = findViewById(R.id.recycler_chat_list)
         mSwipe = findViewById(R.id.chat_swipe)
-        mTitle = findViewById(R.id.page_title)
+        mDelete = findViewById(R.id.delete_button)
         initRecycler()
         getChatList(true)
+        initObserver()
         clickListener()
+    }
+
+    private fun initObserver() {
+        if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
+            mChatViewModel.getChatObserver().observe(this, {
+                AppDialogs.hideProgressDialog()
+                mSwipe.isRefreshing = false
+                when (it?.requestType) {
+                    chat_list.hashCode() -> {
+                        if (it.responseStatus!!) {
+                            isNextLink = (it as ChatList).mNextLink
+                            if (mOffset == 0)
+                                mData.clear()
+                            mData.addAll(it.mData)
+                            mAdapter.notifyDataSetChanged()
+                        } else
+                            AppDialogs.customOkAction(this, it.responseMessage)
+                    }
+
+                    delete_chats.hashCode() -> {
+                        if (it.responseStatus!!) {
+                            for (i in mData) {
+                                if (i.isChecked)
+                                    mData.remove(i)
+                            }
+                            mAdapter.notifyDataSetChanged()
+                        } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
+                    }
+                }
+            })
+        }
     }
 
 
@@ -96,23 +131,6 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
             if (show)
                 AppDialogs.showProgressDialog(this)
             mChatViewModel.getChatList(mOffset, mLimit)
-            if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
-                mChatViewModel.getChatObserver().observe(this, {
-                    AppDialogs.hideProgressDialog()
-                    mSwipe.isRefreshing = false
-                    if (it.responseStatus!!) {
-                        isNextLink = (it as ChatList).mNextLink
-                        if (mOffset == 0)
-                            mData.clear()
-                        mData.addAll(it.mData)
-                        mAdapter.notifyDataSetChanged()
-                    } else {
-                        AppDialogs.customOkAction(this, it.responseMessage)
-                        AppDialogs.hideProgressDialog()
-                        mSwipe.isRefreshing = false
-                    }
-                })
-            }
         }
     }
 
@@ -123,7 +141,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
             mOffset = 0
             getChatList(false)
         }
-        mTitle.setOnClickListener(this)
+        mDelete.setOnClickListener(this)
     }
 
     override fun initChatMessage(selectedChat: ChatList) {
@@ -133,17 +151,19 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
     }
 
     override fun initDelete() {
-
+        mDelete.visibility = if (mDelete.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     override fun onClick(view: View) {
-        if (view == mTitle) {
+        if (view == mDelete) {
             val id = ArrayList<String>()
             for (i in mData) {
                 if (i.isChecked)
                     id.add(i.mMessageId)
             }
-            Log.e("FFFF -->", TextUtils.join(",", id))
+            if (id.isNotEmpty())
+                mChatViewModel.deleteChats(TextUtils.join(",", id))
+            else AppDialogs.showSnackbar(mDelete, "Please select something!")
         }
     }
 }
