@@ -185,8 +185,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
         val newMessage = ChatMessages()
         newMessage.mIsSentByMyself = isMySelf
         newMessage.mMessage = msg
-        newMessage.mTimeStamp =
-            if (timestamp.isNotEmpty()) timestamp else (System.currentTimeMillis() / 1000).toString()
+        newMessage.mTimeStamp = timestamp
         mData.add(mData.size - 1, newMessage)
         mAdapterLib.notifyDataSetChanged()
     }

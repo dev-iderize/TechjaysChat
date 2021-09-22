@@ -44,8 +44,10 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
         Log.e("Receiving:", " $text")
         if (text.isNotEmpty()) {
             val receivedNewMessage = Gson().fromJson(text, ChatSocketMessages::class.java)
-            if (receivedNewMessage.mChatType == "chat")
+            if (receivedNewMessage.mChatType == "chat") {
+                receivedNewMessage.mTimeStamp = (System.currentTimeMillis() / 1000).toString()
                 mCallback.onMessageReceive(receivedNewMessage)
+            }
         }
     }
 
