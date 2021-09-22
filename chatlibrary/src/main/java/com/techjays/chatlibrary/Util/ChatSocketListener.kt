@@ -8,6 +8,8 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import org.json.JSONObject
+
 
 class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() {
 
@@ -42,12 +44,20 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
 
     override fun onMessage(webSocket: WebSocket?, text: String) {
         Log.e("Receiving:", " $text")
-        if (text.isNotEmpty()) {
-            val receivedNewMessage = Gson().fromJson(text, ChatSocketMessages::class.java)
-            if (receivedNewMessage.mChatType == "chat") {
-                receivedNewMessage.mTimeStamp = (System.currentTimeMillis() / 1000).toString()
-                mCallback.onMessageReceive(receivedNewMessage)
+        try {
+            if (text.isNotEmpty()) {
+                val obj = JSONObject(text)
+                if (obj.get("type").equals("chat")) {
+                    val receivedNewMessage = Gson().fromJson(text, ChatSocketMessages::class.java)
+                    if (receivedNewMessage.mChatType == "chat") {
+                        receivedNewMessage.mTimeStamp =
+                            (System.currentTimeMillis() / 1000).toString()
+                        mCallback.onMessageReceive(receivedNewMessage)
+                    }
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
