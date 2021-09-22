@@ -59,7 +59,7 @@ class ChatAdapter(val mContext: FragmentActivity,
 
     open class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtUserName: TextView = view.findViewById(R.id.tvMessage)
-        var mChatTime: RelativeTimeTextView = view.findViewById(R.id.chat_time)
+        var mChatTime: RelativeTimeTextView = view.findViewById(R.id.time)
 
     }
 

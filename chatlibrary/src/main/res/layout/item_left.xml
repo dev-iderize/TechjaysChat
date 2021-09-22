@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <com.github.curioustechizen.ago.RelativeTimeTextView
-        android:id="@+id/chat_time"
+        android:id="@+id/time"
         style="@style/SubTitle"
         android:layout_marginStart="12dp"
         android:padding="10dp"
