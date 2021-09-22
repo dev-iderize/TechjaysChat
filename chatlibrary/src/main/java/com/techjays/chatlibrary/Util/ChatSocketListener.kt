@@ -2,15 +2,12 @@ package com.techjays.chatlibrary.Util
 
 import android.util.Log
 import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.chat.LibChatActivity
-import com.techjays.chatlibrary.model.ChatMessages
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 
-
-class ChatSocketListener(private var mCallback: LibChatActivity) : WebSocketListener() {
+class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() {
 
     private lateinit var ws: WebSocket
 
@@ -31,7 +28,7 @@ class ChatSocketListener(private var mCallback: LibChatActivity) : WebSocketList
                 "}"
     }
 
-    fun sendChatParams(msg:String, to:String): String {
+    fun sendChatParams(msg: String, to: String): String {
         return "{\n" +
                 "    \"token\": \"${ChatLibrary.instance.chat_token}\",\n" +
                 "    \"type\": \"chat\",\n" +
@@ -43,6 +40,7 @@ class ChatSocketListener(private var mCallback: LibChatActivity) : WebSocketList
 
     override fun onMessage(webSocket: WebSocket?, text: String) {
         Log.e("Receiving:", " $text")
+        mCallback.onMessageReceive(text)
     }
 
     override fun onMessage(webSocket: WebSocket?, bytes: ByteString) {
@@ -59,15 +57,15 @@ class ChatSocketListener(private var mCallback: LibChatActivity) : WebSocketList
     }
 
     fun sendChat(s: String, mToUserId: String) {
-        Log.e("sent",sendChatParams(s,mToUserId))
-        ws.send(sendChatParams(s,mToUserId))
+        Log.e("sent", sendChatParams(s, mToUserId))
+        ws.send(sendChatParams(s, mToUserId))
     }
 
     companion object {
         private const val NORMAL_CLOSURE_STATUS = 1000
     }
 
-    interface CallBack{
-        fun addMessage(chatMessage:ChatMessages)
+    interface CallBack {
+        fun onMessageReceive(chatMessage: String)
     }
 }

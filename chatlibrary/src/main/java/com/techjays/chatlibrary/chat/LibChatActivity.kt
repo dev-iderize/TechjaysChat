@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.ChatSocketListener
@@ -14,6 +15,7 @@ import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.base.BaseActivity
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.ChatMessages
+import com.techjays.chatlibrary.model.ChatSocketMessages
 import com.techjays.chatlibrary.view_model.ChatViewModel
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -26,8 +28,7 @@ import okhttp3.OkHttpClient
  **/
 
 
-class LibChatActivity : BaseActivity(), View.OnClickListener
-    {
+class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener.CallBack {
 
     private lateinit var mRecyclerView: RecyclerView
     lateinit var mSelectedChatUser: ChatList
@@ -35,6 +36,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener
     var mLimit = 6
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
+
     //private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var imgBack: ImageView
     private lateinit var sendButton: ImageView
@@ -45,7 +47,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener
     private lateinit var mAdapterLib: LibChatAdapter
     private lateinit var client: OkHttpClient
     private lateinit var ws: WebSocket
-    private lateinit var listener : ChatSocketListener
+    private lateinit var listener: ChatSocketListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +73,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener
         mChatViewModel = ChatViewModel(this)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
-       // mSwipe = findViewById(R.id.chat_swipe_refresh)
+        // mSwipe = findViewById(R.id.chat_swipe_refresh)
         imgBack = findViewById(R.id.imgBack)
         sendButton = findViewById(R.id.btnSendMessage)
         chatEdit = findViewById(R.id.etMessage)
@@ -130,10 +132,10 @@ class LibChatActivity : BaseActivity(), View.OnClickListener
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapterLib.notifyDataSetChanged()
-                       /* if (mData.isNotEmpty())
-                            Handler(Looper.myLooper()!!).postDelayed({
-                                mRecyclerView.smoothScrollToPosition(mData.size+1)
-                            }, 100)*/
+                        /* if (mData.isNotEmpty())
+                             Handler(Looper.myLooper()!!).postDelayed({
+                                 mRecyclerView.smoothScrollToPosition(mData.size+1)
+                             }, 100)*/
                     } else {
                         AppDialogs.customOkAction(this, it?.responseMessage)
                         AppDialogs.hideProgressDialog()
@@ -160,7 +162,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener
             imgBack -> {
                 onBackPressed()
             }
-            sendButton ->{
+            sendButton -> {
                 if (chatEdit.text.isEmpty()) {
                     chatEdit.error = "Enter your message"
                     chatEdit.requestFocus()
@@ -171,5 +173,17 @@ class LibChatActivity : BaseActivity(), View.OnClickListener
             }
         }
 
+    }
+
+    override fun onMessageReceive(chatMessage: String) {
+        if (chatMessage.isNotEmpty()) {
+            val receivedNewMessage = Gson().fromJson(chatMessage, ChatSocketMessages::class.java)
+            val newMessage = ChatMessages()
+            newMessage.mIsSentByMyself = false
+            newMessage.mMessage = receivedNewMessage.mMessage
+            newMessage.mTimeStamp = receivedNewMessage.mTimeStamp
+            mData.add(mData.size - 1, newMessage)
+            mAdapterLib.notifyDataSetChanged()
+        }
     }
 }
