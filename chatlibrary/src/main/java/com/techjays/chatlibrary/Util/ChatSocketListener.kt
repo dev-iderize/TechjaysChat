@@ -1,14 +1,16 @@
 package com.techjays.chatlibrary.Util
 
 import android.util.Log
+import com.techjays.chatlibrary.ChatAdapter
 import com.techjays.chatlibrary.ChatLibrary
+import com.techjays.chatlibrary.model.ChatMessages
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 
 
-class ChatSocketListener : WebSocketListener() {
+class ChatSocketListener(private var mCallback: ChatAdapter.Callback?) : WebSocketListener() {
 
     private lateinit var ws: WebSocket
 
@@ -63,5 +65,9 @@ class ChatSocketListener : WebSocketListener() {
 
     companion object {
         private const val NORMAL_CLOSURE_STATUS = 1000
+    }
+
+    interface CallBack{
+        fun addMessage(chatMessage:ChatMessages)
     }
 }
