@@ -29,7 +29,8 @@ import okhttp3.OkHttpClient
  **/
 
 
-class ChatActivity : BaseActivity(), View.OnClickListener {
+class ChatActivity : BaseActivity(), View.OnClickListener,
+    com.techjays.chatlibrary.ChatAdapter.Callback {
 
     private lateinit var mRecyclerView: RecyclerView
     lateinit var mSelectedChatUser: ChatList
@@ -64,7 +65,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
 
     private fun start() {
         val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
-        listener = ChatSocketListener()
+        listener = ChatSocketListener(this)
         ws = client.newWebSocket(request, listener)
         client.dispatcher().executorService().shutdown()
     }
@@ -93,7 +94,10 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
         mAdapter = ChatAdapter(this, mData)
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         mRecyclerView.adapter = mAdapter
+
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -129,10 +133,10 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapter.notifyDataSetChanged()
-                        if (mData.isNotEmpty())
+                       /* if (mData.isNotEmpty())
                             Handler(Looper.myLooper()!!).postDelayed({
-                                mRecyclerView.smoothScrollToPosition(mData.size - 1)
-                            }, 100)
+                                mRecyclerView.smoothScrollToPosition(mData.size+1)
+                            }, 100)*/
                     } else {
                         AppDialogs.customOkAction(this, it?.responseMessage)
                         AppDialogs.hideProgressDialog()
@@ -160,11 +164,23 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             sendButton ->{
-                listener.sendChat(chatEdit.text.toString(),mSelectedChatUser.mToUserId)
-                chatEdit.text = "".toEditable()
+                if (chatEdit.text.isEmpty()) {
+                    chatEdit.error = "Enter your message"
+                    chatEdit.requestFocus()
+                } else {
+                    listener.sendChat(chatEdit.text.toString(), mSelectedChatUser.mToUserId)
+                    chatEdit.text = "".toEditable()
+                }
             }
-
         }
+
+    }
+
+    override fun initChatMessage(selectedChat: ChatList) {
+
+    }
+
+    override fun initDelete() {
 
     }
 }
