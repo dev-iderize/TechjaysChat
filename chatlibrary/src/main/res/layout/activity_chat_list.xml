@@ -35,7 +35,7 @@
             android:layout_margin="5dp"
             android:gravity="center_vertical"
             android:padding="3dp"
-            android:src="@drawable/send"
+            android:src="@drawable/ic_baseline_delete_24"
             android:visibility="gone" />
 
     </LinearLayout>
