@@ -13,26 +13,31 @@ import com.techjays.chatlibrary.api.ResponseListener
  **/
 class ChatViewModel(private val mContext: Context) : ViewModel(), ResponseListener {
 
-    private var chat = MutableLiveData<Response>()
+    private var chat = MutableLiveData<Response?>()
 
     fun getChatList(offset: Int, limit: Int) {
         AppServices.getChatList(mContext, offset, limit, this)
     }
 
-    fun getChatMessage(offset: Int, limit: Int, userId:String) {
-        AppServices.getChatMessage(mContext, offset, limit,userId, this)
+    fun getChatMessage(offset: Int, limit: Int, userId: String) {
+        AppServices.getChatMessage(mContext, offset, limit, userId, this)
     }
 
-    fun getChatObserver(): MutableLiveData<Response> {
+    fun getChatObserver(): MutableLiveData<Response?> {
         return chat
+    }
+
+    fun deleteChats(ids: String) {
+        AppServices.deleteChats(mContext, ids, this)
     }
 
     override fun onResponse(r: Response?) {
         try {
             if (r != null) {
-                when(r.requestType){
-                    AppServices.API.chat_list.hashCode()-> chat.value = r!!
-                    AppServices.API.get_chat_message.hashCode()->chat.value =r!!
+                when (r.requestType) {
+                    AppServices.API.chat_list.hashCode() -> chat.value = r
+                    AppServices.API.get_chat_message.hashCode() -> chat.value = r
+                    AppServices.API.delete_chats.hashCode() -> chat.value = r
                 }
 
             }

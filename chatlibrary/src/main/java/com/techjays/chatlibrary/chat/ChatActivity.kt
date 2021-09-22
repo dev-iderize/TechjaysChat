@@ -125,7 +125,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                 mChatViewModel.getChatObserver().observe(this, {
                     AppDialogs.hideProgressDialog()
                     mSwipe.isRefreshing = false
-                    if (it.responseStatus!!) {
+                    if (it?.responseStatus!!) {
                         isNextLink = (it as ChatMessages).mNextLink
                         if (mOffset == 0)
                             mData.clear()
@@ -136,7 +136,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                                 mRecyclerView.smoothScrollToPosition(mData.size - 1)
                             }, 100)
                     } else {
-                        AppDialogs.customOkAction(this, it.responseMessage)
+                        AppDialogs.customOkAction(this, it?.responseMessage)
                         AppDialogs.hideProgressDialog()
                         mSwipe.isRefreshing = false
                     }

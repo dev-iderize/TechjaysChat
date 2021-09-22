@@ -60,6 +60,7 @@ class ChatAdapter(
                 i.showCheckBox = !i.showCheckBox
                 notifyDataSetChanged()
             }
+            mCallback?.initDelete()
             return@setOnLongClickListener true
         }
 
