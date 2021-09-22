@@ -95,7 +95,10 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
         mAdapter = ChatAdapter(this, mData)
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         mRecyclerView.adapter = mAdapter
+
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -131,10 +134,10 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapter.notifyDataSetChanged()
-                        if (mData.isNotEmpty())
+                       /* if (mData.isNotEmpty())
                             Handler(Looper.myLooper()!!).postDelayed({
-                                mRecyclerView.smoothScrollToPosition(mData.size - 1)
-                            }, 100)
+                                mRecyclerView.smoothScrollToPosition(mData.size+1)
+                            }, 100)*/
                     } else {
                         AppDialogs.customOkAction(this, it.responseMessage)
                         AppDialogs.hideProgressDialog()
