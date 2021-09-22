@@ -34,7 +34,7 @@ class ChatSocketListener : WebSocketListener() {
                 "    \"token\": \"${ChatLibrary.instance.chat_token}\",\n" +
                 "    \"type\": \"chat\",\n" +
                 "    \"chat_type\": \"private\",\n" +
-                "    \"to\": \"$to\",\n" +
+                "    \"to\": $to,\n" +
                 "    \"message\": \"$msg\"\n" +
                 "}"
     }
