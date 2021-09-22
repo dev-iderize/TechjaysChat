@@ -43,4 +43,6 @@ class ChatList: Response() {
     @SerializedName("profile_pic")
     var mProfilePic = ""
 
+    var isChecked = false
+    var showCheckBox = false
 }

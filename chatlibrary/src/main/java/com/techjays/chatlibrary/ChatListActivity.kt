@@ -2,8 +2,8 @@ package com.techjays.chatlibrary
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
+import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.base.BaseActivity
 import com.techjays.chatlibrary.chat.ChatActivity
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.view_model.ChatViewModel
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
+class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListener {
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
@@ -29,6 +31,8 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
     private lateinit var mChatViewModel: ChatViewModel
     var mData = ArrayList<ChatList>()
     private lateinit var mAdapter: ChatAdapter
+
+    private lateinit var mTitle: TextView
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +60,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
         mChatViewModel = ChatViewModel(this)
         mRecyclerView = findViewById(R.id.recycler_chat_list)
         mSwipe = findViewById(R.id.chat_swipe)
+        mTitle = findViewById(R.id.page_title)
         initRecycler()
         getChatList(true)
         clickListener()
@@ -66,7 +71,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
 
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapter = ChatAdapter(this, mData,this)
+        mAdapter = ChatAdapter(this, mData, this)
         mRecyclerView.adapter = mAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
@@ -109,7 +114,6 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
                 })
             }
         }
-
     }
 
 
@@ -119,11 +123,27 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback {
             mOffset = 0
             getChatList(false)
         }
+        mTitle.setOnClickListener(this)
     }
 
     override fun initChatMessage(selectedChat: ChatList) {
         val i = Intent(this, ChatActivity::class.java)
         i.putExtra("chat_user", selectedChat)
         startActivity(i)
+    }
+
+    override fun initDelete() {
+
+    }
+
+    override fun onClick(view: View) {
+        if (view == mTitle) {
+            val id = ArrayList<String>()
+            for (i in mData) {
+                if (i.isChecked)
+                    id.add(i.mMessageId)
+            }
+            Log.e("FFFF -->", TextUtils.join(",", id))
+        }
     }
 }

@@ -159,4 +159,7 @@ class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
     override fun initChatMessage(selectedChat: ChatList) {
 
     }
+
+    override fun initDelete() {
+    }
 }
