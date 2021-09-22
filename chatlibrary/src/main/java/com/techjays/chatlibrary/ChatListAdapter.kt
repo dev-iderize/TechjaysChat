@@ -1,7 +1,6 @@
 package com.techjays.chatlibrary
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +18,11 @@ import java.util.*
  * Created by Srinath on 17/09/21.
  **/
 
-class ChatAdapter(
+class ChatListAdapter(
     val mContext: FragmentActivity,
     val mData: ArrayList<ChatList>,
     private var mCallback: Callback?
-) : RecyclerView.Adapter<ChatAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<ChatListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView =

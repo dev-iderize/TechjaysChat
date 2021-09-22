@@ -1,8 +1,8 @@
 package com.techjays.chatlibrary.Util
 
 import android.util.Log
-import com.techjays.chatlibrary.ChatAdapter
 import com.techjays.chatlibrary.ChatLibrary
+import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.ChatMessages
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -10,7 +10,7 @@ import okhttp3.WebSocketListener
 import okio.ByteString
 
 
-class ChatSocketListener(private var mCallback: ChatAdapter.Callback?) : WebSocketListener() {
+class ChatSocketListener(private var mCallback: LibChatActivity) : WebSocketListener() {
 
     private lateinit var ws: WebSocket
 

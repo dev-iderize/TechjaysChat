@@ -1,15 +1,12 @@
 package com.techjays.chatlibrary.chat
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.ChatSocketListener
@@ -29,8 +26,8 @@ import okhttp3.OkHttpClient
  **/
 
 
-class ChatActivity : BaseActivity(), View.OnClickListener,
-    com.techjays.chatlibrary.ChatAdapter.Callback {
+class LibChatActivity : BaseActivity(), View.OnClickListener
+    {
 
     private lateinit var mRecyclerView: RecyclerView
     lateinit var mSelectedChatUser: ChatList
@@ -45,7 +42,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
     private lateinit var txtName: TextView
     private lateinit var mChatViewModel: ChatViewModel
     var mData = ArrayList<ChatMessages>()
-    private lateinit var mAdapter: ChatAdapter
+    private lateinit var mAdapterLib: LibChatAdapter
     private lateinit var client: OkHttpClient
     private lateinit var ws: WebSocket
     private lateinit var listener : ChatSocketListener
@@ -93,10 +90,10 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapter = ChatAdapter(this, mData)
+        mAdapterLib = LibChatAdapter(this, mData)
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        mRecyclerView.adapter = mAdapter
+        mRecyclerView.adapter = mAdapterLib
 
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
@@ -132,7 +129,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
-                        mAdapter.notifyDataSetChanged()
+                        mAdapterLib.notifyDataSetChanged()
                        /* if (mData.isNotEmpty())
                             Handler(Looper.myLooper()!!).postDelayed({
                                 mRecyclerView.smoothScrollToPosition(mData.size+1)
@@ -173,14 +170,6 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
-
-    }
-
-    override fun initChatMessage(selectedChat: ChatList) {
-
-    }
-
-    override fun initDelete() {
 
     }
 }

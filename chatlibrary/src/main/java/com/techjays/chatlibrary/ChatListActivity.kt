@@ -7,23 +7,20 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.api.AppServices.API.chat_list
 import com.techjays.chatlibrary.api.AppServices.API.delete_chats
 import com.techjays.chatlibrary.base.BaseActivity
-import com.techjays.chatlibrary.chat.ChatActivity
+import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.view_model.ChatViewModel
-import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListener {
+class ChatListActivity : BaseActivity(), ChatListAdapter.Callback, View.OnClickListener {
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
@@ -33,7 +30,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
     private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var mChatViewModel: ChatViewModel
     var mData = ArrayList<ChatList>()
-    private lateinit var mAdapter: ChatAdapter
+    private lateinit var mListAdapter: ChatListAdapter
 
     private lateinit var mDelete: ImageView
 
@@ -82,7 +79,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
                             if (mOffset == 0)
                                 mData.clear()
                             mData.addAll(it.mData)
-                            mAdapter.notifyDataSetChanged()
+                            mListAdapter.notifyDataSetChanged()
                         } else
                             AppDialogs.customOkAction(this, it.responseMessage)
                     }
@@ -96,7 +93,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
                                     iterator.remove()
                                 }
                             }
-                            mAdapter.notifyDataSetChanged()
+                            mListAdapter.notifyDataSetChanged()
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -109,8 +106,8 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
 
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapter = ChatAdapter(this, mData, this)
-        mRecyclerView.adapter = mAdapter
+        mListAdapter = ChatListAdapter(this, mData, this)
+        mRecyclerView.adapter = mListAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -148,7 +145,7 @@ class ChatListActivity : BaseActivity(), ChatAdapter.Callback, View.OnClickListe
     }
 
     override fun initChatMessage(selectedChat: ChatList) {
-        val i = Intent(this, ChatActivity::class.java)
+        val i = Intent(this, LibChatActivity::class.java)
         i.putExtra("chat_user", selectedChat)
         startActivity(i)
     }

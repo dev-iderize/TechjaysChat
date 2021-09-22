@@ -9,7 +9,7 @@
     <application
         android:networkSecurityConfig="@xml/network_config">
         <activity
-            android:name=".chat.ChatActivity"
+            android:name=".chat.LibChatActivity"
             android:theme="@style/Theme.Vidhire_android"
             android:exported="true" />
         <activity

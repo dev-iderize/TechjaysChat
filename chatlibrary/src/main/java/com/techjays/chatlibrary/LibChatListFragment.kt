@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,7 +24,7 @@ private const val ARG_PARAM3 = "auth_token"
  * Use the [ChatListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
+class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
     private var base_url: String? = null
     private var chat_token: String? = null
     private var auth_token: String? = null
@@ -38,7 +37,7 @@ class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
     private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var mChatViewModel: ChatViewModel
     var mData = ArrayList<ChatList>()
-    private lateinit var mAdapter: ChatAdapter
+    private lateinit var mListAdapter: ChatListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,8 +78,8 @@ class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
 
         val layoutManager = LinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = layoutManager
-        mAdapter = ChatAdapter(requireActivity(), mData,this)
-        mRecyclerView.adapter = mAdapter
+        mListAdapter = ChatListAdapter(requireActivity(), mData,this)
+        mRecyclerView.adapter = mListAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -113,7 +112,7 @@ class ChatListFragment : BaseFragment(), ChatAdapter.Callback {
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
-                        mAdapter.notifyDataSetChanged()
+                        mListAdapter.notifyDataSetChanged()
                     } else {
                         AppDialogs.customOkAction(requireActivity(), it?.responseMessage)
                         AppDialogs.hideProgressDialog()

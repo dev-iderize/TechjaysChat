@@ -7,21 +7,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.github.curioustechizen.ago.RelativeTimeTextView
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.DateUtil
-import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.model.ChatMessages
-import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 /**
  * Created by Srinath on 21/09/21.
  **/
 
-class ChatAdapter(val mContext: FragmentActivity,
-                  val mData: ArrayList<ChatMessages>)
-    : RecyclerView.Adapter<ChatAdapter.ItemViewHolder>() {
+class LibChatAdapter(val mContext: FragmentActivity,
+                     val mData: ArrayList<ChatMessages>)
+    : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
     private val MESSAGE_TYPE_LEFT = 0
     private val MESSAGE_TYPE_RIGHT = 1
