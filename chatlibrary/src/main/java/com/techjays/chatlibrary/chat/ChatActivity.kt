@@ -11,16 +11,24 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
+import com.techjays.chatlibrary.Util.ChatSocketListener
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.base.BaseActivity
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.ChatMessages
 import com.techjays.chatlibrary.view_model.ChatViewModel
+import okhttp3.Request
+import okhttp3.WebSocket
 import java.util.*
+import okhttp3.WebSocketListener
+import okio.ByteString
+import okhttp3.OkHttpClient
+
 
 /**
  * Created by Srinath on 21/09/21.
  **/
+
 
 class ChatActivity : BaseActivity(), View.OnClickListener {
 
@@ -32,10 +40,14 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mListener: EndlessRecyclerViewScrollListener
     private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var imgBack: ImageView
-    private lateinit var txtName:TextView
+    private lateinit var sendButton: ImageView
+    private lateinit var txtName: TextView
     private lateinit var mChatViewModel: ChatViewModel
     var mData = ArrayList<ChatMessages>()
     private lateinit var mAdapter: ChatAdapter
+    private lateinit var client: OkHttpClient
+    private lateinit var ws: WebSocket
+    private lateinit var listener : ChatSocketListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +59,23 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
             }
         }
         init()
+        start()
+    }
+
+    private fun start() {
+        val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
+        listener = ChatSocketListener()
+        ws = client.newWebSocket(request, listener)
+        client.dispatcher().executorService().shutdown()
     }
 
     override fun init() {
         mChatViewModel = ChatViewModel(this)
+        client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         mSwipe = findViewById(R.id.chat_swipe)
         imgBack = findViewById(R.id.imgBack)
+        sendButton = findViewById(R.id.btnSendMessage)
         txtName = findViewById(R.id.tvUserName)
         clickListener()
         initRecycler()
@@ -128,12 +150,16 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
             getChatMessage(false)
         }
         imgBack.setOnClickListener(this)
+        sendButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
             imgBack -> {
                 onBackPressed()
+            }
+            sendButton ->{
+                listener.sendChat("tset",mSelectedChatUser.mToUserId)
             }
 
         }

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("base_url", "https://sprint.myvidhire.com/api/v1/")
             intent.putExtra(
                 "chat_token",
-                "gAAAAABhSWvSuYM-mQooy08PdAcCOiz54P9dH_bdLHXX8w0uPAfURFMY9KbBm4OGmYvisqvLtpM1D7d0z1lwfgaod6cDnCjDQc5is1T5ezxsyTRCWQDMrSuya4WzHZz1QGxIPq5Utzs7iFnnYGcrMEACyy6ZBLuh8g=="
+                "gAAAAABhSyIaKLQbYN0-yjrNh_es5hcGSQI0HTUCi8Z-slMnrDxs7vg6OB3YUOwzsocVYyezKTjV0GPHd8kuyOqgniQmy6iaAljrOvYwUS00IgRv4EPoVt_nO3i5e3lzdf2A5W52GYrxE1ps63t-d_oUPKwjqRYxBQ=="
             )
             intent.putExtra("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
             startActivity(intent)
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
             val newFragment = ChatListFragment.newInstance(
                 "https://sprint.myvidhire.com/api/v1/",
-                "gAAAAABhSWvSuYM-mQooy08PdAcCOiz54P9dH_bdLHXX8w0uPAfURFMY9KbBm4OGmYvisqvLtpM1D7d0z1lwfgaod6cDnCjDQc5is1T5ezxsyTRCWQDMrSuya4WzHZz1QGxIPq5Utzs7iFnnYGcrMEACyy6ZBLuh8g==",
+                "gAAAAABhSxSGLih9x9FtS2q2LjW4IsGn_oFDpGIyrsOY0qygwPRb-h0R6BSxtZ3AT0qmVHzHVZ2X--z0R9k1BRK5OYdvRnhYDH0tmK0CT2w9rNBKS6-b38MWvTrvPjzlkB8IxuJq7cMPyVF3KuoEiLvBfYs6IpuJzg==",
                 "1d0e5734f76ad754333a3b297442a4b1f38eb60e"
             )
 
