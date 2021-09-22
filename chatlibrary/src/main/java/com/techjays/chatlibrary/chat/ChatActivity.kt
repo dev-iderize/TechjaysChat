@@ -38,7 +38,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
     var mLimit = 6
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
-    private lateinit var mSwipe: SwipeRefreshLayout
+    //private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var imgBack: ImageView
     private lateinit var sendButton: ImageView
     private lateinit var chatEdit: EditText
@@ -74,7 +74,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
         mChatViewModel = ChatViewModel(this)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
-        mSwipe = findViewById(R.id.chat_swipe_refresh)
+       // mSwipe = findViewById(R.id.chat_swipe_refresh)
         imgBack = findViewById(R.id.imgBack)
         sendButton = findViewById(R.id.btnSendMessage)
         chatEdit = findViewById(R.id.etMessage)
@@ -118,7 +118,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun getChatMessage(show: Boolean) {
-        mSwipe.isRefreshing = !checkInternet()
+        //mSwipe.isRefreshing = !checkInternet()
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
@@ -126,7 +126,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
             if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
                 mChatViewModel.getChatObserver().observe(this, {
                     AppDialogs.hideProgressDialog()
-                    mSwipe.isRefreshing = false
+                    //mSwipe.isRefreshing = false
                     if (it?.responseStatus!!) {
                         isNextLink = (it as ChatMessages).mNextLink
                         if (mOffset == 0)
@@ -140,7 +140,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
                     } else {
                         AppDialogs.customOkAction(this, it?.responseMessage)
                         AppDialogs.hideProgressDialog()
-                        mSwipe.isRefreshing = false
+                        //mSwipe.isRefreshing = false
                     }
                 })
             }
@@ -149,11 +149,11 @@ class ChatActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun clickListener() {
-        mSwipe.setOnRefreshListener {
-            mListener.resetState()
-            mOffset = 0
-            getChatMessage(false)
-        }
+//        mSwipe.setOnRefreshListener {
+//            mListener.resetState()
+//            mOffset = 0
+//            getChatMessage(false)
+//        }
         imgBack.setOnClickListener(this)
         sendButton.setOnClickListener(this)
     }
