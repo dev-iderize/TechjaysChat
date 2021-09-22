@@ -97,7 +97,6 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
         layoutManager.stackFromEnd = true
         mRecyclerView.adapter = mAdapterLib
 
-
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 try {
@@ -113,7 +112,6 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
             }
         }
         mRecyclerView.addOnScrollListener(mListener)
-
     }
 
     private fun getChatMessage(show: Boolean) {
@@ -176,10 +174,19 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
     }
 
     override fun onMessageReceive(receivedNewMessage: ChatSocketMessages) {
+        createNewMessage(
+            receivedNewMessage.mData == null,
+            receivedNewMessage.mMessage,
+            receivedNewMessage.mTimeStamp
+        )
+    }
+
+    private fun createNewMessage(isMySelf: Boolean, msg: String, timestamp: String) {
         val newMessage = ChatMessages()
-        newMessage.mIsSentByMyself = false
-        newMessage.mMessage = receivedNewMessage.mMessage
-        newMessage.mTimeStamp = receivedNewMessage.mTimeStamp
+        newMessage.mIsSentByMyself = isMySelf
+        newMessage.mMessage = msg
+        newMessage.mTimeStamp =
+            if (timestamp.isNotEmpty()) timestamp else (System.currentTimeMillis() / 1000).toString()
         mData.add(mData.size - 1, newMessage)
         mAdapterLib.notifyDataSetChanged()
     }

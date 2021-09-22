@@ -16,7 +16,7 @@ class ChatSocketMessages : Response() {
     var mChatType = ""
 
     @SerializedName("data")
-    var mData = ChatSocketMessages()
+    var mData: ChatSocketMessages? = null
 
     @SerializedName("message")
     var mMessage = ""
