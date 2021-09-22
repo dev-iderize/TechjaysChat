@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
@@ -21,7 +22,7 @@ import java.util.*
 class ChatAdapter(
     val mContext: FragmentActivity,
     val mData: ArrayList<ChatList>,
-    private var mCallback: ChatAdapter.Callback?
+    private var mCallback: Callback?
 ) : RecyclerView.Adapter<ChatAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -31,6 +32,7 @@ class ChatAdapter(
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(
         holder: ItemViewHolder,
         @SuppressLint("RecyclerView") position: Int
@@ -38,6 +40,7 @@ class ChatAdapter(
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
 
         val chatList = mData[position]
+        holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}"
         holder.mChatMessage.text = chatList.mMessage
         Utility.loadUserImage(
@@ -45,8 +48,23 @@ class ChatAdapter(
             holder.mUserImage,
             mContext
         )
-        holder.itemView.setOnClickListener {
-            mCallback?.initChatMessage(mData[position])
+        holder.mCardView.setOnClickListener {
+            mCallback?.initChatMessage(chatList)
+        }
+
+        holder.mChatCheckBox.isChecked = chatList.isChecked
+
+        holder.mCardView.setOnLongClickListener {
+            for (i in mData) {
+                i.isChecked = false
+                i.showCheckBox = !i.showCheckBox
+                notifyDataSetChanged()
+            }
+            return@setOnLongClickListener true
+        }
+
+        holder.mChatCheckBox.setOnClickListener {
+            chatList.isChecked = !chatList.isChecked
         }
     }
 
@@ -60,10 +78,12 @@ class ChatAdapter(
         var mUserImage: CircleImageView = view.findViewById(R.id.user_image)
         var mChatName: TextView = view.findViewById(R.id.chat_name)
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
+        var mChatCheckBox: CheckBox = view.findViewById(R.id.checkbox)
     }
 
-    interface Callback{
-        fun initChatMessage(selectedChat:ChatList)
+    interface Callback {
+        fun initChatMessage(selectedChat: ChatList)
+        fun initDelete()
     }
 
 }

@@ -4,21 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_gray_"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/app_gray_"
     android:orientation="vertical"
     tools:context=".ChatListActivity">
+
     <TextView
+        android:id="@+id/page_title"
         android:layout_width="match_parent"
-        android:text="@string/chats"
-        android:gravity="center_vertical"
+        android:layout_height="?android:attr/actionBarSize"
         android:layout_marginStart="34dp"
-        android:textSize="20sp"
+        android:gravity="center_vertical"
         android:letterSpacing="0.1"
+        android:text="@string/chats"
         android:textColor="@color/app_black"
-        android:textStyle="bold"
-        android:layout_height="?android:attr/actionBarSize"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/chat_swipe"
