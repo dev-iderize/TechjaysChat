@@ -41,7 +41,7 @@
 
     </LinearLayout>
 
-    <com.github.curioustechizen.ago.RelativeTimeTextView
+    <TextView
         android:id="@+id/time"
         style="@style/SubTitle"
         android:layout_marginStart="12dp"

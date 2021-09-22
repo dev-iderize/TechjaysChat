@@ -45,7 +45,7 @@ class ChatAdapter(val mContext: FragmentActivity,
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
         holder.txtUserName.text = chatList.mMessage
-        holder.mChatTime.setReferenceTime(DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp))
+        holder.mChatTime.text = DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp).toString()
         /*val format = SimpleDateFormat("yyyyMMddhhmmss")
         val date= format.parse(chatList.mTimeStamp)
         val newFormat = SimpleDateFormat("( hh:mm aa ) dd MMM yy")
@@ -59,7 +59,7 @@ class ChatAdapter(val mContext: FragmentActivity,
 
     open class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtUserName: TextView = view.findViewById(R.id.tvMessage)
-        var mChatTime: RelativeTimeTextView = view.findViewById(R.id.time)
+        var mChatTime: TextView = view.findViewById(R.id.time)
 
     }
 
