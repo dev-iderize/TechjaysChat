@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var imgBack: ImageView
     private lateinit var sendButton: ImageView
+    private lateinit var chatEdit: EditText
     private lateinit var txtName: TextView
     private lateinit var mChatViewModel: ChatViewModel
     var mData = ArrayList<ChatMessages>()
@@ -76,6 +78,7 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
         mSwipe = findViewById(R.id.chat_swipe)
         imgBack = findViewById(R.id.imgBack)
         sendButton = findViewById(R.id.btnSendMessage)
+        chatEdit = findViewById(R.id.etMessage)
         txtName = findViewById(R.id.tvUserName)
         clickListener()
         initRecycler()
@@ -159,7 +162,8 @@ class ChatActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             sendButton ->{
-                listener.sendChat("tset",mSelectedChatUser.mToUserId)
+                listener.sendChat(chatEdit.text.toString(),mSelectedChatUser.mToUserId)
+                chatEdit.text = "".toEditable()
             }
 
         }

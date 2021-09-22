@@ -1,5 +1,6 @@
 package com.techjays.chatlibrary.base
 
+import android.text.Editable
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -33,5 +34,8 @@ abstract class BaseActivity : AppCompatActivity() {
     fun getTXTValue(aTextText: TextView?): String {
         return aTextText?.text?.toString()?.trim { it <= ' ' } ?: ""
     }
+
+    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
 
 }
