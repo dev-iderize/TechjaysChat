@@ -62,10 +62,10 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 initChatMessage(chatData)
             }
 
-            ChatLibrary.instance.auth_token = auth_token
-            ChatLibrary.instance.chat_token = chat_token
-            ChatLibrary.instance.base_url = base_url
-            ChatLibrary.instance.libUserData = userData
+            ChatLibrary.instance.authToken = auth_token
+            ChatLibrary.instance.chatToken = chat_token
+            ChatLibrary.instance.baseUrl = base_url
+            ChatLibrary.instance.mUserData = userData
         } catch (e: Exception) {
             Log.d("ex", e.toString())
             throw  e
@@ -158,6 +158,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             mListener.resetState()
             mOffset = 0
             getChatList(false)
+            mDelete.visibility = View.GONE
         }
         mDelete.setOnClickListener(this)
     }

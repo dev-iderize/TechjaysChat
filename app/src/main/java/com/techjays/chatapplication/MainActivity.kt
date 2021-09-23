@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentTransaction
 import com.techjays.chatlibrary.LibChatListActivity
-import com.techjays.chatlibrary.ChatListFragmentLib
+import com.techjays.chatlibrary.LibChatListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,16 +35,21 @@ class MainActivity : AppCompatActivity() {
         mButton2 = findViewById(R.id.nav_fragment)
         mButton2.setOnClickListener {
 
-            val newFragment = ChatListFragmentLib.newInstance(
-                "https://sprint.myvidhire.com/api/v1/",
-                "gAAAAABhSxSGLih9x9FtS2q2LjW4IsGn_oFDpGIyrsOY0qygwPRb-h0R6BSxtZ3AT0qmVHzHVZ2X--z0R9k1BRK5OYdvRnhYDH0tmK0CT2w9rNBKS6-b38MWvTrvPjzlkB8IxuJq7cMPyVF3KuoEiLvBfYs6IpuJzg==",
-                "1d0e5734f76ad754333a3b297442a4b1f38eb60e"
-            )
+            val newFragment = LibChatListFragment()
 
-            val transaction: FragmentTransaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.root_container, newFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            val bundle = Bundle()
+            bundle.putString("base_url", "https://sprint.myvidhire.com/api/v1/")
+            bundle.putString(
+                "chat_token",
+                "gAAAAABhSxSGLih9x9FtS2q2LjW4IsGn_oFDpGIyrsOY0qygwPRb-h0R6BSxtZ3AT0qmVHzHVZ2X--z0R9k1BRK5OYdvRnhYDH0tmK0CT2w9rNBKS6-b38MWvTrvPjzlkB8IxuJq7cMPyVF3KuoEiLvBfYs6IpuJzg=="
+            )
+            bundle.putString("auth_token", "5cee957a8fe5b72393d2511818c33eef5fd18d1c")
+            newFragment.arguments = bundle
+
+            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.root_container, newFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 }

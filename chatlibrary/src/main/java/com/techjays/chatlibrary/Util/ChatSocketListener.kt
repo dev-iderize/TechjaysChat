@@ -25,7 +25,7 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
     fun getConnectionParams(): String {
         return "{\n" +
                 "\n" +
-                "    \"token\": \"${ChatLibrary.instance.chat_token}\",\n" +
+                "    \"token\": \"${ChatLibrary.instance.chatToken}\",\n" +
                 "\n" +
                 "    \"type\": \"connect\"\n" +
                 "\n" +
@@ -34,7 +34,7 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
 
     fun sendChatParams(msg: String, to: String): String {
         return "{\n" +
-                "    \"token\": \"${ChatLibrary.instance.chat_token}\",\n" +
+                "    \"token\": \"${ChatLibrary.instance.chatToken}\",\n" +
                 "    \"type\": \"chat\",\n" +
                 "    \"chat_type\": \"private\",\n" +
                 "    \"to\": $to,\n" +

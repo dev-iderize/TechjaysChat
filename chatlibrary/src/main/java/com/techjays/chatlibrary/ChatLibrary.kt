@@ -8,14 +8,13 @@ import com.techjays.chatlibrary.model.LibUser
  */
 class ChatLibrary private constructor() {
 
-    var base_url = ""
-    var chat_token = ""
-    var auth_token = ""
-    var libUserData: LibUser? = null
+    var baseUrl = ""
+    var chatToken = ""
+    var authToken = ""
+    var mUserData: LibUser? = null
 
     companion object {
         // Getter-Setters
         var instance = ChatLibrary()
-
     }
 }
