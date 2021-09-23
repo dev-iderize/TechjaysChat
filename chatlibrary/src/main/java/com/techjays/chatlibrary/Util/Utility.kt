@@ -1,7 +1,6 @@
 package com.techjays.chatlibrary.Util
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
@@ -9,7 +8,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.SystemClock
 import android.text.Selection
-import android.text.format.DateUtils
 import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
@@ -18,11 +16,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.text.buildSpannedString
-import androidx.core.text.color
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -231,7 +225,7 @@ object Utility {
     }
 
     fun loadUserImage(aURL: String?, image: ImageView, context: Context) {
-        val placeHolder: Int = R.drawable.ic_user_placeholder
+        val placeHolder: Int = R.drawable.lib_ic_user_placeholder
         loadUserImage(aURL, image, placeHolder)
     }
 

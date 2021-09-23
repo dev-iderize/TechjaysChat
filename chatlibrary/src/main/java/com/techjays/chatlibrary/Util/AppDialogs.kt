@@ -7,19 +7,14 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -104,7 +99,7 @@ object AppDialogs {
         hidecustomView()
 
         val builder = AlertDialog.Builder(context,com.techjays.chatlibrary.R.style.BottomSheetDialog)
-        val view = LayoutInflater.from(context).inflate(com.techjays.chatlibrary.R.layout.dialog_ok_action, null)
+        val view = LayoutInflater.from(context).inflate(com.techjays.chatlibrary.R.layout.lib_dialog_ok_action, null)
 
         val dialogTitle = view.findViewById(com.techjays.chatlibrary.R.id.dialog_title) as TextView
         val dialogMessage = view.findViewById(com.techjays.chatlibrary.R.id.dialog_message) as TextView
@@ -167,7 +162,7 @@ object AppDialogs {
         hideProgressDialog()
         progressDialog = Dialog(context)
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(com.techjays.chatlibrary.R.layout.dialog_progress_custom, null)
+        val view = inflater.inflate(com.techjays.chatlibrary.R.layout.lib_dialog_progress_custom, null)
         progressDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         progressDialog!!.setContentView(view)

@@ -1,6 +1,6 @@
 package com.techjays.chatlibrary.base
 
-interface BaseInterface {
+interface LibBaseInterface {
 
     fun doRefresh(refresh: Boolean)
 }

@@ -1,6 +1,6 @@
 package com.techjays.chatlibrary
 
-import com.techjays.chatlibrary.model.User
+import com.techjays.chatlibrary.model.LibUser
 
 
 /**
@@ -11,7 +11,7 @@ class ChatLibrary private constructor() {
     var base_url = ""
     var chat_token = ""
     var auth_token = ""
-    var userData: User? = null
+    var libUserData: LibUser? = null
 
     companion object {
         // Getter-Setters

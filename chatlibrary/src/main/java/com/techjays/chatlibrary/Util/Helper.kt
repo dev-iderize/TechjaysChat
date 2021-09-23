@@ -11,10 +11,8 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.util.Patterns
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
-import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.base.FragmentManager
+import com.techjays.chatlibrary.base.LibFragmentManager
 import java.util.*
 
 object Helper {
@@ -116,7 +114,7 @@ object Helper {
 
     fun navigateProfile(activity: FragmentActivity, id: String, showHeader: Boolean) {
         if (Utility.isInternetAvailable(activity)) {
-            val mFragmentManager = FragmentManager(activity)
+            val mFragmentManager = LibFragmentManager(activity)
             val bundle = Bundle()
             bundle.putString("user_id", id)
             bundle.putBoolean("showHeader", showHeader)

@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.base.BaseFragment
-import com.techjays.chatlibrary.model.ChatList
-import com.techjays.chatlibrary.view_model.ChatViewModel
+import com.techjays.chatlibrary.base.LibBaseFragment
+import com.techjays.chatlibrary.model.LibChatList
+import com.techjays.chatlibrary.view_model.LibChatViewModel
 import java.util.ArrayList
 
 private const val ARG_PARAM1 = "base_url"
@@ -21,10 +21,10 @@ private const val ARG_PARAM3 = "auth_token"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ChatListFragment.newInstance] factory method to
+ * Use the [ChatListFragmentLib.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
+class ChatListFragmentLib : LibBaseFragment(), LibChatListAdapter.Callback {
     private var base_url: String? = null
     private var chat_token: String? = null
     private var auth_token: String? = null
@@ -35,9 +35,9 @@ class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
     private lateinit var mSwipe: SwipeRefreshLayout
-    private lateinit var mChatViewModel: ChatViewModel
-    var mData = ArrayList<ChatList>()
-    private lateinit var mListAdapter: ChatListAdapter
+    private lateinit var mLibChatViewModel: LibChatViewModel
+    var mData = ArrayList<LibChatList>()
+    private lateinit var mListAdapterLib: LibChatListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,13 +60,13 @@ class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mView =  inflater.inflate(R.layout.fragment_chat_list, container, false)
+        mView =  inflater.inflate(R.layout.lib_fragment_chat_list, container, false)
         init(mView)
         return mView
     }
 
     override fun init(view: View) {
-        mChatViewModel = ChatViewModel(this.requireActivity())
+        mLibChatViewModel = LibChatViewModel(this.requireActivity())
         mRecyclerView = mView.findViewById(R.id.recycler_chat_list)
         mSwipe = view.findViewById(R.id.chat_swipe)
         initRecycler()
@@ -78,8 +78,8 @@ class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
 
         val layoutManager = LinearLayoutManager(requireActivity())
         mRecyclerView.layoutManager = layoutManager
-        mListAdapter = ChatListAdapter(requireActivity(), mData,this)
-        mRecyclerView.adapter = mListAdapter
+        mListAdapterLib = LibChatListAdapter(requireActivity(), mData,this)
+        mRecyclerView.adapter = mListAdapterLib
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -102,17 +102,17 @@ class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(requireActivity())
-            mChatViewModel.getChatList(mOffset, mLimit)
-            if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
-                mChatViewModel.getChatObserver().observe(requireActivity(), {
+            mLibChatViewModel.getChatList(mOffset, mLimit)
+            if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
+                mLibChatViewModel.getChatObserver().observe(requireActivity(), {
                     AppDialogs.hideProgressDialog()
                     mSwipe.isRefreshing = false
                     if (it?.responseStatus!!) {
-                        isNextLink = (it as ChatList).mNextLink
+                        isNextLink = (it as LibChatList).mNextLink
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
-                        mListAdapter.notifyDataSetChanged()
+                        mListAdapterLib.notifyDataSetChanged()
                     } else {
                         AppDialogs.customOkAction(requireActivity(), it?.responseMessage)
                         AppDialogs.hideProgressDialog()
@@ -146,7 +146,7 @@ class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
     companion object {
         @JvmStatic
         fun newInstance(base_url: String,chat_token: String,auth_token: String) =
-            ChatListFragment().apply {
+            ChatListFragmentLib().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, base_url)
                     putString(ARG_PARAM2, chat_token)
@@ -155,7 +155,7 @@ class ChatListFragment : BaseFragment(), ChatListAdapter.Callback {
             }
     }
 
-    override fun initChatMessage(selectedChat: ChatList) {
+    override fun initChatMessage(selectedLibChat: LibChatList) {
 
     }
 

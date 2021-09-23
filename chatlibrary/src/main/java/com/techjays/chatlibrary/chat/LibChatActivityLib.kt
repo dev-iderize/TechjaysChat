@@ -13,11 +13,11 @@ import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.ChatSocketListener
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.base.BaseActivity
-import com.techjays.chatlibrary.model.ChatList
-import com.techjays.chatlibrary.model.ChatMessages
-import com.techjays.chatlibrary.model.ChatSocketMessages
-import com.techjays.chatlibrary.view_model.ChatViewModel
+import com.techjays.chatlibrary.base.LibBaseActivity
+import com.techjays.chatlibrary.model.LibChatList
+import com.techjays.chatlibrary.model.LibChatMessages
+import com.techjays.chatlibrary.model.LibChatSocketMessages
+import com.techjays.chatlibrary.view_model.LibChatViewModel
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
@@ -29,22 +29,22 @@ import okhttp3.OkHttpClient
  **/
 
 
-class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener.CallBack {
+class LibChatActivityLib : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack {
 
     private lateinit var mRecyclerView: RecyclerView
-    lateinit var mSelectedChatUser: ChatList
+    lateinit var mSelectedLibChatUser: LibChatList
     var mOffset = 0
     var mLimit = 6
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
 
     //private lateinit var mSwipe: SwipeRefreshLayout
-    private lateinit var imgBack: ImageView
-    private lateinit var sendButton: ImageView
-    private lateinit var chatEdit: EditText
-    private lateinit var txtName: TextView
-    private lateinit var mChatViewModel: ChatViewModel
-    var mData = ArrayList<ChatMessages>()
+    private lateinit var libImgBack: ImageView
+    private lateinit var libSendButton: ImageView
+    private lateinit var libChatEdit: EditText
+    private lateinit var libTxtName: TextView
+    private lateinit var mLibChatViewModel: LibChatViewModel
+    var mData = ArrayList<LibChatMessages>()
     private lateinit var mAdapterLib: LibChatAdapter
     private lateinit var client: OkHttpClient
     private lateinit var ws: WebSocket
@@ -53,10 +53,10 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+        setContentView(R.layout.lib_activity_chat)
         if (intent != null) {
             if (intent.extras?.containsKey("chat_user")!!) {
-                mSelectedChatUser = intent.extras?.get("chat_user") as ChatList
+                mSelectedLibChatUser = intent.extras?.get("chat_user") as LibChatList
             }
         }
         init()
@@ -71,14 +71,14 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
     }
 
     override fun init() {
-        mChatViewModel = ChatViewModel(this)
+        mLibChatViewModel = LibChatViewModel(this)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         // mSwipe = findViewById(R.id.chat_swipe_refresh)
-        imgBack = findViewById(R.id.imgBack)
-        sendButton = findViewById(R.id.btnSendMessage)
-        chatEdit = findViewById(R.id.etMessage)
-        txtName = findViewById(R.id.tvUserName)
+        libImgBack = findViewById(R.id.libImgBack)
+        libSendButton = findViewById(R.id.btnSendMessage)
+        libChatEdit = findViewById(R.id.etMessage)
+        libTxtName = findViewById(R.id.libTvUserName)
         clickListener()
         initRecycler()
         initView()
@@ -86,7 +86,7 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
     }
 
     private fun initView() {
-        txtName.text = "${mSelectedChatUser.mCompanyName}${mSelectedChatUser.mFirstName}"
+        libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
     }
 
 
@@ -120,13 +120,13 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
-            mChatViewModel.getChatMessage(mOffset, mLimit, mSelectedChatUser.mToUserId)
-            if (!mChatViewModel.getChatObserver().hasActiveObservers()) {
-                mChatViewModel.getChatObserver().observe(this, {
+            mLibChatViewModel.getChatMessage(mOffset, mLimit, mSelectedLibChatUser.mToUserId)
+            if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
+                mLibChatViewModel.getChatObserver().observe(this, {
                     AppDialogs.hideProgressDialog()
                     //mSwipe.isRefreshing = false
                     if (it?.responseStatus!!) {
-                        isNextLink = (it as ChatMessages).mNextLink
+                        isNextLink = (it as LibChatMessages).mNextLink
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
@@ -152,43 +152,43 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
 //            mOffset = 0
 //            getChatMessage(false)
 //        }
-        imgBack.setOnClickListener(this)
-        sendButton.setOnClickListener(this)
+        libImgBack.setOnClickListener(this)
+        libSendButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
-            imgBack -> {
+            libImgBack -> {
                 onBackPressed()
             }
-            sendButton -> {
-                if (chatEdit.text.isEmpty()) {
-                    chatEdit.error = "Enter your message"
-                    chatEdit.requestFocus()
+            libSendButton -> {
+                if (libChatEdit.text.isEmpty()) {
+                    libChatEdit.error = "Enter your message"
+                    libChatEdit.requestFocus()
                 } else {
-                    listener.sendChat(chatEdit.text.toString(), mSelectedChatUser.mToUserId)
+                    listener.sendChat(libChatEdit.text.toString(), mSelectedLibChatUser.mToUserId)
                 }
             }
         }
 
     }
 
-    override fun onMessageReceive(receivedNewMessage: ChatSocketMessages) {
+    override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {
         val isMySelf = receivedNewMessage.mData?.mSender == null
         runOnUiThread {
-            val newMessage = ChatMessages()
+            val newMessage = LibChatMessages()
             newMessage.mIsSentByMyself = isMySelf
             if (isMySelf) {
-                newMessage.mMessage = chatEdit.text.toString()
+                newMessage.mMessage = libChatEdit.text.toString()
                 newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-                chatEdit.text = "".toEditable()
+                libChatEdit.text = "".toEditable()
                 mData.add(0, newMessage)
                 mRecyclerView.smoothScrollToPosition(0)
                 mAdapterLib.notifyDataSetChanged()
-            } else if (mSelectedChatUser.mToUserId.equals(receivedNewMessage.mData?.mSender?.mUserId.toString())) {
+            } else if (mSelectedLibChatUser.mToUserId.equals(receivedNewMessage.mData?.mSender?.mUserId.toString())) {
                 newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                 newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-                chatEdit.text = "".toEditable()
+                libChatEdit.text = "".toEditable()
                 mData.add(0, newMessage)
                 mRecyclerView.smoothScrollToPosition(0)
                 mAdapterLib.notifyDataSetChanged()

@@ -5,10 +5,10 @@ import com.techjays.chatlibrary.api.Response
 /**
  * Created by Mathan on 23/07/21.
  **/
-class User : Response() {
+class LibUser : Response() {
 
     @SerializedName("data")
-    var mUser: User? = null
+    var mLibUser: LibUser? = null
 
     @SerializedName("user_id")
     var mUserId = -1

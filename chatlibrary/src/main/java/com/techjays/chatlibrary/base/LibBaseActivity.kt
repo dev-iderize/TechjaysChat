@@ -1,40 +1,30 @@
 package com.techjays.chatlibrary.base
 
-import android.view.View
+import android.text.Editable
 import android.widget.EditText
 import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.Utility
 
-abstract class BaseFragment : Fragment() {
 
-    abstract fun onBackPressed()
-
-    abstract fun onResumeFragment()
-
-    abstract fun init(view: View)
-
-    abstract fun initBundle()
+abstract class LibBaseActivity : AppCompatActivity() {
 
     abstract fun clickListener()
 
+    abstract fun init()
+
     fun checkInternet(): Boolean {
-        return if (Utility.isInternetAvailable(this.context))
+        return if (Utility.isInternetAvailable(this))
             true
         else {
             AppDialogs.customOkAction(
-                requireActivity(),
-                "No Internet"
-            )
+                this,
+                "No Internet")
+
             false
         }
-    }
-
-    override fun onResume() {
-        onResumeFragment()
-        super.onResume()
     }
 
     fun getETValue(aEditText: EditText?): String {
@@ -44,5 +34,8 @@ abstract class BaseFragment : Fragment() {
     fun getTXTValue(aTextText: TextView?): String {
         return aTextText?.text?.toString()?.trim { it <= ' ' } ?: ""
     }
+
+    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
 
 }

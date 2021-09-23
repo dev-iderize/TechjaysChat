@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.Util.DateUtil
-import com.techjays.chatlibrary.model.ChatMessages
+import com.techjays.chatlibrary.model.LibChatMessages
 import java.util.ArrayList
 
 /**
@@ -17,7 +16,7 @@ import java.util.ArrayList
  **/
 
 class LibChatAdapter(val mContext: FragmentActivity,
-                     val mData: ArrayList<ChatMessages>)
+                     val mData: ArrayList<LibChatMessages>)
     : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
     private val MESSAGE_TYPE_LEFT = 0
@@ -26,11 +25,11 @@ class LibChatAdapter(val mContext: FragmentActivity,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return if (viewType == MESSAGE_TYPE_RIGHT) {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_right, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.lib_item_right, parent, false)
             ItemViewHolder(view)
         } else {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_left, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.lib_item_left, parent, false)
             ItemViewHolder(view)
         }
     }

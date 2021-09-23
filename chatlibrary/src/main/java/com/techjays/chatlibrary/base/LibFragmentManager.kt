@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.transition.Slide
 import com.techjays.chatlibrary.R
 
-class FragmentManager
+class LibFragmentManager
 /**
  * Constructor to Initiate fragment manager
  *

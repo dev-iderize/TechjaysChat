@@ -7,7 +7,7 @@ import com.techjays.chatlibrary.api.Response
  * Created by Mathan on 22/09/21.
  **/
 
-open class ChatSocketMessages : Response() {
+open class LibChatSocketMessages : Response() {
 
     @SerializedName("type")
     var mType = ""
@@ -16,13 +16,13 @@ open class ChatSocketMessages : Response() {
     var mChatType = ""
 
     @SerializedName("data")
-    var mData: ChatSocketMessages? = null
+    var mData: LibChatSocketMessages? = null
 
     @SerializedName("message")
     var mMessage = ""
 
     @SerializedName("sender")
-    var mSender: ChatSocketMessages? = null
+    var mSender: LibChatSocketMessages? = null
 
     @SerializedName("user_id")
     var mUserId = -1

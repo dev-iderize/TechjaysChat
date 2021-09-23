@@ -3,7 +3,7 @@ package com.techjays.chatlibrary.Util
 import android.util.Log
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.model.ChatSocketMessages
+import com.techjays.chatlibrary.model.LibChatSocketMessages
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -48,7 +48,7 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
             if (text.isNotEmpty()) {
                 val obj = JSONObject(text)
                 if (obj.get("type").equals("chat")) {
-                    val receivedNewMessage = Gson().fromJson(text, ChatSocketMessages::class.java)
+                    val receivedNewMessage = Gson().fromJson(text, LibChatSocketMessages::class.java)
                     if (receivedNewMessage.responseStatus!! && receivedNewMessage.mType == "chat") {
                         if (receivedNewMessage.mData!!.mTimeStamp.isEmpty())
                             receivedNewMessage.mData!!.mTimeStamp =
@@ -85,6 +85,6 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
     }
 
     interface CallBack {
-        fun onMessageReceive(chatMessage: ChatSocketMessages)
+        fun onMessageReceive(libChatMessage: LibChatSocketMessages)
     }
 }

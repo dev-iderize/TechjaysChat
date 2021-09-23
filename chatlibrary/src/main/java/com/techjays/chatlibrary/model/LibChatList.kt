@@ -8,13 +8,13 @@ import com.techjays.chatlibrary.api.Response
  **/
 
 
-class ChatList: Response() {
+class LibChatList: Response() {
 
     @SerializedName("next_link")
     var mNextLink = false
 
     @SerializedName("data")
-    var mData = ArrayList<ChatList>()
+    var mData = ArrayList<LibChatList>()
 
     @SerializedName("message_id")
     var mMessageId = ""

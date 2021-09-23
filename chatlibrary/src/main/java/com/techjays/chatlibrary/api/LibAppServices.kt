@@ -10,8 +10,8 @@ import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.Helper
 import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.constants.ProjectApplication
-import com.techjays.chatlibrary.model.ChatList
-import com.techjays.chatlibrary.model.ChatMessages
+import com.techjays.chatlibrary.model.LibChatList
+import com.techjays.chatlibrary.model.LibChatMessages
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -20,7 +20,7 @@ import retrofit2.http.*
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
-class AppServices {
+class LibAppServices {
 
     object API {
 
@@ -170,7 +170,7 @@ class AppServices {
                 mParam["limit"] = limit.toString()
 
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
-                initService(c, call, ChatList::class.java, mHashCode, listener)
+                initService(c, call, LibChatList::class.java, mHashCode, listener)
                 Log.d("mParam --> ", mParam.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -189,7 +189,7 @@ class AppServices {
                 mParam["to_user_id"] = userId
 
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
-                initService(c, call, ChatMessages::class.java, mHashCode, listener)
+                initService(c, call, LibChatMessages::class.java, mHashCode, listener)
                 Log.d("mParam --> ", mParam.toString())
             } catch (e: Exception) {
                 e.printStackTrace()

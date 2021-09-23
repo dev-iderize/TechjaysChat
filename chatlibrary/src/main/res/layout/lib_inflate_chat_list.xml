@@ -32,7 +32,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_user_placeholder"
+                android:src="@drawable/lib_ic_user_placeholder"
                 app:civ_border_color="@android:color/white"
                 app:civ_border_width="4dp" />
 

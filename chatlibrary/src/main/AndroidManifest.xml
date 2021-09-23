@@ -9,11 +9,11 @@
     <application
         android:networkSecurityConfig="@xml/network_config">
         <activity
-            android:name=".chat.LibChatActivity"
+            android:name=".chat.LibChatActivityLib"
             android:theme="@style/Theme.Vidhire_android"
             android:exported="true" />
         <activity
-            android:name=".ChatListActivity"
+            android:name=".LibChatListActivityLib"
             android:theme="@style/Theme.Vidhire_android"
             android:exported="true" />
     </application>

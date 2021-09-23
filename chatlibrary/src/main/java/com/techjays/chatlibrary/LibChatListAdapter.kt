@@ -4,13 +4,12 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.Util.Utility
-import com.techjays.chatlibrary.model.ChatList
+import com.techjays.chatlibrary.model.LibChatList
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
@@ -18,16 +17,16 @@ import java.util.*
  * Created by Srinath on 17/09/21.
  **/
 
-class ChatListAdapter(
+class LibChatListAdapter(
     val mContext: FragmentActivity,
-    val mData: ArrayList<ChatList>,
+    val mData: ArrayList<LibChatList>,
     private var mCallback: Callback?
-) : RecyclerView.Adapter<ChatListAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<LibChatListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.inflate_chat_list, parent, false)
+                .inflate(R.layout.lib_inflate_chat_list, parent, false)
         return ItemViewHolder(itemView)
     }
 
@@ -82,7 +81,7 @@ class ChatListAdapter(
     }
 
     interface Callback {
-        fun initChatMessage(selectedChat: ChatList)
+        fun initChatMessage(selectedLibChat: LibChatList)
         fun initDelete()
     }
 

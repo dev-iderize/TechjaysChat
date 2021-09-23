@@ -7,13 +7,13 @@ import com.techjays.chatlibrary.api.Response
  * Created by Srinath on 21/09/21.
  **/
 
-class ChatMessages : Response() {
+class LibChatMessages : Response() {
 
     @SerializedName("next_link")
     var mNextLink = false
 
     @SerializedName("data")
-    var mData = ArrayList<ChatMessages>()
+    var mData = ArrayList<LibChatMessages>()
 
     @SerializedName("message_id")
     var mMessageId = ""
