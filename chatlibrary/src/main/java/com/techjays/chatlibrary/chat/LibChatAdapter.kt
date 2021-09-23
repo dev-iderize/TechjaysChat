@@ -8,7 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.Util.DateUtil
 import com.techjays.chatlibrary.model.LibChatMessages
+import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 /**
@@ -41,11 +43,11 @@ class LibChatAdapter(val mContext: FragmentActivity,
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
         holder.txtUserName.text = chatList.mMessage
-//        holder.mChatTime.text = DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp).toString()
-        /*val format = SimpleDateFormat("yyyyMMddhhmmss")
+       /* holder.mChatTime.text = DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp).toString()*/
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val date= format.parse(chatList.mTimeStamp)
-        val newFormat = SimpleDateFormat("( hh:mm aa ) dd MMM yy")
-        holder.mTime.text = newFormat.format(date)*/
+        val newFormat = SimpleDateFormat("hh:mm aa dd MMM")
+        holder.mChatTime.text = newFormat.format(date)
     }
 
 

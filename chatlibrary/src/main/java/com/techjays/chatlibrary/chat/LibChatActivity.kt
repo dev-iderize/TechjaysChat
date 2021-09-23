@@ -13,11 +13,13 @@ import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.ChatSocketListener
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
+import com.techjays.chatlibrary.Util.Utility
 import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.view_model.LibChatViewModel
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
@@ -49,6 +51,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var client: OkHttpClient
     private lateinit var ws: WebSocket
     private lateinit var listener: ChatSocketListener
+    private lateinit var libProfileImage: CircleImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +82,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libSendButton = findViewById(R.id.btnSendMessage)
         libChatEdit = findViewById(R.id.etMessage)
         libTxtName = findViewById(R.id.libTvUserName)
+        libProfileImage = findViewById(R.id.libImgProfile)
         clickListener()
         initRecycler()
         initView()
@@ -87,6 +91,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     private fun initView() {
         libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
+        Utility.loadUserImage(
+            mSelectedLibChatUser.mProfilePic,
+            libProfileImage,
+            this
+        )
     }
 
 

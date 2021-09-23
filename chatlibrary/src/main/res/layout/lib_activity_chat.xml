@@ -24,9 +24,10 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/libImgProfile"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_marginLeft="5dp"
+            android:src="@drawable/lib_ic_baseline_account_circle_24"
             android:layout_marginRight="5dp"
             android:padding="5dp" />
 
@@ -43,7 +44,6 @@
     </LinearLayout>
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
@@ -53,8 +53,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-       />
+        android:layout_marginBottom="5dp" />
 
 
     <RelativeLayout
@@ -67,8 +66,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorTextBackground"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etMessage"
@@ -78,7 +79,7 @@
                 android:background="@color/colorTextBackground"
                 android:hint="@string/type_message"
                 android:inputType="text"
-                android:padding="12dp"
+                android:padding="6dp"
                 android:textColor="@color/app_black" />
 
             <ImageView
@@ -88,8 +89,7 @@
                 android:background="@drawable/lib_button_background"
                 android:padding="10dp"
                 android:rotation="360"
-                android:src="@drawable/lib_send"
-                app:tint="@color/white" />
+                android:src="@drawable/lib_send"/>
 
         </LinearLayout>
 

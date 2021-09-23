@@ -11,6 +11,8 @@
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/drawable.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/item_left_side_background.xml" value="0.290625" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/item_right_side_background.xml" value="0.290625" />
+        <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_item_left_side_background.xml" value="0.290625" />
+        <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_item_right_side_background.xml" value="0.290625" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/activity_chat.xml" value="0.2509057971014493" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/activity_chat_list.xml" value="0.2509057971014493" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/dialog_ok_action.xml" value="0.2509057971014493" />
@@ -19,6 +21,7 @@
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/item_left.xml" value="0.2509057971014493" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/item_right.xml" value="0.2509057971014493" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_activity_chat.xml" value="0.24139492753623187" />
+        <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_activity_chat_list.xml" value="0.24139492753623187" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_dialog_ok_action.xml" value="0.24139492753623187" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_inflate_chat_list.xml" value="0.24139492753623187" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_left.xml" value="0.24139492753623187" />
