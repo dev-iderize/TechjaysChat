@@ -50,7 +50,7 @@ class LibChatListActivityLib : LibBaseActivity(), LibChatListAdapter.Callback,
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
 
-            if (data.extras!!.containsKey("")) {
+            if (data.extras!!.containsKey("chat_user_data")) {
                 val chatUserData =
                     Gson().fromJson(
                         data.getStringExtra("chat_user_data").toString(),
