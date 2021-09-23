@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
@@ -38,7 +39,7 @@ class LibChatListAdapter(
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
 
         val chatList = mData[position]
-//        holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
+        holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}"
         holder.mChatMessage.text = chatList.mMessage
         Utility.loadUserImage(
@@ -50,7 +51,7 @@ class LibChatListAdapter(
             mCallback?.initChatMessage(chatList)
         }
 
-//        holder.mChatCheckBox.isChecked = chatList.isChecked
+        holder.mChatCheckBox.isChecked = chatList.isChecked
 
         holder.mCardView.setOnLongClickListener {
             for (i in mData) {
@@ -62,9 +63,9 @@ class LibChatListAdapter(
             return@setOnLongClickListener true
         }
 
-//        holder.mChatCheckBox.setOnClickListener {
-//            chatList.isChecked = !chatList.isChecked
-//        }
+        holder.mChatCheckBox.setOnClickListener {
+            chatList.isChecked = !chatList.isChecked
+        }
     }
 
 
@@ -77,7 +78,7 @@ class LibChatListAdapter(
         var mUserImage: CircleImageView = view.findViewById(R.id.user_image)
         var mChatName: TextView = view.findViewById(R.id.chat_name)
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
-//        var mChatCheckBox = view.findViewById<CheckBox>(R.id.check_box)
+        var mChatCheckBox = view.findViewById<CheckBox>(R.id.check_box_)
     }
 
     interface Callback {
