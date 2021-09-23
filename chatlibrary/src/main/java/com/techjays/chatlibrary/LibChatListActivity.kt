@@ -16,13 +16,13 @@ import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.api.LibAppServices.API.chat_list
 import com.techjays.chatlibrary.api.LibAppServices.API.delete_chats
 import com.techjays.chatlibrary.base.LibBaseActivity
-import com.techjays.chatlibrary.chat.LibChatActivityLib
+import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.view_model.LibChatViewModel
 import kotlin.collections.ArrayList
 
-class LibChatListActivityLib : LibBaseActivity(), LibChatListAdapter.Callback,
+class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     View.OnClickListener {
 
     private lateinit var mRecyclerView: RecyclerView
@@ -163,7 +163,7 @@ class LibChatListActivityLib : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
-        val i = Intent(this, LibChatActivityLib::class.java)
+        val i = Intent(this, LibChatActivity::class.java)
         i.putExtra("chat_user", selectedLibChat)
         startActivity(i)
     }

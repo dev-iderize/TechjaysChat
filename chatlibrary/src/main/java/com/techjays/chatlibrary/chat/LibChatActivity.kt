@@ -29,7 +29,7 @@ import okhttp3.OkHttpClient
  **/
 
 
-class LibChatActivityLib : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack {
+class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack {
 
     private lateinit var mRecyclerView: RecyclerView
     lateinit var mSelectedLibChatUser: LibChatList
