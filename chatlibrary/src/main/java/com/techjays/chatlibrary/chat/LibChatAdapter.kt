@@ -42,7 +42,7 @@ class LibChatAdapter(val mContext: FragmentActivity,
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
         holder.txtUserName.text = chatList.mMessage
-        holder.mChatTime.text = DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp).toString()
+//        holder.mChatTime.text = DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp).toString()
         /*val format = SimpleDateFormat("yyyyMMddhhmmss")
         val date= format.parse(chatList.mTimeStamp)
         val newFormat = SimpleDateFormat("( hh:mm aa ) dd MMM yy")

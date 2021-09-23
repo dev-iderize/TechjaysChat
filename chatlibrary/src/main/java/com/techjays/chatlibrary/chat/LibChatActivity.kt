@@ -166,7 +166,6 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
                     chatEdit.requestFocus()
                 } else {
                     listener.sendChat(chatEdit.text.toString(), mSelectedChatUser.mToUserId)
-                    chatEdit.text = "".toEditable()
                 }
             }
         }
@@ -175,18 +174,22 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
 
     override fun onMessageReceive(receivedNewMessage: ChatSocketMessages) {
         createNewMessage(
-            receivedNewMessage.mData == null,
+            receivedNewMessage.mData?.mSender == null,
             receivedNewMessage.mMessage,
             receivedNewMessage.mTimeStamp
         )
     }
 
     private fun createNewMessage(isMySelf: Boolean, msg: String, timestamp: String) {
-        val newMessage = ChatMessages()
-        newMessage.mIsSentByMyself = isMySelf
-        newMessage.mMessage = msg
-        newMessage.mTimeStamp = timestamp
-        mData.add(mData.size - 1, newMessage)
-        mAdapterLib.notifyDataSetChanged()
+        runOnUiThread {
+            val newMessage = ChatMessages()
+            newMessage.mIsSentByMyself = isMySelf
+            newMessage.mMessage = if (isMySelf) chatEdit.text.toString() else msg
+            newMessage.mTimeStamp = timestamp
+            chatEdit.text = "".toEditable()
+            mData.add(0, newMessage)
+            mRecyclerView.smoothScrollToPosition(0)
+            mAdapterLib.notifyDataSetChanged()
+        }
     }
 }

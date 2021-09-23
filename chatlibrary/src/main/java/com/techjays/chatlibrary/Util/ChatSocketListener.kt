@@ -49,9 +49,8 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
                 val obj = JSONObject(text)
                 if (obj.get("type").equals("chat")) {
                     val receivedNewMessage = Gson().fromJson(text, ChatSocketMessages::class.java)
-                    if (receivedNewMessage.mChatType == "chat") {
-                        receivedNewMessage.mTimeStamp =
-                            (System.currentTimeMillis() / 1000).toString()
+                    if (receivedNewMessage.responseStatus!! && receivedNewMessage.mType == "chat") {
+                        receivedNewMessage.mTimeStamp = (System.currentTimeMillis() / 1000).toString()
                         mCallback.onMessageReceive(receivedNewMessage)
                     }
                 }
