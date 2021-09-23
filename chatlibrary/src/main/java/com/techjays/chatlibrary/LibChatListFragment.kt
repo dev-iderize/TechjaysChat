@@ -165,6 +165,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
             mListener.resetState()
             mOffset = 0
             getChatList(false)
+            mDelete.visibility = View.GONE
         }
         mDelete.setOnClickListener(this)
     }
@@ -183,6 +184,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
     }
 
     override fun initDelete() {
+        mDelete.visibility = if (mDelete.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     override fun onClick(view: View) {
