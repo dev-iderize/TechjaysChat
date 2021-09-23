@@ -17,7 +17,7 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <com.google.android.material.checkbox.MaterialCheckBox
+            <CheckBox
                 android:id="@+id/check_box_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
                 android:layout_marginEnd="5dp"
                 android:buttonTint="@color/app_dark_blue"
                 android:checked="true"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_image"
