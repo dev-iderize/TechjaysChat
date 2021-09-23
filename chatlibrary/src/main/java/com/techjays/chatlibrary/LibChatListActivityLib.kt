@@ -22,7 +22,8 @@ import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.view_model.LibChatViewModel
 import kotlin.collections.ArrayList
 
-class LibChatListActivityLib : LibBaseActivity(), LibChatListAdapter.Callback, View.OnClickListener {
+class LibChatListActivityLib : LibBaseActivity(), LibChatListAdapter.Callback,
+    View.OnClickListener {
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
@@ -48,6 +49,18 @@ class LibChatListActivityLib : LibBaseActivity(), LibChatListAdapter.Callback, V
             val auth_token = data.getStringExtra("auth_token").toString()
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
+
+            if (data.extras!!.containsKey("")) {
+                val chatUserData =
+                    Gson().fromJson(
+                        data.getStringExtra("chat_user_data").toString(),
+                        LibUser::class.java
+                    )
+                val chatData = LibChatList()
+                chatData.mCompanyName = chatUserData.mUserName
+                chatData.mToUserId = chatUserData.mUserId.toString()
+                initChatMessage(chatData)
+            }
 
             ChatLibrary.instance.auth_token = auth_token
             ChatLibrary.instance.chat_token = chat_token

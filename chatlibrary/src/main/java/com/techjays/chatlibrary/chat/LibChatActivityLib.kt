@@ -178,27 +178,31 @@ class LibChatActivityLib : LibBaseActivity(), View.OnClickListener, ChatSocketLi
         runOnUiThread {
             val newMessage = LibChatMessages()
             newMessage.mIsSentByMyself = isMySelf
-            if (isMySelf) {
-                newMessage.mMessage = libChatEdit.text.toString()
-                newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-                libChatEdit.text = "".toEditable()
-                mData.add(0, newMessage)
-                mRecyclerView.smoothScrollToPosition(0)
-                mAdapterLib.notifyDataSetChanged()
-            } else if (mSelectedLibChatUser.mToUserId.equals(receivedNewMessage.mData?.mSender?.mUserId.toString())) {
-                newMessage.mMessage = receivedNewMessage.mData!!.mMessage
-                newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-                libChatEdit.text = "".toEditable()
-                mData.add(0, newMessage)
-                mRecyclerView.smoothScrollToPosition(0)
-                mAdapterLib.notifyDataSetChanged()
-            } else {
-                /*
-                * Build notification on receiving broadcast from channel "ChatLibraryBuildNotification"
-                * */
-                val intent = Intent("ChatLibraryBuildNotification");
-                intent.putExtra("data", Gson().toJson(receivedNewMessage));
-                sendBroadcast(intent);
+            when {
+                isMySelf -> {
+                    newMessage.mMessage = libChatEdit.text.toString()
+                    newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
+                    libChatEdit.text = "".toEditable()
+                    mData.add(0, newMessage)
+                    mRecyclerView.smoothScrollToPosition(0)
+                    mAdapterLib.notifyDataSetChanged()
+                }
+                mSelectedLibChatUser.mToUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
+                    newMessage.mMessage = receivedNewMessage.mData!!.mMessage
+                    newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
+                    libChatEdit.text = "".toEditable()
+                    mData.add(0, newMessage)
+                    mRecyclerView.smoothScrollToPosition(0)
+                    mAdapterLib.notifyDataSetChanged()
+                }
+                else -> {
+                    /*
+                        * Build notification on receiving broadcast from channel "ChatLibraryBuildNotification"
+                        * */
+                    val intent = Intent("ChatLibraryBuildNotification");
+                    intent.putExtra("data", Gson().toJson(receivedNewMessage));
+                    sendBroadcast(intent);
+                }
             }
 
         }
