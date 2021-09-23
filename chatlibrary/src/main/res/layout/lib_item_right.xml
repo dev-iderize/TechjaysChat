@@ -39,7 +39,7 @@
                 style="@style/SubTitle"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
-                android:textSize="7sp"
+                android:textSize="10sp"
                 android:text="11.Am"
                 android:textColor="@color/app_white"
                 android:layout_height="wrap_content"

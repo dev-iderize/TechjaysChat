@@ -9,6 +9,8 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() {
@@ -51,8 +53,13 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
                     val receivedNewMessage = Gson().fromJson(text, LibChatSocketMessages::class.java)
                     if (receivedNewMessage.responseStatus!! && receivedNewMessage.mType == "chat") {
                         if (receivedNewMessage.mData!!.mTimeStamp.isEmpty())
-                            receivedNewMessage.mData!!.mTimeStamp =
-                                (System.currentTimeMillis() / 1000).toString()
+                        {
+                            val c = Calendar.getInstance()
+                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+                            receivedNewMessage.mData!!.mTimeStamp =sdf.format(c.time)
+
+                        }
+
                         mCallback.onMessageReceive(receivedNewMessage)
                     }
                 }
