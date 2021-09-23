@@ -63,6 +63,23 @@ object DateUtil {
     }
 
     /**
+     * @param d Data String - 06 12 1993
+     * @param input String - dd MM yyyy
+     * @param output String - Required output
+     */
+
+    fun formatDisplayDate(d: String, input: String, output: String): String {
+        var mOutput = ""
+        try {
+            val date = SimpleDateFormat(input, Locale.getDefault()).parse(d)
+            mOutput = SimpleDateFormat(output, Locale.getDefault()).format(date!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return mOutput
+    }
+
+    /**
      * @param ds Date String in format dd-MM-yyyy
      * @return instance of [Date]
      */
@@ -333,7 +350,6 @@ object DateUtil {
      * @param SelectedDate  String (dd-MM-yyyy)
      * @param to_datePicker DatePickerDialog - DatePickerDialog.OnDateSetListener from_datePicker = new DatePickerDialog.OnDateSetListener()
      */
-
 
 
     /**
