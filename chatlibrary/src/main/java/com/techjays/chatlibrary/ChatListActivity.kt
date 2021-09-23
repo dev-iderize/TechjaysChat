@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.gson.Gson
 import com.techjays.chatlibrary.Util.AppDialogs
 import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.api.AppServices.API.chat_list
@@ -17,6 +18,7 @@ import com.techjays.chatlibrary.api.AppServices.API.delete_chats
 import com.techjays.chatlibrary.base.BaseActivity
 import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.ChatList
+import com.techjays.chatlibrary.model.User
 import com.techjays.chatlibrary.view_model.ChatViewModel
 import kotlin.collections.ArrayList
 
@@ -44,10 +46,13 @@ class ChatListActivity : BaseActivity(), ChatListAdapter.Callback, View.OnClickL
             val base_url = data.getStringExtra("base_url").toString()
             val chat_token = data.getStringExtra("chat_token").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
+            val userData =
+                Gson().fromJson(data.getStringExtra("auth_token").toString(), User::class.java)
 
             ChatLibrary.instance.auth_token = auth_token
             ChatLibrary.instance.chat_token = chat_token
             ChatLibrary.instance.base_url = base_url
+            ChatLibrary.instance.userData = userData
         } catch (e: Exception) {
             Log.d("ex", e.toString())
             throw  e
@@ -87,9 +92,9 @@ class ChatListActivity : BaseActivity(), ChatListAdapter.Callback, View.OnClickL
                     delete_chats.hashCode() -> {
                         if (it.responseStatus!!) {
                             val iterator = mData.iterator()
-                            while(iterator.hasNext()){
+                            while (iterator.hasNext()) {
                                 val item = iterator.next()
-                                if(item.isChecked){
+                                if (item.isChecked) {
                                     iterator.remove()
                                 }
                             }
