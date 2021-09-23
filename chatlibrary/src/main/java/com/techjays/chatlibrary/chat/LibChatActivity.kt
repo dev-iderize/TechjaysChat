@@ -1,5 +1,6 @@
 package com.techjays.chatlibrary.chat
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -177,13 +178,29 @@ class LibChatActivity : BaseActivity(), View.OnClickListener, ChatSocketListener
         runOnUiThread {
             val newMessage = ChatMessages()
             newMessage.mIsSentByMyself = isMySelf
-            newMessage.mMessage =
-                if (isMySelf) chatEdit.text.toString() else receivedNewMessage.mData!!.mMessage
-            newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-            chatEdit.text = "".toEditable()
-            mData.add(0, newMessage)
-            mRecyclerView.smoothScrollToPosition(0)
-            mAdapterLib.notifyDataSetChanged()
+            if (isMySelf) {
+                newMessage.mMessage = chatEdit.text.toString()
+                newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
+                chatEdit.text = "".toEditable()
+                mData.add(0, newMessage)
+                mRecyclerView.smoothScrollToPosition(0)
+                mAdapterLib.notifyDataSetChanged()
+            } else if (mSelectedChatUser.mToUserId.equals(receivedNewMessage.mData?.mSender?.mUserId.toString())) {
+                newMessage.mMessage = receivedNewMessage.mData!!.mMessage
+                newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
+                chatEdit.text = "".toEditable()
+                mData.add(0, newMessage)
+                mRecyclerView.smoothScrollToPosition(0)
+                mAdapterLib.notifyDataSetChanged()
+            } else {
+                /*
+                * Build notification on receiving broadcast from channel "ChatLibraryBuildNotification"
+                * */
+                val intent = Intent("ChatLibraryBuildNotification");
+                intent.putExtra("data", Gson().toJson(receivedNewMessage));
+                sendBroadcast(intent);
+            }
+
         }
     }
 }
