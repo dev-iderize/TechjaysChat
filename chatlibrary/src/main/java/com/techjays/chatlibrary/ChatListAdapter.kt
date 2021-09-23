@@ -78,7 +78,7 @@ class ChatListAdapter(
         var mUserImage: CircleImageView = view.findViewById(R.id.user_image)
         var mChatName: TextView = view.findViewById(R.id.chat_name)
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
-        var mChatCheckBox: CheckBox = view.findViewById(R.id.checkbox)
+        var mChatCheckBox: CheckBox = view.findViewById(R.id.checkbox_chatList)
     }
 
     interface Callback {
