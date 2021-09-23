@@ -39,7 +39,7 @@ class ChatListAdapter(
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
 
         val chatList = mData[position]
-        holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
+//        holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}"
         holder.mChatMessage.text = chatList.mMessage
         Utility.loadUserImage(
@@ -51,7 +51,7 @@ class ChatListAdapter(
             mCallback?.initChatMessage(chatList)
         }
 
-        holder.mChatCheckBox.isChecked = chatList.isChecked
+//        holder.mChatCheckBox.isChecked = chatList.isChecked
 
         holder.mCardView.setOnLongClickListener {
             for (i in mData) {
@@ -63,9 +63,9 @@ class ChatListAdapter(
             return@setOnLongClickListener true
         }
 
-        holder.mChatCheckBox.setOnClickListener {
-            chatList.isChecked = !chatList.isChecked
-        }
+//        holder.mChatCheckBox.setOnClickListener {
+//            chatList.isChecked = !chatList.isChecked
+//        }
     }
 
 
@@ -78,7 +78,7 @@ class ChatListAdapter(
         var mUserImage: CircleImageView = view.findViewById(R.id.user_image)
         var mChatName: TextView = view.findViewById(R.id.chat_name)
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
-        var mChatCheckBox = view.findViewById<CheckBox>(R.id.check_box)
+//        var mChatCheckBox = view.findViewById<CheckBox>(R.id.check_box)
     }
 
     interface Callback {
