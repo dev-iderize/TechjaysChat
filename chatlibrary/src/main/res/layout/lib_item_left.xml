@@ -8,12 +8,6 @@
     android:orientation="vertical"
     android:paddingTop="10dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,27 +23,38 @@
             android:src="@drawable/lib_ic_baseline_account_circle_24"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvMessage"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:padding="6dp"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/lib_item_left_side_background"
-            android:padding="10dp"
-            android:textSize="16sp"
-            tools:text="message" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black"
+                android:background="@drawable/lib_item_left_side_background"
+                android:textSize="16sp"
+                tools:text="message" />
+            <TextView
+                android:id="@+id/time"
+                style="@style/SubTitle"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:text="11.Am"
+                android:textSize="10sp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:layout_width="wrap_content" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/time"
-        style="@style/SubTitle"
-        android:layout_marginStart="12dp"
-        android:padding="10dp"
-        android:textSize="15sp"
-        android:layout_height="wrap_content"
-        android:textStyle="normal"
-        android:layout_width="wrap_content" />
-
 
 </LinearLayout>
