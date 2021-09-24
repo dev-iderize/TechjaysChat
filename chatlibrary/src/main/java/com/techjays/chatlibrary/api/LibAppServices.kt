@@ -6,9 +6,9 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.Util.AppDialogs
-import com.techjays.chatlibrary.Util.Helper
-import com.techjays.chatlibrary.Util.Utility
+import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.Helper
+import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.constants.ProjectApplication
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages

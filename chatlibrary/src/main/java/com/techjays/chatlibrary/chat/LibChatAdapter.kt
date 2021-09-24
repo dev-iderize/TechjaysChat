@@ -8,9 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.Util.DateUtil
+import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.model.LibChatMessages
-import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 /**
@@ -45,7 +44,9 @@ class LibChatAdapter(
         val chatList = mData[position]
         holder.txtUserName.text = chatList.mMessage
         holder.mChatTime.text = DateUtil.formatDisplayDate(
-            chatList.mTimeStamp, "yyyy-MM-dd'T'HH:mm:ss", "hh:mma, dd MMM"
+            DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "hh:mma, dd MMM"
         )
     }
 

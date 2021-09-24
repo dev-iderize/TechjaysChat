@@ -1,4 +1,4 @@
-package com.techjays.chatlibrary.Util
+package com.techjays.chatlibrary.util
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager

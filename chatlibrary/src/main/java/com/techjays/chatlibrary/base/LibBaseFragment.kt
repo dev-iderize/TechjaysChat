@@ -4,9 +4,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.Util.AppDialogs
-import com.techjays.chatlibrary.Util.Utility
+import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.Utility
 
 abstract class LibBaseFragment : Fragment() {
 

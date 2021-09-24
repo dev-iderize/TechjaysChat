@@ -1,4 +1,4 @@
-package com.techjays.chatlibrary.view_model
+package com.techjays.chatlibrary.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.techjays.chatlibrary
+package com.techjays.chatlibrary.chatlist
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
-import com.techjays.chatlibrary.Util.AppDialogs
-import com.techjays.chatlibrary.Util.EndlessRecyclerViewScrollListener
+import com.techjays.chatlibrary.ChatLibrary
+import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.base.LibBaseFragment
 import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibUser
-import com.techjays.chatlibrary.view_model.LibChatViewModel
+import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import java.util.ArrayList
 
 /**

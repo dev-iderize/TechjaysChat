@@ -1,4 +1,4 @@
-package com.techjays.chatlibrary
+package com.techjays.chatlibrary.chatlist
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,7 +9,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.techjays.chatlibrary.Util.Utility
+import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.model.LibChatList
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*

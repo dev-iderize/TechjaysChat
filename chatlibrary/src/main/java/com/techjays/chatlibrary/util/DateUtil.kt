@@ -1,10 +1,9 @@
-package com.techjays.chatlibrary.Util
+package com.techjays.chatlibrary.util
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.util.Log
-import com.techjays.chatlibrary.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +24,14 @@ object DateUtil {
             cal.timeZone = TimeZone.getTimeZone("Asia/Calcutta")
             return SimpleDateFormat("h:mm a", Locale.ENGLISH).format(cal.time)
         }
+
+    fun getCurrentDataTime(needUTC: Boolean, format: String): String {
+        val c = Calendar.getInstance()
+        val sdf = SimpleDateFormat(format, Locale.ENGLISH)
+        if (needUTC)
+            sdf.timeZone = TimeZone.getTimeZone("UTC")
+        return sdf.format(c.time)
+    }
 
     val previous15DaysDate: String
         get() {
@@ -250,19 +257,19 @@ object DateUtil {
      * 2. Then convert that UTC time to device timezone
      * @return Device time
      */
-    fun convertUTCToDeviceTime(utcDate: String): Long {
+    fun convertUTCToDeviceTime(utcDate: String): String {
         try {
             if (utcDate.isEmpty())
-                return 0
+                return ""
             val utcFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             utcFormatter.timeZone = TimeZone.getTimeZone("UTC")
             formatter.timeZone = TimeZone.getDefault()
-            return getMilliSeconds(formatter.format(utcFormatter.parse(utcDate)!!))
+            return formatter.format(utcFormatter.parse(utcDate)!!)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return 0
+        return ""
     }
 
     private val myFormatDate = SimpleDateFormat("dd MMM yyyy", Locale.US)

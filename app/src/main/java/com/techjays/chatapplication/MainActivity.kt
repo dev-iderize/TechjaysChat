@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentTransaction
-import com.techjays.chatlibrary.LibChatListActivity
-import com.techjays.chatlibrary.LibChatListFragment
+import com.techjays.chatlibrary.chatlist.LibChatListActivity
+import com.techjays.chatlibrary.chatlist.LibChatListFragment
 
 class MainActivity : AppCompatActivity() {
 

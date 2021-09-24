@@ -4,9 +4,8 @@ import android.text.Editable
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.Util.AppDialogs
-import com.techjays.chatlibrary.Util.Utility
+import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.Utility
 
 
 abstract class LibBaseActivity : AppCompatActivity() {

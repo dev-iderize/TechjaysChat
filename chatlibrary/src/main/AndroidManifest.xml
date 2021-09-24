@@ -13,7 +13,7 @@
             android:theme="@style/Theme.Vidhire_android"
             android:exported="true" />
         <activity
-            android:name=".LibChatListActivity"
+            android:name=".chatlist.LibChatListActivity"
             android:theme="@style/Theme.Vidhire_android"
             android:exported="true" />
     </application>

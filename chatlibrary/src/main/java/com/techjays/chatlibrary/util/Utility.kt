@@ -1,4 +1,4 @@
-package com.techjays.chatlibrary.Util
+package com.techjays.chatlibrary.util
 
 import android.annotation.SuppressLint
 import android.content.Context

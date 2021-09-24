@@ -1,4 +1,4 @@
-package com.techjays.chatlibrary.Util
+package com.techjays.chatlibrary.util
 
 import android.util.Log
 import com.google.gson.Gson
@@ -50,14 +50,12 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
             if (text.isNotEmpty()) {
                 val obj = JSONObject(text)
                 if (obj.get("type").equals("chat")) {
-                    val receivedNewMessage = Gson().fromJson(text, LibChatSocketMessages::class.java)
+                    val receivedNewMessage =
+                        Gson().fromJson(text, LibChatSocketMessages::class.java)
                     if (receivedNewMessage.responseStatus!! && receivedNewMessage.mType == "chat") {
-                        if (receivedNewMessage.mData!!.mTimeStamp.isEmpty())
-                        {
-                            val c = Calendar.getInstance()
-                            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
-                            receivedNewMessage.mData!!.mTimeStamp =sdf.format(c.time)
-
+                        if (receivedNewMessage.mData!!.mTimeStamp.isEmpty()) {
+                            receivedNewMessage.mData!!.mTimeStamp =
+                                DateUtil.getCurrentDataTime(true, "yyyy-MM-dd'T'HH:mm:ss")
                         }
 
                         mCallback.onMessageReceive(receivedNewMessage)
