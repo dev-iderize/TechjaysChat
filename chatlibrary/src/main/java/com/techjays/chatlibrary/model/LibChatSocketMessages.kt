@@ -32,4 +32,7 @@ open class LibChatSocketMessages : Response() {
 
     @SerializedName("timestamp")
     var mTimeStamp = ""
+
+    @SerializedName("profile_pic")
+    var mProfilePic = ""
 }
