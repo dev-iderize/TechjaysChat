@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
+    <color name="app_pink">#FF878E</color>
+    <color name="app_black">#141436</color>
+    <color name="app_grey">#4D4F4A4B</color>
+    <color name="app_purple">#898AFF</color>
+    <color name="app_white_light10">#FAFAFA</color>
+    <color name="app_cwp">#4D4F4A4B</color>
+    <color name="colorTextBackground">#f5f5f5</color>
+    <color name="colorItemLeft">#F7F5F5</color>
+
+    <color name="app_blue">#138CD4</color>
+    <color name="app_dark_blue">#1F00FF</color>
+    <color name="app_yellow">#FFDC00</color>
+    <color name="app_navy_blue">#233C57</color>
+    <color name="app_only_white">#FFFFFF</color>
+    <color name="app_button_color">#F4F5FE</color>
+    <color name="app_stroke_color">#E1E2EA</color>
+    <color name="app_line_gray">#E5E5E5</color>
+    <color name="app_light_blue">#5AAFE1</color>
+    <color name="app_gray_">#EEEEEE</color>
+
+
+    <color name="app_white">#FF000000</color>
+    <color name="app_white_light">#4D4F4A4B</color>
+    <color name="app_video_text">#4D4F4A4B</color>
+
+    <color name="app_transparent">#00000000</color>
+    <color name="app_gray">#BDBDBD</color>
+    <color name="app_gray_light">#E0E0E0</color>
+    <color name="app_gray_dark">#818181</color>
+    <color name="app_green_light">#95CF85</color>
+    <color name="app_green">#29BC07</color>
+    <color name="app_red">#CF0303</color>
+    <color name="app_red_light">#E14F4F</color>
+    <color name="rejectcolor">#E0372A</color>
+    <color name="acceptColor">#23D335</color>
+
+</resources>

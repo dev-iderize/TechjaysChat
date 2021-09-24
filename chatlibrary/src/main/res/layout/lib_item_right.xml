@@ -1,70 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutUser"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="100dp"
-    android:paddingTop="20dp">
+    android:layout_marginStart="10dp"
+    android:layout_marginBottom="5dp"
+    android:gravity="end"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/lib_ic_baseline_account_circle_24"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@drawable/lib_item_right_side_background"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:padding="5dp">
 
-        <TextView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/tvMessage"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/app_white"
-            android:paddingHorizontal="10dp"
-            android:textSize="14sp"
-            tools:text="message" />
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:text="message" />
 
             <TextView
                 android:id="@+id/time"
                 style="@style/SubTitle"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
-                android:textSize="10sp"
-                android:text="11.Am"
-                android:textColor="@color/app_white"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:layout_width="wrap_content" />
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:text="11.Am"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
         </LinearLayout>
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/userImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/lib_ic_baseline_account_circle_24"
-            android:visibility="gone" />
-
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
 
 </LinearLayout>
