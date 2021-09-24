@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="34dp"
             android:orientation="horizontal"
-            android:paddingVertical="10dp">
+            android:paddingVertical="10dp"
+            android:background="@color/pure_white">
 
             <CheckBox
                 android:id="@+id/check_box_"
@@ -35,7 +36,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/lib_ic_user_placeholder"
                 app:civ_border_color="@android:color/white"
-                app:civ_border_width="4dp" />
+                app:civ_border_width="2dp" />
 
             <LinearLayout
                 android:layout_width="0dp"

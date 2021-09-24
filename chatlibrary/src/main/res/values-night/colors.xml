@@ -3,7 +3,7 @@
     <color name="black">#FFFFFFFF</color>
     <color name="white">#FF000000</color>
     <color name="app_pink">#FF878E</color>
-    <color name="app_black">#141436</color>
+    <color name="app_black">#FFFFFF</color>
     <color name="app_grey">#4D4F4A4B</color>
     <color name="app_purple">#898AFF</color>
     <color name="app_white_light10">#FAFAFA</color>
@@ -37,5 +37,7 @@
     <color name="app_red_light">#E14F4F</color>
     <color name="rejectcolor">#E0372A</color>
     <color name="acceptColor">#23D335</color>
-
+    <color name="title_black">#FFFFFF</color>
+    <color name="pure_white">#121212</color>
+    <color name="chat_black">#121212</color>
 </resources>
