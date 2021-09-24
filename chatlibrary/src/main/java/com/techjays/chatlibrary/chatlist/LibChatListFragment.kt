@@ -3,6 +3,7 @@ package com.techjays.chatlibrary.chatlist
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +21,13 @@ import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.base.LibBaseFragment
 import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
+import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
+import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import java.util.ArrayList
 
 /**
@@ -42,7 +48,8 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
     private lateinit var mLibChatViewModel: LibChatViewModel
     var mData = ArrayList<LibChatList>()
     private lateinit var mListAdapterLib: LibChatListAdapter
-
+    private var ws: WebSocket? = null
+    private lateinit var listener: ChatSocketListener
     private lateinit var mDelete: ImageView
 
     override fun onCreateView(
@@ -60,7 +67,6 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
         mRecyclerView = mView.findViewById(R.id.recycler_chat_list)
         mSwipe = view.findViewById(R.id.chat_swipe)
         mDelete = view.findViewById(R.id.delete_button)
-
         initBundle()
     }
 
@@ -173,6 +179,64 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
         mDelete.setOnClickListener(this)
     }
 
+    private fun start() {
+        val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
+        var client: OkHttpClient = OkHttpClient()
+        listener = ChatSocketListener(object : ChatSocketListener.CallBack {
+            override fun onMessageReceive(libChatMessage: LibChatSocketMessages) {
+                requireActivity().runOnUiThread {
+                    var isAlreadyInList = false
+                    val isMySelf = libChatMessage.mData?.mSender == null
+                    if (!isMySelf) {
+                        for (item in mData) {
+                            if (libChatMessage.mData?.mSender!!.mUserId.toString()
+                                    .equals(item.mToUserId.toString())
+                            ) {
+                                isAlreadyInList = true
+                                Log.e("te", mData.indexOf(item).toString());
+                                mData[mData.indexOf(item)].mMessage =
+                                    libChatMessage.mData?.mMessage!!
+                                mData[mData.indexOf(item)].newMessage = true
+                                var newChat: LibChatList = mData[mData.indexOf(item)]
+                                mData.remove(item)
+                                mData.add(0, newChat)
+                                mListAdapterLib.notifyDataSetChanged()
+                                break
+                            }
+                        }
+
+                        if (!isAlreadyInList) {
+                            var newChat: LibChatList = LibChatList()
+                            newChat.mMessage = libChatMessage.mData?.mMessage!!
+                            newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
+                            newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
+                            newChat.newMessage = true
+                            mData.add(0, newChat)
+                            mListAdapterLib.notifyDataSetChanged()
+                        }
+                    }
+
+                }
+            }
+        })
+        ws = client.newWebSocket(request, listener)
+        client.dispatcher().executorService().shutdown()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (ws != null) {
+            ws!!.cancel()
+            ws = null;
+        }
+    }
+
+
     override fun onBackPressed() {
     }
 
@@ -181,6 +245,14 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
+        if(mData.size > 0){
+            try {
+                mData[mData.indexOf(selectedLibChat)].newMessage = false
+                mListAdapterLib.notifyDataSetChanged();
+            } catch (e: Exception) {
+                throw e
+            }
+        }
         val i = Intent(requireActivity(), LibChatActivity::class.java)
         i.putExtra("chat_user", selectedLibChat)
         startActivity(i)

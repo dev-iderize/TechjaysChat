@@ -45,4 +45,6 @@ class LibChatList: Response() {
 
     var isChecked = false
     var showCheckBox = false
+
+    var newMessage:Boolean = false
 }
