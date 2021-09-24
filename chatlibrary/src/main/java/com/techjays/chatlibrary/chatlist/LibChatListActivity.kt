@@ -20,12 +20,17 @@ import com.techjays.chatlibrary.api.LibAppServices.API.delete_chats
 import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
+import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
+import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import kotlin.collections.ArrayList
 
 class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
-    View.OnClickListener {
+    View.OnClickListener , ChatSocketListener.CallBack{
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
@@ -36,7 +41,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     private lateinit var mLibChatViewModel: LibChatViewModel
     var mData = ArrayList<LibChatList>()
     private lateinit var mListAdapterLib: LibChatListAdapter
-
+    private var ws: WebSocket? = null
+    private lateinit var listener: ChatSocketListener
     private lateinit var mDelete: ImageView
 
     @SuppressLint("SetTextI18n")
@@ -86,6 +92,27 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         initObserver()
         clickListener()
     }
+
+    private fun start() {
+        val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
+        listener = ChatSocketListener(this)
+        val client = OkHttpClient()
+        ws = client.newWebSocket(request, listener)
+        client.dispatcher().executorService().shutdown()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ws?.cancel()
+        ws = null;
+    }
+
+
 
     private fun initObserver() {
         if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
@@ -166,6 +193,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
+        mData[mData.indexOf(selectedLibChat)].newMessage = false
+        mListAdapterLib.notifyDataSetChanged();
         val i = Intent(this, LibChatActivity::class.java)
         i.putExtra("chat_user", selectedLibChat)
         startActivity(i)
@@ -185,6 +214,42 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             if (id.isNotEmpty())
                 mLibChatViewModel.deleteChats(TextUtils.join(",", id))
             else AppDialogs.showSnackbar(mDelete, "Please select something!")
+        }
+    }
+
+    override fun onMessageReceive(libChatMessage: LibChatSocketMessages) {
+        runOnUiThread {
+            var isAlreadyInList = false
+            val isMySelf = libChatMessage.mData?.mSender == null
+            if (!isMySelf) {
+                for (item in mData) {
+                    if (libChatMessage.mData?.mSender!!.mUserId.toString()
+                            .equals(item.mToUserId.toString())
+                    ) {
+                        isAlreadyInList = true
+                        Log.e("te", mData.indexOf(item).toString());
+                        mData[mData.indexOf(item)].mMessage =
+                            libChatMessage.mData?.mMessage!!
+                        mData[mData.indexOf(item)].newMessage = true
+                        var newChat: LibChatList = mData[mData.indexOf(item)]
+                        mData.remove(item)
+                        mData.add(0, newChat)
+                        mListAdapterLib.notifyDataSetChanged()
+                        break
+                    }
+                }
+
+                if (!isAlreadyInList) {
+                    var newChat: LibChatList = LibChatList()
+                    newChat.mMessage = libChatMessage.mData?.mMessage!!
+                    newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
+                    newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
+                    newChat.newMessage = true
+                    mData.add(0, newChat)
+                    mListAdapterLib.notifyDataSetChanged()
+                }
+            }
+
         }
     }
 }

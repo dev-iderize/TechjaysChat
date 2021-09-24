@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("base_url", "https://sprint.myvidhire.com/api/v1/")
             intent.putExtra(
                 "chat_token",
-                "gAAAAABhSyKfrKoBKtN_SDmfp_hHmMdxU3igV3dc99h9RcVJaVHC57N2VhYNptZmzyTV8CUh09mDJvPcr4cWVekeRBwC9o9gQSFIV2ZB9NeURjIgIRvkEfZwwIF3fEpmq2a8rs2rSIRCWzCIX1g6YJOlbA5Gsu_UbQ=="
+                "gAAAAABhTcNgST12W47jH_ry5xIk15L0iiTgIKzYA1odECOeaRrxGVgxuB1a8ZRntao5UGUyfgSmI8LlVbhUEqN4K8M_yh5LGGjLEO5WwBWDGtLRK4OZT0rPS29UIiarAw_LIAL0eynum-wE562B9q7605qYZY3IDQ=="
             )
-            intent.putExtra("auth_token", "5cee957a8fe5b72393d2511818c33eef5fd18d1c")
+            intent.putExtra("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
             startActivity(intent)
         }
 
@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
             bundle.putString("base_url", "https://sprint.myvidhire.com/api/v1/")
             bundle.putString(
                 "chat_token",
-                "gAAAAABhSxSGLih9x9FtS2q2LjW4IsGn_oFDpGIyrsOY0qygwPRb-h0R6BSxtZ3AT0qmVHzHVZ2X--z0R9k1BRK5OYdvRnhYDH0tmK0CT2w9rNBKS6-b38MWvTrvPjzlkB8IxuJq7cMPyVF3KuoEiLvBfYs6IpuJzg=="
+                "gAAAAABhTcNgST12W47jH_ry5xIk15L0iiTgIKzYA1odECOeaRrxGVgxuB1a8ZRntao5UGUyfgSmI8LlVbhUEqN4K8M_yh5LGGjLEO5WwBWDGtLRK4OZT0rPS29UIiarAw_LIAL0eynum-wE562B9q7605qYZY3IDQ=="
             )
-            bundle.putString("auth_token", "5cee957a8fe5b72393d2511818c33eef5fd18d1c")
+            bundle.putString("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
             newFragment.arguments = bundle
 
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()

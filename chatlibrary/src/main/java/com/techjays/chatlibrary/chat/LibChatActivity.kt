@@ -73,6 +73,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         client.dispatcher().executorService().shutdown()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        ws.cancel()
+    }
+
     override fun init() {
         mLibChatViewModel = LibChatViewModel(this)
         client = OkHttpClient()

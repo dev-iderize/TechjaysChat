@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
@@ -43,6 +44,12 @@ class LibChatListAdapter(
         holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}"
         holder.mChatMessage.text = chatList.mMessage
+
+        if(chatList.newMessage)
+            holder.mIndicator.visibility = View.VISIBLE
+        else
+            holder.mIndicator.visibility = View.GONE
+
         Utility.loadUserImage(
             chatList.mProfilePic,
             holder.mUserImage,
@@ -80,6 +87,7 @@ class LibChatListAdapter(
         var mChatName: TextView = view.findViewById(R.id.chat_name)
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
         var mChatCheckBox = view.findViewById<CheckBox>(R.id.check_box_)
+        var mIndicator = view.findViewById<RelativeLayout>(R.id.lib_new_indicator)
     }
 
     interface Callback {
