@@ -38,4 +38,7 @@
     <color name="rejectcolor">#E0372A</color>
     <color name="acceptColor">#23D335</color>
 
+    <color name="title_black">#121212</color>
+    <color name="pure_white">#FDFDFD</color>
+    <color name="chat_black">#121212</color>
 </resources>

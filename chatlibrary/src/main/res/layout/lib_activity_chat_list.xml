@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_white"
+    android:background="@color/pure_white"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTextBackground"
+        android:background="@color/pure_white"
         android:orientation="horizontal">
 
         <TextView
@@ -24,7 +24,7 @@
             android:gravity="center_vertical"
             android:letterSpacing="0.1"
             android:text="@string/chats"
-            android:textColor="@color/app_black"
+            android:textColor="@color/title_black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,6 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/chat_swipe"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
