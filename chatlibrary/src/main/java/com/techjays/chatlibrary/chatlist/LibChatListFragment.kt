@@ -245,8 +245,14 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
-        mData[mData.indexOf(selectedLibChat)].newMessage = false
-        mListAdapterLib.notifyDataSetChanged();
+        if(mData.size > 0){
+            try {
+                mData[mData.indexOf(selectedLibChat)].newMessage = false
+                mListAdapterLib.notifyDataSetChanged();
+            } catch (e: Exception) {
+                throw e
+            }
+        }
         val i = Intent(requireActivity(), LibChatActivity::class.java)
         i.putExtra("chat_user", selectedLibChat)
         startActivity(i)
