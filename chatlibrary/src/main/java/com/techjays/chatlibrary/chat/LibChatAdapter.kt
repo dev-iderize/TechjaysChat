@@ -46,7 +46,7 @@ class LibChatAdapter(
         holder.mChatTime.text = DateUtil.formatDisplayDate(
             DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
             "yyyy-MM-dd'T'HH:mm:ss",
-            "hh:mma, dd MMM"
+            "hh:mmaa, dd MMM"
         )
     }
 
