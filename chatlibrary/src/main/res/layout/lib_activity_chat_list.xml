@@ -48,6 +48,7 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/pure_white"
             android:id="@+id/recycler_chat_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
