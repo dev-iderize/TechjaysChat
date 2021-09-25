@@ -204,7 +204,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 mSelectedLibChatUser.mToUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-                    libChatEdit.text = "".toEditable()
+                    /*libChatEdit.text = "".toEditable()*/
                     mData.add(0, newMessage)
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
