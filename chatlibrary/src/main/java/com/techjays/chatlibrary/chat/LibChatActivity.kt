@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.ChatSocketListener
@@ -67,7 +68,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     private fun start() {
-        val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
+        val request: Request = Request.Builder().url(ChatLibrary.instance.socketUrl).build()
         listener = ChatSocketListener(this)
         ws = client.newWebSocket(request, listener)
         client.dispatcher().executorService().shutdown()

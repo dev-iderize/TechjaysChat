@@ -9,6 +9,7 @@ import com.techjays.chatlibrary.model.LibUser
 class ChatLibrary private constructor() {
 
     var baseUrl = ""
+    var socketUrl = ""
     var chatToken = ""
     var authToken = ""
     var mUserData: LibUser? = null
