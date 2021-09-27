@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
             val bundle = Bundle()
             bundle.putString("base_url", "https://sprint.myvidhire.com/api/v1/")
+            bundle.putString("socket_url", "ws://3.19.93.161:8765")
             bundle.putString(
                 "chat_token",
                 "gAAAAABhTeNwMK-408SXqM8BOo-JsuaWklyQk26ZZMbXtDoeGFzQZHRlkrv-bC1WiDpXKYlG_ftRXlMfNzs-zrzGXwaZbRldgSSCOuPBLrXN71flNYOimZUGjlSiy3aVRqg3ZDqRqGQ93tJffdg_nwDXXS5AFwnENNuXlfzhztxvUPo6vrwBjicqRFPfeNvOl1TA2s0G7uLITxKRYbjWtVbPKkP5jfHpoYNlx1-waoS9KnHc-HPNR_NuX9LEsx0Rghhrl77I97w6azVLqI0SZmxFmHGc9-SlcKS76X3lADcTkMpOerXti3E="
