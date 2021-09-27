@@ -1,8 +1,6 @@
 package com.techjays.chatlibrary.chat
 
 import android.content.Intent
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -13,25 +11,28 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.ChatSocketListener
-import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
+import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.ChatSocketListener
+import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
+import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
-import okhttp3.OkHttpClient
+
 
 
 /**
@@ -88,7 +89,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         ws.cancel()
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun init() {
         mLibChatViewModel = LibChatViewModel(this)
         client = OkHttpClient()
@@ -106,7 +106,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         getChatMessage(true)
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initView() {
         libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
         Utility.loadUserImage(
@@ -119,13 +118,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 ChatLibrary.instance.mColor
             )
         )
-        var mBackground: Drawable = libSendButton.background
-        mBackground.colorFilter = BlendModeColorFilter(
-            Color.parseColor(ChatLibrary.instance.mColor),
-            BlendMode.SRC_ATOP
-        )
+        val mBackground: Drawable = libSendButton.background
+        try {
+            mBackground.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                Utility.getColor(
+                    this,
+                    if (ChatLibrary.instance.mColor == "#FF878E") R.color.app_pink else R.color.app_blue
+                ), BlendModeCompat.SRC_ATOP
+            )
+        } catch (e: Exception) {
+            throw e
+        }
     }
-
 
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this)

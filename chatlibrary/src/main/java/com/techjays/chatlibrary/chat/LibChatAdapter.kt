@@ -1,23 +1,22 @@
 package com.techjays.chatlibrary.chat
 
 import android.annotation.SuppressLint
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
+import com.techjays.chatlibrary.util.Utility
 import java.util.*
 
 /**
@@ -44,7 +43,6 @@ class LibChatAdapter(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(
         holder: ItemViewHolder,
         @SuppressLint("RecyclerView") position: Int
@@ -57,11 +55,18 @@ class LibChatAdapter(
             "yyyy-MM-dd'T'HH:mm:ss",
             "hh:mmaa, dd MMM"
         )
-        if (mData[position].mIsSentByMyself) {
-            holder.mBackgroundRight.colorFilter = BlendModeColorFilter(
-                Color.parseColor(ChatLibrary.instance.mColor),
-                BlendMode.SRC_ATOP
-            )
+        try {
+            if (mData[position].mIsSentByMyself) {
+                holder.mBackgroundRight.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        Utility.getColor(
+                            mContext,
+                            if (ChatLibrary.instance.mColor == "#FF878E") R.color.app_pink else R.color.app_blue                      //color:int = Color.parasecolor()
+                        ), BlendModeCompat.SRC_ATOP
+                    )
+            }
+        } catch (e: Exception) {
+            throw e
         }
     }
 
