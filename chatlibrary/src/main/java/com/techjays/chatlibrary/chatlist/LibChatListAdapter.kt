@@ -45,7 +45,7 @@ class LibChatListAdapter(
         holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}"
         holder.mChatMessage.text = chatList.mMessage
 
-        if(chatList.newMessage)
+        if (chatList.newMessage)
             holder.mIndicator.visibility = View.VISIBLE
         else
             holder.mIndicator.visibility = View.GONE

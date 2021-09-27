@@ -54,6 +54,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             val data = intent
             val base_url = data.getStringExtra("base_url").toString()
             val chat_token = data.getStringExtra("chat_token").toString()
+            val socketUrl = data.getStringExtra("socket_url").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
@@ -72,6 +73,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
             ChatLibrary.instance.authToken = auth_token
             ChatLibrary.instance.chatToken = chat_token
+            ChatLibrary.instance.socketUrl = socketUrl
             ChatLibrary.instance.baseUrl = base_url
             ChatLibrary.instance.mUserData = userData
         } catch (e: Exception) {

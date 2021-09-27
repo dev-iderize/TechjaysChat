@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         mButton.setOnClickListener {
             val intent = Intent(this@MainActivity, LibChatListActivity::class.java)
             intent.putExtra("base_url", "https://sprint.myvidhire.com/api/v1/")
+            intent.putExtra("socket_url", "ws://3.19.93.161:8765")
             intent.putExtra(
                 "chat_token",
                 "gAAAAABhTeNwMK-408SXqM8BOo-JsuaWklyQk26ZZMbXtDoeGFzQZHRlkrv-bC1WiDpXKYlG_ftRXlMfNzs-zrzGXwaZbRldgSSCOuPBLrXN71flNYOimZUGjlSiy3aVRqg3ZDqRqGQ93tJffdg_nwDXXS5AFwnENNuXlfzhztxvUPo6vrwBjicqRFPfeNvOl1TA2s0G7uLITxKRYbjWtVbPKkP5jfHpoYNlx1-waoS9KnHc-HPNR_NuX9LEsx0Rghhrl77I97w6azVLqI0SZmxFmHGc9-SlcKS76X3lADcTkMpOerXti3E="
