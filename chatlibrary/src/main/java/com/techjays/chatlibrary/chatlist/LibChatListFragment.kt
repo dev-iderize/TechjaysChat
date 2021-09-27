@@ -75,6 +75,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
         if (bundle != null) {
 
             val baseURL = bundle.getString("base_url")!!
+            val socketUrl = bundle.getString("socket_url")!!
             val chatToken = bundle.getString("chat_token")!!
             val authToken = bundle.getString("auth_token")!!
             val userData = Gson().fromJson(bundle.getString("user_data"), LibUser::class.java)
@@ -95,6 +96,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
             ChatLibrary.instance.authToken = authToken
             ChatLibrary.instance.chatToken = chatToken
             ChatLibrary.instance.baseUrl = baseURL
+            ChatLibrary.instance.socketUrl = socketUrl
             ChatLibrary.instance.mUserData = userData
 
             initRecycler()
@@ -180,7 +182,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
     }
 
     private fun start() {
-        val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
+        val request: Request = Request.Builder().url(ChatLibrary.instance.socketUrl).build()
         var client: OkHttpClient = OkHttpClient()
         listener = ChatSocketListener(object : ChatSocketListener.CallBack {
             override fun onMessageReceive(libChatMessage: LibChatSocketMessages) {
@@ -196,6 +198,8 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
                                 Log.e("te", mData.indexOf(item).toString());
                                 mData[mData.indexOf(item)].mMessage =
                                     libChatMessage.mData?.mMessage!!
+                                mData[mData.indexOf(item)].mProfilePic =
+                                    libChatMessage.mData?.mProfilePic!!
                                 mData[mData.indexOf(item)].newMessage = true
                                 var newChat: LibChatList = mData[mData.indexOf(item)]
                                 mData.remove(item)
@@ -210,6 +214,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
                             newChat.mMessage = libChatMessage.mData?.mMessage!!
                             newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
                             newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
+                            newChat.mProfilePic = libChatMessage.mData?.mProfilePic!!
                             newChat.newMessage = true
                             mData.add(0, newChat)
                             mListAdapterLib.notifyDataSetChanged()

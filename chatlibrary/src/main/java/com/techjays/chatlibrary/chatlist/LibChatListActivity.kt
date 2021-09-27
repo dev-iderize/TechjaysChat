@@ -236,6 +236,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                         Log.e("te", mData.indexOf(item).toString());
                         mData[mData.indexOf(item)].mMessage =
                             libChatMessage.mData?.mMessage!!
+                        mData[mData.indexOf(item)].mProfilePic =
+                            libChatMessage.mData?.mProfilePic!!
                         mData[mData.indexOf(item)].newMessage = true
                         var newChat: LibChatList = mData[mData.indexOf(item)]
                         mData.remove(item)
@@ -250,6 +252,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                     newChat.mMessage = libChatMessage.mData?.mMessage!!
                     newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
                     newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
+                    newChat.mProfilePic = libChatMessage.mData?.mProfilePic!!
                     newChat.newMessage = true
                     mData.add(0, newChat)
                     mListAdapterLib.notifyDataSetChanged()

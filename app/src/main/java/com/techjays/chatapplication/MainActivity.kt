@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("base_url", "https://sprint.myvidhire.com/api/v1/")
             intent.putExtra(
                 "chat_token",
-                "gAAAAABhTcNgST12W47jH_ry5xIk15L0iiTgIKzYA1odECOeaRrxGVgxuB1a8ZRntao5UGUyfgSmI8LlVbhUEqN4K8M_yh5LGGjLEO5WwBWDGtLRK4OZT0rPS29UIiarAw_LIAL0eynum-wE562B9q7605qYZY3IDQ=="
+                "gAAAAABhTeNwMK-408SXqM8BOo-JsuaWklyQk26ZZMbXtDoeGFzQZHRlkrv-bC1WiDpXKYlG_ftRXlMfNzs-zrzGXwaZbRldgSSCOuPBLrXN71flNYOimZUGjlSiy3aVRqg3ZDqRqGQ93tJffdg_nwDXXS5AFwnENNuXlfzhztxvUPo6vrwBjicqRFPfeNvOl1TA2s0G7uLITxKRYbjWtVbPKkP5jfHpoYNlx1-waoS9KnHc-HPNR_NuX9LEsx0Rghhrl77I97w6azVLqI0SZmxFmHGc9-SlcKS76X3lADcTkMpOerXti3E="
             )
             intent.putExtra("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
             startActivity(intent)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             bundle.putString("base_url", "https://sprint.myvidhire.com/api/v1/")
             bundle.putString(
                 "chat_token",
-                "gAAAAABhTcNgST12W47jH_ry5xIk15L0iiTgIKzYA1odECOeaRrxGVgxuB1a8ZRntao5UGUyfgSmI8LlVbhUEqN4K8M_yh5LGGjLEO5WwBWDGtLRK4OZT0rPS29UIiarAw_LIAL0eynum-wE562B9q7605qYZY3IDQ=="
+                "gAAAAABhTeNwMK-408SXqM8BOo-JsuaWklyQk26ZZMbXtDoeGFzQZHRlkrv-bC1WiDpXKYlG_ftRXlMfNzs-zrzGXwaZbRldgSSCOuPBLrXN71flNYOimZUGjlSiy3aVRqg3ZDqRqGQ93tJffdg_nwDXXS5AFwnENNuXlfzhztxvUPo6vrwBjicqRFPfeNvOl1TA2s0G7uLITxKRYbjWtVbPKkP5jfHpoYNlx1-waoS9KnHc-HPNR_NuX9LEsx0Rghhrl77I97w6azVLqI0SZmxFmHGc9-SlcKS76X3lADcTkMpOerXti3E="
             )
             bundle.putString("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
             newFragment.arguments = bundle
