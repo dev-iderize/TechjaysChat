@@ -1,16 +1,24 @@
 package com.techjays.chatlibrary.chat
 
 import android.annotation.SuppressLint
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.model.LibChatMessages
-import java.util.ArrayList
+import com.techjays.chatlibrary.util.DateUtil
+import java.util.*
 
 /**
  * Created by Srinath on 21/09/21.
@@ -36,6 +44,7 @@ class LibChatAdapter(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(
         holder: ItemViewHolder,
         @SuppressLint("RecyclerView") position: Int
@@ -48,8 +57,13 @@ class LibChatAdapter(
             "yyyy-MM-dd'T'HH:mm:ss",
             "hh:mmaa, dd MMM"
         )
+        if (mData[position].mIsSentByMyself) {
+            holder.mBackgroundRight.colorFilter = BlendModeColorFilter(
+                Color.parseColor(ChatLibrary.instance.mColor),
+                BlendMode.SRC_ATOP
+            )
+        }
     }
-
 
     override fun getItemCount(): Int {
         return mData.size
@@ -58,6 +72,8 @@ class LibChatAdapter(
     open class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtUserName: TextView = view.findViewById(R.id.tvMessage)
         var mChatTime: TextView = view.findViewById(R.id.time)
+        var mChatItem: LinearLayout = view.findViewById(R.id.message_layout)
+        var mBackgroundRight: Drawable = mChatItem.background
 
     }
 

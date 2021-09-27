@@ -1,11 +1,18 @@
 package com.techjays.chatlibrary.chat
 
 import android.content.Intent
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -42,6 +49,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var mListener: EndlessRecyclerViewScrollListener
 
     //private lateinit var mSwipe: SwipeRefreshLayout
+    private lateinit var libAppBar: LinearLayout
     private lateinit var libImgBack: ImageView
     private lateinit var libSendButton: ImageView
     private lateinit var libChatEdit: EditText
@@ -55,6 +63,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var libProfileImage: CircleImageView
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat)
@@ -79,11 +88,13 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         ws.cancel()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun init() {
         mLibChatViewModel = LibChatViewModel(this)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         // mSwipe = findViewById(R.id.chat_swipe_refresh)
+        libAppBar = findViewById(R.id.l1)
         libImgBack = findViewById(R.id.libImgBack)
         libSendButton = findViewById(R.id.btnSendMessage)
         libChatEdit = findViewById(R.id.etMessage)
@@ -95,12 +106,23 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         getChatMessage(true)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun initView() {
         libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
         Utility.loadUserImage(
             mSelectedLibChatUser.mProfilePic,
             libProfileImage,
             this
+        )
+        libAppBar.setBackgroundColor(
+            Color.parseColor(
+                ChatLibrary.instance.mColor
+            )
+        )
+        var mBackground: Drawable = libSendButton.background
+        mBackground.colorFilter = BlendModeColorFilter(
+            Color.parseColor(ChatLibrary.instance.mColor),
+            BlendMode.SRC_ATOP
         )
     }
 

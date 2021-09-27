@@ -78,6 +78,8 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
             val socketUrl = bundle.getString("socket_url")!!
             val chatToken = bundle.getString("chat_token")!!
             val authToken = bundle.getString("auth_token")!!
+            val color = bundle.getString("color")!!
+
             val userData = Gson().fromJson(bundle.getString("user_data"), LibUser::class.java)
 
             if (bundle.containsKey("chat_user_data")) {
@@ -98,6 +100,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
             ChatLibrary.instance.baseUrl = baseURL
             ChatLibrary.instance.socketUrl = socketUrl
             ChatLibrary.instance.mUserData = userData
+            ChatLibrary.instance.mColor = color
 
             initRecycler()
             getChatList(true)
@@ -250,7 +253,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
-        if(mData.size > 0){
+        if (mData.size > 0) {
             try {
                 mData[mData.indexOf(selectedLibChat)].newMessage = false
                 mListAdapterLib.notifyDataSetChanged();

@@ -13,6 +13,7 @@ class ChatLibrary private constructor() {
     var chatToken = ""
     var authToken = ""
     var mUserData: LibUser? = null
+    var mColor = ""
 
     companion object {
         // Getter-Setters

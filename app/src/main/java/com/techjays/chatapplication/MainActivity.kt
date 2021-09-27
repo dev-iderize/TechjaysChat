@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
                 "gAAAAABhTeNwMK-408SXqM8BOo-JsuaWklyQk26ZZMbXtDoeGFzQZHRlkrv-bC1WiDpXKYlG_ftRXlMfNzs-zrzGXwaZbRldgSSCOuPBLrXN71flNYOimZUGjlSiy3aVRqg3ZDqRqGQ93tJffdg_nwDXXS5AFwnENNuXlfzhztxvUPo6vrwBjicqRFPfeNvOl1TA2s0G7uLITxKRYbjWtVbPKkP5jfHpoYNlx1-waoS9KnHc-HPNR_NuX9LEsx0Rghhrl77I97w6azVLqI0SZmxFmHGc9-SlcKS76X3lADcTkMpOerXti3E="
             )
             intent.putExtra("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
+            intent.putExtra("color", "#FF878E")
+
             startActivity(intent)
         }
 
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 "gAAAAABhTeNwMK-408SXqM8BOo-JsuaWklyQk26ZZMbXtDoeGFzQZHRlkrv-bC1WiDpXKYlG_ftRXlMfNzs-zrzGXwaZbRldgSSCOuPBLrXN71flNYOimZUGjlSiy3aVRqg3ZDqRqGQ93tJffdg_nwDXXS5AFwnENNuXlfzhztxvUPo6vrwBjicqRFPfeNvOl1TA2s0G7uLITxKRYbjWtVbPKkP5jfHpoYNlx1-waoS9KnHc-HPNR_NuX9LEsx0Rghhrl77I97w6azVLqI0SZmxFmHGc9-SlcKS76X3lADcTkMpOerXti3E="
             )
             bundle.putString("auth_token", "1d0e5734f76ad754333a3b297442a4b1f38eb60e")
+            bundle.putString("color", "#FF878E")
             newFragment.arguments = bundle
 
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()

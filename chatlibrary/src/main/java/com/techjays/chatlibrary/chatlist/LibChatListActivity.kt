@@ -30,7 +30,7 @@ import okhttp3.WebSocket
 import kotlin.collections.ArrayList
 
 class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
-    View.OnClickListener , ChatSocketListener.CallBack{
+    View.OnClickListener, ChatSocketListener.CallBack {
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
@@ -56,6 +56,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             val chat_token = data.getStringExtra("chat_token").toString()
             val socketUrl = data.getStringExtra("socket_url").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
+            val color = data.getStringExtra("color").toString()
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
 
@@ -76,6 +77,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             ChatLibrary.instance.socketUrl = socketUrl
             ChatLibrary.instance.baseUrl = base_url
             ChatLibrary.instance.mUserData = userData
+            ChatLibrary.instance.mColor = color
         } catch (e: Exception) {
             Log.d("ex", e.toString())
             throw  e
@@ -113,7 +115,6 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         ws?.cancel()
         ws = null;
     }
-
 
 
     private fun initObserver() {
@@ -195,7 +196,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
-        if(mData.size > 0){
+        if (mData.size > 0) {
             try {
                 mData[mData.indexOf(selectedLibChat)].newMessage = false
                 mListAdapterLib.notifyDataSetChanged();

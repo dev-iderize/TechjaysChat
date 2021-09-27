@@ -23,6 +23,7 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -36,9 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:autoLink="web"
-                android:textColorLink="@color/black"
                 android:linksClickable="true"
                 android:textColor="@color/black"
+                android:textColorLink="@color/black"
                 android:textSize="14sp"
                 tools:text="message" />
 
