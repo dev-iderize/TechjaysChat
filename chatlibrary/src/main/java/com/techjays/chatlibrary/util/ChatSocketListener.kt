@@ -9,8 +9,6 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 import org.json.JSONObject
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() {
@@ -21,6 +19,7 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
         Log.e("Opened:", "Successfully")
         ws = webSocket
         ws.send(getConnectionParams())
+        Log.d("opeeeeeee", getConnectionParams())
 
     }
 

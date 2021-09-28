@@ -3,14 +3,13 @@ package com.techjays.chatlibrary.chat
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +31,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
-
 
 
 /**
@@ -63,8 +61,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var listener: ChatSocketListener
     private lateinit var libProfileImage: CircleImageView
 
-
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat)
@@ -108,6 +104,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     private fun initView() {
         libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
+        Log.d("profile_ppiccccccccc", mSelectedLibChatUser.mProfilePic)
         Utility.loadUserImage(
             mSelectedLibChatUser.mProfilePic,
             libProfileImage,
@@ -211,7 +208,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
         }
-
     }
 
     override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {

@@ -2,7 +2,6 @@ package com.techjays.chatlibrary.chatlist
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -14,8 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.api.LibAppServices.API.chat_list
 import com.techjays.chatlibrary.api.LibAppServices.API.delete_chats
 import com.techjays.chatlibrary.base.LibBaseActivity
@@ -23,13 +20,13 @@ import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
+import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.ChatSocketListener
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
-import kotlin.collections.ArrayList
 
 class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     View.OnClickListener, ChatSocketListener.CallBack {
@@ -100,7 +97,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     private fun start() {
-        val request: Request = Request.Builder().url("ws://3.19.93.161:8765").build()
+        val request: Request = Request.Builder().url(ChatLibrary.instance.socketUrl).build()
         listener = ChatSocketListener(this)
         val client = OkHttpClient()
         ws = client.newWebSocket(request, listener)
