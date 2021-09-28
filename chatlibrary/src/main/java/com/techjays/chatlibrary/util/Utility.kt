@@ -2,15 +2,19 @@ package com.techjays.chatlibrary.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.os.SystemClock
 import android.text.Selection
 import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
+import android.view.View
+import android.view.Window
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
@@ -107,6 +111,13 @@ object Utility {
         }
 
         return null
+    }
+
+    fun statusBarColor(window: Window, context: Context, color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = context.resources.getColor(color)
+        }
     }
 
     fun encodeFileToBase64Binary(filePath: String): String? {

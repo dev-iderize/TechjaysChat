@@ -2,6 +2,7 @@ package com.techjays.chatlibrary.chatlist
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -23,6 +24,7 @@ import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.util.ChatSocketListener
+import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -49,6 +51,11 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat_list)
+        try {
+            Utility.statusBarColor(window,applicationContext, Color.parseColor(ChatLibrary.instance.mColor))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         try {
             val data = intent

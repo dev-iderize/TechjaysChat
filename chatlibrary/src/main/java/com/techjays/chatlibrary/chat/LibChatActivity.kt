@@ -68,6 +68,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat)
+        try {
+            Utility.statusBarColor(window,applicationContext, Color.parseColor(ChatLibrary.instance.mColor))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         if (intent != null) {
             if (intent.extras?.containsKey("chat_user")!!) {
                 mSelectedLibChatUser = intent.extras?.get("chat_user") as LibChatList
