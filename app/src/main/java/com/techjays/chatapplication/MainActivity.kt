@@ -1,12 +1,16 @@
 package com.techjays.chatapplication
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.FragmentTransaction
+import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.chatlist.LibChatListActivity
 import com.techjays.chatlibrary.chatlist.LibChatListFragment
+import com.techjays.chatlibrary.util.Utility
 
 class MainActivity : AppCompatActivity() {
 
