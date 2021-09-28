@@ -80,6 +80,23 @@ object Utility {
 
     }
 
+    fun isUsingNightModeResources(context: Context): Boolean {
+        return when (context.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            Configuration.UI_MODE_NIGHT_NO -> false
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
+            else -> false
+        }
+    }
+
+    fun statusBarColor(window: Window, context: Context, color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = context.resources.getColor(color)
+        }
+    }
+
     fun log(msg: String) {
         Log.d("FFFFFFFF ---> ", msg)
     }

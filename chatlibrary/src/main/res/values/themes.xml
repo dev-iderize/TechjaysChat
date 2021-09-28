@@ -10,9 +10,6 @@
         <item name="colorSecondaryVariant">@color/app_blue</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/app_blue</item>
-        <item name="windowActionBar">false</item>
-        <!-- Customize your theme here. -->
     </style>
 
 </resources>
