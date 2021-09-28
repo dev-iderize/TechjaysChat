@@ -66,6 +66,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                         LibUser::class.java
                     )
                 val chatData = LibChatList()
+                chatData.mProfilePic = chatUserData.mProfilePic
                 chatData.mCompanyName = chatUserData.mUserName
                 chatData.mToUserId = chatUserData.mUserId.toString()
                 initChatMessage(chatData)
