@@ -51,11 +51,6 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat_list)
-        try {
-            Utility.statusBarColor(window,applicationContext, Color.parseColor(ChatLibrary.instance.mColor))
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
         try {
             val data = intent
