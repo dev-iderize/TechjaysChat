@@ -23,7 +23,6 @@ import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -59,21 +58,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             val color = data.getStringExtra("color").toString()
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
-            when {
-                ChatLibrary.instance.mColor.equals("#FF878E") -> {
-                    if (!Utility.isUsingNightModeResources(this))
-                        Utility.statusBarColor(window, this, R.color.status_pink)
-                    else
-                        Utility.statusBarColor(window, this, R.color.dark_grey)
-                }
-                else -> {
-                    if (!Utility.isUsingNightModeResources(this))
-                        Utility.statusBarColor(window, this, R.color.app_dark_blue)
-                    else
-                        Utility.statusBarColor(window, this, R.color.dark_grey)
 
-                }
-            }
             if (data.extras!!.containsKey("chat_user_data")) {
                 val chatUserData =
                     Gson().fromJson(
@@ -93,7 +78,6 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             ChatLibrary.instance.baseUrl = base_url
             ChatLibrary.instance.mUserData = userData
             ChatLibrary.instance.mColor = color
-
         } catch (e: Exception) {
             Log.d("ex", e.toString())
             throw  e
