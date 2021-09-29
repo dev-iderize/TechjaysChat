@@ -21,6 +21,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
+        when (ChatLibrary.instance.mColor) {
+            "#FF878E" -> {
+                if (!Utility.isUsingNightModeResources(this))
+                    Utility.statusBarColor(window, this, com.techjays.chatlibrary.R.color.status_pink)
+                else
+                    Utility.statusBarColor(window, this, com.techjays.chatlibrary.R.color.dark_grey)
+            }
+        }
     }
 
     private fun initView() {

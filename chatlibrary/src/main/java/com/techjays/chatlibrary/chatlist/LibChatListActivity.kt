@@ -66,19 +66,12 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                         data.getStringExtra("chat_user_data").toString(),
                         LibUser::class.java
                     )
-                when {
-                    ChatLibrary.instance.mColor.equals("#FF878E") -> {
+                when (ChatLibrary.instance.mColor) {
+                    "#FF878E" -> {
                         if (!Utility.isUsingNightModeResources(this))
                             Utility.statusBarColor(window, this, R.color.status_pink)
                         else
                             Utility.statusBarColor(window, this, R.color.dark_grey)
-                    }
-                    else -> {
-                        if (!Utility.isUsingNightModeResources(this))
-                            Utility.statusBarColor(window, this, R.color.app_dark_blue)
-                        else
-                            Utility.statusBarColor(window, this, R.color.dark_grey)
-
                     }
                 }
                 val chatData = LibChatList()

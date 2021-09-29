@@ -68,6 +68,14 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 mSelectedLibChatUser = intent.extras?.get("chat_user") as LibChatList
             }
         }
+        when (ChatLibrary.instance.mColor) {
+            "#FF878E" -> {
+                if (!Utility.isUsingNightModeResources(this))
+                    Utility.statusBarColor(window, this, R.color.status_pink)
+                else
+                    Utility.statusBarColor(window, this, R.color.dark_grey)
+            }
+        }
         init()
         start()
     }
