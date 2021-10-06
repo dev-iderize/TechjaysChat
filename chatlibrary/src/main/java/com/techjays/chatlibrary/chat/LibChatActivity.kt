@@ -5,10 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +34,8 @@ import java.util.*
  **/
 
 
-class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack {
+class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack,
+    LibChatAdapter.Callback {
 
     private lateinit var mRecyclerView: RecyclerView
     lateinit var mSelectedLibChatUser: LibChatList
@@ -52,6 +50,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var libSendButton: ImageView
     private lateinit var libChatEdit: EditText
     private lateinit var libTxtName: TextView
+    private lateinit var libDeleteButton: ImageView
     private lateinit var mLibChatViewModel: LibChatViewModel
     var mData = ArrayList<LibChatMessages>()
     private lateinit var mAdapterLib: LibChatAdapter
@@ -70,7 +69,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
         when (ChatLibrary.instance.mColor) {
             "#FF878E" -> {
-                    Utility.statusBarColor(window, this, R.color.status_pink)
+                Utility.statusBarColor(window, this, R.color.status_pink)
             }
         }
         init()
@@ -100,6 +99,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libChatEdit = findViewById(R.id.etMessage)
         libTxtName = findViewById(R.id.libTvUserName)
         libProfileImage = findViewById(R.id.libImgProfile)
+        libDeleteButton = findViewById(R.id.delete_button)
         clickListener()
         initRecycler()
         initView()
@@ -134,7 +134,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapterLib = LibChatAdapter(this, mData)
+        mAdapterLib = LibChatAdapter(this, mData, this)
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         mRecyclerView.adapter = mAdapterLib
@@ -210,7 +210,16 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     listener.sendChat(libChatEdit.text.toString(), mSelectedLibChatUser.mToUserId)
                 }
             }
+            libDeleteButton->{
+
+            }
         }
+    }
+
+    private fun deleteVisibility(show: Boolean) {
+        if (show)
+            libDeleteButton.visibility =
+                if (libDeleteButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {
@@ -247,4 +256,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
         }
     }
+
+    override fun messageDeleteforMe() {
+        // Toast.makeText(this, "for_me_only", Toast.LENGTH_SHORT).show()
+        deleteVisibility(true)
+
+
+
+    }
+
+    override fun messageDeleteforAll() {
+        //Toast.makeText(this, "for_all", Toast.LENGTH_SHORT).show()
+        deleteVisibility(true)
+    }
+
 }

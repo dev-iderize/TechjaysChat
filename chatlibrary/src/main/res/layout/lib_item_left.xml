@@ -21,12 +21,21 @@
             android:layout_marginEnd="5dp"
             android:src="@drawable/lib_ic_baseline_account_circle_24"
             android:visibility="gone" />
-
+        <CheckBox
+            android:id="@+id/check_box_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:visibility="gone"
+            android:buttonTint="@color/app_blue"
+            />
         <LinearLayout
             android:id="@+id/message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:clickable="true"
             android:background="@drawable/lib_item_left_side_background"
             android:orientation="vertical"
             android:padding="5dp">

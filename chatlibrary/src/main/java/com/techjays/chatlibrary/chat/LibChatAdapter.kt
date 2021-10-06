@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -14,6 +15,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.chatlist.LibChatListAdapter
+import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
@@ -25,7 +28,8 @@ import java.util.*
 
 class LibChatAdapter(
     val mContext: FragmentActivity,
-    val mData: ArrayList<LibChatMessages>
+    val mData: ArrayList<LibChatMessages>,
+    private var mCallback: LibChatAdapter.Callback?
 ) : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
     private val MESSAGE_TYPE_LEFT = 0
@@ -49,6 +53,19 @@ class LibChatAdapter(
     ) {
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
+        holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
+        holder.mChatItem.setOnLongClickListener {
+            for (i in mData) {
+                i.isChecked = false
+                i.showCheckBox = !i.showCheckBox
+                notifyDataSetChanged()
+            }
+            if (mData[position].mIsSentByMyself)
+                mCallback?.messageDeleteforAll()
+            else
+                mCallback?.messageDeleteforMe()
+            true
+        }
         holder.txtUserName.text = chatList.mMessage
         holder.mChatTime.text = DateUtil.formatDisplayDate(
             DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
@@ -79,6 +96,7 @@ class LibChatAdapter(
         var mChatTime: TextView = view.findViewById(R.id.time)
         var mChatItem: LinearLayout = view.findViewById(R.id.message_layout)
         var mBackgroundRight: Drawable = mChatItem.background
+        var mCheckBox: CheckBox = view.findViewById(R.id.check_box_delete)
 
     }
 
@@ -88,5 +106,10 @@ class LibChatAdapter(
         } else {
             MESSAGE_TYPE_LEFT
         }
+    }
+
+    interface Callback {
+        fun messageDeleteforMe()
+        fun messageDeleteforAll()
     }
 }
