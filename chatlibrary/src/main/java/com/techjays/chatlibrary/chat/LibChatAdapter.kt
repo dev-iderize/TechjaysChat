@@ -1,7 +1,6 @@
 package com.techjays.chatlibrary.chat
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +14,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.chatlist.LibChatListAdapter
-import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
@@ -29,7 +26,7 @@ import java.util.*
 class LibChatAdapter(
     val mContext: FragmentActivity,
     val mData: ArrayList<LibChatMessages>,
-    private var mCallback: LibChatAdapter.Callback?
+    private var mCallback: Callback?
 ) : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
     private val MESSAGE_TYPE_LEFT = 0
@@ -54,17 +51,20 @@ class LibChatAdapter(
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
         holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
+        holder.mCheckBox.isChecked = chatList.isChecked
         holder.mChatItem.setOnLongClickListener {
             for (i in mData) {
                 i.isChecked = false
                 i.showCheckBox = !i.showCheckBox
                 notifyDataSetChanged()
             }
+            mCallback?.showDeleteButton()
             if (mData[position].mIsSentByMyself)
-                mCallback?.messageDeleteforAll()
-            else
-                mCallback?.messageDeleteforMe()
+                mCallback?.messageDeleteforAll(mData[position].mIsSentByMyself)
             true
+        }
+        holder.mCheckBox.setOnClickListener {
+            chatList.isChecked = !chatList.isChecked
         }
         holder.txtUserName.text = chatList.mMessage
         holder.mChatTime.text = DateUtil.formatDisplayDate(
@@ -109,7 +109,7 @@ class LibChatAdapter(
     }
 
     interface Callback {
-        fun messageDeleteforMe()
-        fun messageDeleteforAll()
+        fun messageDeleteforAll(mIsSentByMyself: Boolean)
+        fun showDeleteButton()
     }
 }

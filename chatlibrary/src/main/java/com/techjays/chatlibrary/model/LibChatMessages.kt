@@ -27,6 +27,9 @@ class LibChatMessages : Response() {
     @SerializedName("timestamp")
     var mTimeStamp = ""
 
+    @SerializedName("to_user_id")
+    var mToUserId = ""
+
     var isChecked: Boolean = false
     var showCheckBox: Boolean = false
 }

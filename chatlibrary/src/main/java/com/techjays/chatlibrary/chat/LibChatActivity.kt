@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -193,6 +194,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 //            mOffset = 0
 //            getChatMessage(false)
 //        }
+        libDeleteButton.setOnClickListener(this)
         libImgBack.setOnClickListener(this)
         libSendButton.setOnClickListener(this)
     }
@@ -210,17 +212,20 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     listener.sendChat(libChatEdit.text.toString(), mSelectedLibChatUser.mToUserId)
                 }
             }
-            libDeleteButton->{
+            libDeleteButton -> {
+                val id = ArrayList<String>()
+                for (i in mData) {
+                    if (i.isChecked)
+                        id.add(i.mToUserId)
+                }
+                if (id.isNotEmpty())
+                   // mLibChatViewModel.deleteChats(TextUtils.join(",", id))
+                else AppDialogs.showSnackbar(libDeleteButton, "Please select something!")
 
             }
         }
     }
 
-    private fun deleteVisibility(show: Boolean) {
-        if (show)
-            libDeleteButton.visibility =
-                if (libDeleteButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-    }
 
     override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {
         val isMySelf = receivedNewMessage.mData?.mSender == null
@@ -256,18 +261,19 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
         }
     }
+    override fun showDeleteButton() {
+        libDeleteButton.visibility =
+            if (libDeleteButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
 
-    override fun messageDeleteforMe() {
-        // Toast.makeText(this, "for_me_only", Toast.LENGTH_SHORT).show()
-        deleteVisibility(true)
-
-
+    override fun messageDeleteforAll(mIsSentByMyself: Boolean) {
+        if (mIsSentByMyself)
+            Toast.makeText(this, "for_all", Toast.LENGTH_SHORT).show()
+        else
+            Toast.makeText(this, "for me", Toast.LENGTH_SHORT).show()
 
     }
 
-    override fun messageDeleteforAll() {
-        //Toast.makeText(this, "for_all", Toast.LENGTH_SHORT).show()
-        deleteVisibility(true)
-    }
+
 
 }
