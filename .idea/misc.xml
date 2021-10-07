@@ -4,11 +4,25 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.12552083333333333" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/app/src/main/res/layout/a.xml" value="0.2223731884057971" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/background_rounded_corners.xml" value="0.14322916666666666" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/bg_shadow_white_circle.xml" value="0.21851851851851853" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/checked.xml" value="0.21851851851851853" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/custom_checkbox.xml" value="0.21851851851851853" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/ic_close.xml" value="0.21851851851851853" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_button_background.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_ic_baseline_account_circle_24.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_ic_baseline_delete_24.xml" value="0.14322916666666666" />
-        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_activity_chat.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_item_right_side_background.xml" value="0.262037037037037" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/unchecked.xml" value="0.21851851851851853" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/background_rounded_corners.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/dialog_option_selection.xml" value="0.22735507246376813" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/dialog_selection_option.xml" value="0.2223731884057971" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/inflate_dialog_option.xml" value="0.22735507246376813" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_activity_chat.xml" value="0.3762183235867446" />
         <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_activity_chat_list.xml" value="0.12708333333333333" />
         <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_inflate_chat_list.xml" value="0.3740340030911901" />
+        <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_left.xml" value="0.25" />
         <entry key="..\:/Users/clubo/StudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_right.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/app/src/main/res/layout/activity_main.xml" value="0.2509057971014493" />
         <entry key="..\:/Users/naths/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/bg_border_view_white.xml" value="0.290625" />

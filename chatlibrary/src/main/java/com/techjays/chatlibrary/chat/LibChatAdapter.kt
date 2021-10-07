@@ -48,19 +48,21 @@ class LibChatAdapter(
         holder: ItemViewHolder,
         @SuppressLint("RecyclerView") position: Int
     ) {
-        //val isEmployer = LocalStorageSP.isEmployer(mContext)
         val chatList = mData[position]
-        holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
+        holder.mCheckBox.visibility =
+            if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mCheckBox.isChecked = chatList.isChecked
         holder.mChatItem.setOnLongClickListener {
-            for (i in mData) {
-                i.isChecked = false
-                i.showCheckBox = !i.showCheckBox
-                notifyDataSetChanged()
-            }
-            mCallback?.showDeleteButton()
-            if (mData[position].mIsSentByMyself)
+
+                for (i in mData) {
+                    i.isChecked = false
+                    i.showCheckBox = !i.showCheckBox
+                    notifyDataSetChanged()
+                }
+                mCallback?.showDeleteButton()
                 mCallback?.messageDeleteforAll(mData[position].mIsSentByMyself)
+
+
             true
         }
         holder.mCheckBox.setOnClickListener {

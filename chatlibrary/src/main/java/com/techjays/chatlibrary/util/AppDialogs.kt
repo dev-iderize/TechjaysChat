@@ -15,8 +15,11 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import com.techjays.chatlibrary.ChatLibrary
+import com.techjays.chatlibrary.model.common.Option
 import java.util.*
 
 object AppDialogs {
@@ -38,7 +41,6 @@ object AppDialogs {
     interface OptionListener : ConfirmListener {
         fun no()
     }
-
 
 
     /**
@@ -98,13 +100,18 @@ object AppDialogs {
 
         hidecustomView()
 
-        val builder = AlertDialog.Builder(context,com.techjays.chatlibrary.R.style.BottomSheetDialog)
-        val view = LayoutInflater.from(context).inflate(com.techjays.chatlibrary.R.layout.lib_dialog_ok_action, null)
+        val builder =
+            AlertDialog.Builder(context, com.techjays.chatlibrary.R.style.BottomSheetDialog)
+        val view = LayoutInflater.from(context)
+            .inflate(com.techjays.chatlibrary.R.layout.lib_dialog_ok_action, null)
 
         val dialogTitle = view.findViewById(com.techjays.chatlibrary.R.id.dialog_title) as TextView
-        val dialogMessage = view.findViewById(com.techjays.chatlibrary.R.id.dialog_message) as TextView
-        val dialogAction = view.findViewById(com.techjays.chatlibrary.R.id.dialog_action_button) as TextView
-        val dialogClose = view.findViewById(com.techjays.chatlibrary.R.id.dialog_close_button) as ImageView
+        val dialogMessage =
+            view.findViewById(com.techjays.chatlibrary.R.id.dialog_message) as TextView
+        val dialogAction =
+            view.findViewById(com.techjays.chatlibrary.R.id.dialog_action_button) as TextView
+        val dialogClose =
+            view.findViewById(com.techjays.chatlibrary.R.id.dialog_close_button) as ImageView
 
         builder.setCancelable(false)
 
@@ -112,7 +119,7 @@ object AppDialogs {
             dialogClose.visibility = View.VISIBLE
         else dialogClose.visibility = View.GONE
 
-        dialogTitle.text =  title
+        dialogTitle.text = title
         dialogMessage.text = msg
 
         dialogAction.text = if ((action == null)) context.getString(android.R.string.ok) else action
@@ -162,7 +169,8 @@ object AppDialogs {
         hideProgressDialog()
         progressDialog = Dialog(context)
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(com.techjays.chatlibrary.R.layout.lib_dialog_progress_custom, null)
+        val view =
+            inflater.inflate(com.techjays.chatlibrary.R.layout.lib_dialog_progress_custom, null)
         progressDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         progressDialog!!.setContentView(view)
@@ -266,6 +274,34 @@ object AppDialogs {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
+    @SuppressLint("InflateParams")
+    fun initOptionDialog(
+        context: Context,
+        list: ArrayList<Option>,
+        callback: DialogOptionAdapter.Callback
+    ) {
+        hidecustomView()
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(com.techjays.chatlibrary.R.layout.dialog_option_selection, null)
+
+        val builder =
+            AlertDialog.Builder(context, com.techjays.chatlibrary.R.style.BottomSheetDialog)
+        builder.setCancelable(false)
+
+        val aRecycler =
+            view.findViewById<RecyclerView>(com.techjays.chatlibrary.R.id.option_recycler)
+        aRecycler.adapter = DialogOptionAdapter(context, list, callback)
+
+        view.findViewById<ImageView>(com.techjays.chatlibrary.R.id.dialog_close_button)
+            .setOnClickListener {
+                custom_dialog!!.dismiss()
+            }
+
+        builder.setView(view)
+        custom_dialog = builder.create()
+        custom_dialog!!.show()
+    }
+
 
     fun showFromDatedialogwithToday(
         context: Context,
@@ -338,7 +374,6 @@ object AppDialogs {
      * @param icon Image
      * @param msg Message to show
      */
-
 
 
 }

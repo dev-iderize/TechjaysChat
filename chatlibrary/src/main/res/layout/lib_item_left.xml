@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="5dp"
+            android:button="@drawable/custom_checkbox"
             android:visibility="gone"
-            android:buttonTint="@color/app_blue"
             />
         <LinearLayout
             android:id="@+id/message_layout"

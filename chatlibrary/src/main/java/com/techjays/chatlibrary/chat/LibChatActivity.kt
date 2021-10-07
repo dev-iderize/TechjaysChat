@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -18,10 +19,8 @@ import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.ChatSocketListener
-import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.model.common.Option
+import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.OkHttpClient
@@ -59,6 +58,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var ws: WebSocket
     private lateinit var listener: ChatSocketListener
     private lateinit var libProfileImage: CircleImageView
+
+    private var deletetype: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -213,16 +214,50 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
             libDeleteButton -> {
+                /***
                 val id = ArrayList<String>()
+                val user_id = ArrayList<String>()
                 for (i in mData) {
-                    if (i.isChecked)
-                        id.add(i.mToUserId)
+                if (i.isChecked)
+                id.add(i.mMessageId)
+                user_id.add(i.mToUserId)
                 }
-                if (id.isNotEmpty())
-                   // mLibChatViewModel.deleteChats(TextUtils.join(",", id))
-                else AppDialogs.showSnackbar(libDeleteButton, "Please select something!")
+                if (id.isNotEmpty()) {
 
+                } else AppDialogs.showSnackbar(libDeleteButton, "Please select something!")**/
+                delete()
             }
+        }
+    }
+
+    fun delete() {
+        if (checkInternet()) {
+            val option = ArrayList<Option>()
+            if (!deletetype)
+                option.add(
+                    Option(
+                        "Delete for me"
+                    )
+                )
+            option.add(
+                Option(
+                    "Delete for All"
+
+                )
+            )
+            AppDialogs.initOptionDialog(this,
+                option,
+                object : DialogOptionAdapter.Callback {
+                    override fun select(position: Int, option: Option) {
+                        if (checkInternet()) {
+                            AppDialogs.hidecustomView()
+                            when (option.mName) {
+
+
+                            }
+                        }
+                    }
+                })
         }
     }
 
@@ -261,6 +296,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
         }
     }
+
     override fun showDeleteButton() {
         libDeleteButton.visibility =
             if (libDeleteButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
@@ -268,12 +304,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun messageDeleteforAll(mIsSentByMyself: Boolean) {
         if (mIsSentByMyself)
-            Toast.makeText(this, "for_all", Toast.LENGTH_SHORT).show()
-        else
-            Toast.makeText(this, "for me", Toast.LENGTH_SHORT).show()
+            deletetype = true
 
     }
-
 
 
 }
