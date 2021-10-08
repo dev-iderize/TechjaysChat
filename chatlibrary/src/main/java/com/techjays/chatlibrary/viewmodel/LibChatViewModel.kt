@@ -30,6 +30,11 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
         LibAppServices.deleteChats(mContext, ids, this)
     }
 
+    fun deleteMessages(Userid: Int, isforme: Boolean, ids: String) {
+        LibAppServices.deleteMessages(mContext, Userid, isforme, ids, this)
+    }
+
+
     override fun onResponse(r: Response?) {
         try {
             if (r != null) {
@@ -37,6 +42,7 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
                     LibAppServices.API.chat_list.hashCode() -> chat.value = r
                     LibAppServices.API.get_chat_message.hashCode() -> chat.value = r
                     LibAppServices.API.delete_chats.hashCode() -> chat.value = r
+                    LibAppServices.API.delete_messages.hashCode() -> chat.value = r
                 }
 
             }

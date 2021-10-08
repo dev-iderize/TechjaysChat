@@ -34,11 +34,11 @@ class LibAppServices {
         const val notifications = "notifications/"
 
         //Chat
-        const val get_chat_token ="chat/token/"
+        const val get_chat_token = "chat/token/"
         const val chat_list = "chat/chat-lists/"
-        const val get_chat_message="chat/chat-messages/"
-        const val delete_chats="chat/delete-chat-list/"
-
+        const val get_chat_message = "chat/chat-messages/"
+        const val delete_chats = "chat/delete-chat-list/"
+        const val delete_messages = "chat/delete-chat-messages/"
     }
 
     private interface ApiInterface {
@@ -177,7 +177,13 @@ class LibAppServices {
             }
         }
 
-        fun getChatMessage(c: Context, offset: Int, limit: Int,userId:String, listener: ResponseListener) {
+        fun getChatMessage(
+            c: Context,
+            offset: Int,
+            limit: Int,
+            userId: String,
+            listener: ResponseListener
+        ) {
             try {
                 val apiService = getClient().create(ApiInterface::class.java)
                 val mHashCode = API.get_chat_message
@@ -207,7 +213,7 @@ class LibAppServices {
                 val mURL = API.constructUrl(mHashCode)
 
                 val mObject = JsonObject()
-                mObject.addProperty("to_user_id",ids)
+                mObject.addProperty("to_user_id", ids)
 
                 val call = apiService.POST(mURL, getAuthHeader(c), mObject)
                 initService(c, call, Response::class.java, mHashCode, listener)
@@ -217,6 +223,31 @@ class LibAppServices {
             }
         }
 
+        fun deleteMessages(
+            c: Context,
+            user_id: Int,
+            isforme: Boolean,
+            ids: String,
+            listener: ResponseListener
+        ) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.delete_messages
+                val mURL = API.constructUrl(mHashCode)
+                val mObject = JsonObject()
+                mObject.addProperty("to_user_id", user_id)
+                mObject.addProperty("message_ids", ids)
+                if (isforme)
+                    mObject.addProperty("delete_message_type", "for_me")
+                else
+                    mObject.addProperty("delete_message_type", "everyone")
+                val call = apiService.POST(mURL, getAuthHeader(c), mObject)
+                initService(c, call, Response::class.java, mHashCode, listener)
+                Log.d("Param --> ", mObject.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
 // ################################################################################################
 

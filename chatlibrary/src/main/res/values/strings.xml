@@ -3,4 +3,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="type_message">Write a message...</string>
     <string name="chats">Chats</string>
+    <string name="deleteforme">Delete</string>
+    <string name="deleteforall">Delete for All</string>
 </resources>

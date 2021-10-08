@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
@@ -52,19 +53,18 @@ class LibChatAdapter(
         holder.mCheckBox.visibility =
             if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mCheckBox.isChecked = chatList.isChecked
-        holder.mChatItem.setOnLongClickListener {
-
+            holder.mChatItem.setOnLongClickListener {
                 for (i in mData) {
                     i.isChecked = false
                     i.showCheckBox = !i.showCheckBox
                     notifyDataSetChanged()
                 }
                 mCallback?.showDeleteButton()
-                mCallback?.messageDeleteforAll(mData[position].mIsSentByMyself)
+               mCallback?.messageDeleteforAll()
 
 
-            true
-        }
+                true
+            }
         holder.mCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
         }
@@ -111,7 +111,8 @@ class LibChatAdapter(
     }
 
     interface Callback {
-        fun messageDeleteforAll(mIsSentByMyself: Boolean)
+        fun messageDeleteforAll()
         fun showDeleteButton()
+        fun messageDeleteforMe()
     }
 }

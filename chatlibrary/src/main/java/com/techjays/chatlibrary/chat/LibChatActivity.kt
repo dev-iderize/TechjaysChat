@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.base.LibBaseActivity
+import com.techjays.chatlibrary.chatlist.LibChatListAdapter
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -27,6 +29,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
+import kotlin.math.log
 
 
 /**
@@ -58,6 +61,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var ws: WebSocket
     private lateinit var listener: ChatSocketListener
     private lateinit var libProfileImage: CircleImageView
+
+    var DELETEFORME: Int = 0
+    var DELETEFORALL: Int = 1
 
     private var deletetype: Boolean = false
 
@@ -104,6 +110,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libDeleteButton = findViewById(R.id.delete_button)
         clickListener()
         initRecycler()
+        initObserver()
         initView()
         getChatMessage(true)
     }
@@ -156,6 +163,29 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             }
         }
         mRecyclerView.addOnScrollListener(mListener)
+    }
+
+    private fun initObserver() {
+        if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
+            mLibChatViewModel.getChatObserver().observe(this, {
+                AppDialogs.hideProgressDialog()
+                when (it?.requestType) {
+
+                    LibAppServices.API.delete_messages.hashCode() -> {
+                        if (it.responseStatus!!) {
+                            val iterator = mData.iterator()
+                            while (iterator.hasNext()) {
+                                val item = iterator.next()
+                                if (item.isChecked) {
+                                    iterator.remove()
+                                }
+                            }
+                            mAdapterLib.notifyDataSetChanged()
+                        } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
+                    }
+                }
+            })
+        }
     }
 
     private fun getChatMessage(show: Boolean) {
@@ -214,50 +244,51 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
             libDeleteButton -> {
-                /***
                 val id = ArrayList<String>()
-                val user_id = ArrayList<String>()
                 for (i in mData) {
-                if (i.isChecked)
-                id.add(i.mMessageId)
-                user_id.add(i.mToUserId)
+                    if (i.isChecked)
+                        id.add(i.mMessageId)
                 }
-                if (id.isNotEmpty()) {
-
-                } else AppDialogs.showSnackbar(libDeleteButton, "Please select something!")**/
-                delete()
-            }
-        }
-    }
-
-    fun delete() {
-        if (checkInternet()) {
-            val option = ArrayList<Option>()
-            if (!deletetype)
-                option.add(
-                    Option(
-                        "Delete for me"
+                if (checkInternet()) {
+                    val option = ArrayList<Option>()
+                    option.add(
+                        Option(
+                            DELETEFORME,
+                            getString(R.string.deleteforme)
+                        )
                     )
-                )
-            option.add(
-                Option(
-                    "Delete for All"
+                    option.add(
+                        Option(
+                            DELETEFORALL,
+                            getString(R.string.deleteforall)
 
-                )
-            )
-            AppDialogs.initOptionDialog(this,
-                option,
-                object : DialogOptionAdapter.Callback {
-                    override fun select(position: Int, option: Option) {
-                        if (checkInternet()) {
-                            AppDialogs.hidecustomView()
-                            when (option.mName) {
+                        )
+                    )
+                    AppDialogs.initOptionDialog(this,
+                        option,
+                        object : DialogOptionAdapter.Callback {
+                            override fun select(position: Int, option: Option) {
+                                if (checkInternet()) {
+                                    AppDialogs.hidecustomView()
+                                    when (option.mId) {
+                                        DELETEFORALL -> {
+
+                                        }
+                                        DELETEFORME -> {
+
+                                            Log.e("idssss",TextUtils.join(",", id))
+                                            if (id.isNotEmpty())
+                                                mLibChatViewModel.deleteMessages(mSelectedLibChatUser.mToUserId.toInt(),false,TextUtils.join(",", id))
+                                            else AppDialogs.showSnackbar(mRecyclerView, "Please select something!")
+                                        }
 
 
+                                    }
+                                }
                             }
-                        }
-                    }
-                })
+                        })
+                }
+            }
         }
     }
 
@@ -302,10 +333,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             if (libDeleteButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
-    override fun messageDeleteforAll(mIsSentByMyself: Boolean) {
-        if (mIsSentByMyself)
-            deletetype = true
+    override fun messageDeleteforMe() {
 
+    }
+
+    override fun messageDeleteforAll() {
     }
 
 
