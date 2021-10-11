@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -74,6 +75,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     var DELETEFORALL: Int = 1
     var deleteforAll = LibChatMessages().deleteTypeForAll
 
+    val id = ArrayList<String>()
     var mResumePath = ""
     private var mPermission =
         arrayOf(
@@ -220,6 +222,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapterLib.notifyDataSetChanged()
+                        LibChatMessages().isChecked = false
                         /* if (mData.isNotEmpty())
                              Handler(Looper.myLooper()!!).postDelayed({
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
@@ -317,7 +320,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     private fun deleteChatMessages(deleteforme: Boolean) {
-        val id = ArrayList<String>()
+
         for (i in mData) {
             if (i.isChecked)
                 id.add(i.mMessageId)
@@ -369,9 +372,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
     }
 
-    override fun showDeleteButton() {
-        libDeleteButton.visibility =
-            if (libDeleteButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    override fun showDeleteButton(count: Int) {
+        libDeleteButton.visibility = if (count > 0) View.VISIBLE else View.GONE
     }
 
     override fun messageDeleteforMe() {

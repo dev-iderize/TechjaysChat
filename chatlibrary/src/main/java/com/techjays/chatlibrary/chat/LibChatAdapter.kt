@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.BoolRes
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.FragmentActivity
@@ -34,6 +36,7 @@ class LibChatAdapter(
     private val MESSAGE_TYPE_SENT = 1
     private val DOCUMENT_TYPE_SENT = 3
     private val DOCUMENT_TYPE_RECIEVED = 4
+    private var checkboxcount: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return if (viewType == MESSAGE_TYPE_SENT) {
@@ -61,17 +64,19 @@ class LibChatAdapter(
                 i.showCheckBox = !i.showCheckBox
                 notifyDataSetChanged()
             }
-            mCallback?.showDeleteButton()
+
             if (mData[position].mIsSentByMyself)
                 mCallback?.messageDeleteforAll()
             else
                 mCallback?.messageDeleteforMe()
             true
         }
-
-
         holder.mCheckBox.setOnClickListener {
-            chatList.isChecked = !chatList.isChecked
+            if (holder.mCheckBox.isChecked)
+                checkboxcount += 1
+            else
+                checkboxcount -= 1
+            mCallback?.showDeleteButton(checkboxcount)
         }
         holder.txtUserName.text = chatList.mMessage
         holder.mChatTime.text = DateUtil.formatDisplayDate(
@@ -117,7 +122,7 @@ class LibChatAdapter(
 
     interface Callback {
         fun messageDeleteforAll()
-        fun showDeleteButton()
+        fun showDeleteButton(count: Int)
         fun messageDeleteforMe()
     }
 }
