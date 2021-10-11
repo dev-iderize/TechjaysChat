@@ -30,11 +30,13 @@ class LibChatAdapter(
     private var mCallback: Callback?
 ) : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
-    private val MESSAGE_TYPE_LEFT = 0
-    private val MESSAGE_TYPE_RIGHT = 1
+    private val MESSAGE_TYPE_RECIEVED = 0
+    private val MESSAGE_TYPE_SENT = 1
+    private val DOCUMENT_TYPE_SENT = 3
+    private val DOCUMENT_TYPE_RECIEVED = 4
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return if (viewType == MESSAGE_TYPE_RIGHT) {
+        return if (viewType == MESSAGE_TYPE_SENT) {
             val view =
                 LayoutInflater.from(parent.context).inflate(R.layout.lib_item_right, parent, false)
             ItemViewHolder(view)
@@ -50,21 +52,24 @@ class LibChatAdapter(
         @SuppressLint("RecyclerView") position: Int
     ) {
         val chatList = mData[position]
-        holder.mCheckBox.visibility =
-            if (chatList.showCheckBox) View.VISIBLE else View.GONE
+        holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mCheckBox.isChecked = chatList.isChecked
-            holder.mChatItem.setOnLongClickListener {
-                for (i in mData) {
-                    i.isChecked = false
-                    i.showCheckBox = !i.showCheckBox
-                    notifyDataSetChanged()
-                }
-                mCallback?.showDeleteButton()
-               mCallback?.messageDeleteforAll()
+        holder.mChatItem.setOnLongClickListener {
 
-
-                true
+            for (i in mData) {
+                i.isChecked = false
+                i.showCheckBox = !i.showCheckBox
+                notifyDataSetChanged()
             }
+            mCallback?.showDeleteButton()
+            if (mData[position].mIsSentByMyself)
+                mCallback?.messageDeleteforAll()
+            else
+                mCallback?.messageDeleteforMe()
+            true
+        }
+
+
         holder.mCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
         }
@@ -104,9 +109,9 @@ class LibChatAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (mData[position].mIsSentByMyself) {
-            MESSAGE_TYPE_RIGHT
+            MESSAGE_TYPE_SENT
         } else {
-            MESSAGE_TYPE_LEFT
+            MESSAGE_TYPE_RECIEVED
         }
     }
 

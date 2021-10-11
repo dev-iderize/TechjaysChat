@@ -9,6 +9,6 @@ import com.techjays.chatlibrary.api.Response
  * Created by Sharon on 10.7.20.
  **/
 
-class Option(var mId:Int,var mName: String) : Response() {
+class Option(var mId:Int?,var mName: String,var mImage: Drawable?) : Response() {
     var mOptions = ArrayList<Option>()
 }

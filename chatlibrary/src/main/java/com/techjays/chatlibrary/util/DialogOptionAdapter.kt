@@ -36,9 +36,12 @@ class DialogOptionAdapter(
 
         val option = mData[position]
         holder.mTitle.text = option.mName
+        holder.mImage.setImageDrawable(option.mImage)
         holder.mMain.setOnClickListener {
             mCallback.select(position, option)
         }
+
+
     }
 
     override fun getItemCount(): Int {

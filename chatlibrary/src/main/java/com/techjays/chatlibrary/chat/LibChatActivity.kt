@@ -64,8 +64,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     var DELETEFORME: Int = 0
     var DELETEFORALL: Int = 1
+    var deleteforAll = LibChatMessages().deleteTypeForAll
 
-    private var deletetype: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -244,26 +244,25 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
             libDeleteButton -> {
-                val id = ArrayList<String>()
-                for (i in mData) {
-                    if (i.isChecked)
-                        id.add(i.mMessageId)
-                }
+
                 if (checkInternet()) {
                     val option = ArrayList<Option>()
                     option.add(
                         Option(
                             DELETEFORME,
-                            getString(R.string.deleteforme)
+                            getString(R.string.deleteforme),
+                            Utility.getDrawable(this, R.drawable.lib_ic_baseline_delete_24)
                         )
                     )
-                    option.add(
-                        Option(
-                            DELETEFORALL,
-                            getString(R.string.deleteforall)
+                    if (deleteforAll)
+                        option.add(
+                            Option(
+                                DELETEFORALL,
+                                getString(R.string.deleteforall),
+                                Utility.getDrawable(this, R.drawable.lib_ic_baseline_delete_24)
 
+                            )
                         )
-                    )
                     AppDialogs.initOptionDialog(this,
                         option,
                         object : DialogOptionAdapter.Callback {
@@ -272,17 +271,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                     AppDialogs.hidecustomView()
                                     when (option.mId) {
                                         DELETEFORALL -> {
+                                            deleteChatMessages(false)
 
                                         }
                                         DELETEFORME -> {
-
-                                            Log.e("idssss",TextUtils.join(",", id))
-                                            if (id.isNotEmpty())
-                                                mLibChatViewModel.deleteMessages(mSelectedLibChatUser.mToUserId.toInt(),false,TextUtils.join(",", id))
-                                            else AppDialogs.showSnackbar(mRecyclerView, "Please select something!")
+                                            deleteChatMessages(true)
                                         }
-
-
                                     }
                                 }
                             }
@@ -290,6 +284,24 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
         }
+    }
+
+    private fun deleteChatMessages(deleteforme: Boolean) {
+        val id = ArrayList<String>()
+        for (i in mData) {
+            if (i.isChecked)
+                id.add(i.mMessageId)
+        }
+        if (id.isNotEmpty())
+            mLibChatViewModel.deleteMessages(
+                mSelectedLibChatUser.mToUserId.toInt(),
+                deleteforme,
+                TextUtils.join(",", id)
+            )
+        else AppDialogs.showSnackbar(
+            mRecyclerView,
+            "Please select something!"
+        )
     }
 
 
@@ -338,6 +350,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     override fun messageDeleteforAll() {
+        deleteforAll = true
+
     }
 
 

@@ -9,6 +9,8 @@ import com.techjays.chatlibrary.api.Response
 
 class LibChatMessages : Response() {
 
+
+
     @SerializedName("next_link")
     var mNextLink = false
 
@@ -32,4 +34,5 @@ class LibChatMessages : Response() {
 
     var isChecked: Boolean = false
     var showCheckBox: Boolean = false
+    var deleteTypeForAll:Boolean=false
 }
