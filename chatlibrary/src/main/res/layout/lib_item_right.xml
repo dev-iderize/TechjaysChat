@@ -3,15 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <CheckBox
-        android:id="@+id/check_box_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="5dp"
-        android:button="@drawable/custom_checkbox"
-        android:visibility="gone"
-        />
+    <include layout="@layout/checkbox"/>
     <LinearLayout
     android:id="@+id/layoutUser"
     android:layout_width="match_parent"
