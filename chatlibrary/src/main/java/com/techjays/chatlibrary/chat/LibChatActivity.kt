@@ -361,6 +361,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         runOnUiThread {
             val newMessage = LibChatMessages()
             newMessage.mIsSentByMyself = isMySelf
+            newMessage.mMessageId = receivedNewMessage.mData!!.mMessageId
             when {
                 isMySelf -> {
                     newMessage.mMessage = libChatEdit.text.toString()
@@ -382,9 +383,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     /*
                         * Build notification on receiving broadcast from channel "ChatLibraryBuildNotification"
                         * */
-                    val intent = Intent("ChatLibraryBuildNotification");
-                    intent.putExtra("data", Gson().toJson(receivedNewMessage));
-                    sendBroadcast(intent);
+                    val intent = Intent("ChatLibraryBuildNotification")
+                    intent.putExtra("data", Gson().toJson(receivedNewMessage))
+                    sendBroadcast(intent)
                 }
             }
 
