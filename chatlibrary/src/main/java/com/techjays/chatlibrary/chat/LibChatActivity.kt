@@ -7,12 +7,8 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -199,6 +195,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                 }
                             }
                             mAdapterLib.notifyDataSetChanged()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.delete_string),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -264,7 +265,14 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
             libDeleteButton -> {
+                deleteforAll = true
 
+                for (i in mData) {
+                    if (i.isChecked && !i.mIsSentByMyself) {
+                        deleteforAll = false
+                        break
+                    }
+                }
                 if (checkInternet()) {
                     val option = ArrayList<Option>()
                     option.add(
@@ -374,15 +382,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun showDeleteButton(count: Int) {
         libDeleteButton.visibility = if (count > 0) View.VISIBLE else View.GONE
-    }
-
-    override fun messageDeleteforMe() {
-
-    }
-
-    override fun messageDeleteforAll() {
-        deleteforAll = true
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

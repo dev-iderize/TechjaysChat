@@ -8,19 +8,15 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.BoolRes
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
-import java.security.MessageDigest
 import java.util.*
 
 /**
@@ -64,14 +60,14 @@ class LibChatAdapter(
                 i.showCheckBox = !i.showCheckBox
                 notifyDataSetChanged()
             }
-
-
             true
         }
         holder.mCheckBox.setOnClickListener {
+            chatList.isChecked = !chatList.isChecked
             if (holder.mCheckBox.isChecked) {
-                chatList.isChecked = !chatList.isChecked
-                checkboxcount += 1
+
+                if (mData[position].mIsSentByMyself)
+                    checkboxcount += 1
             } else
                 checkboxcount -= 1
 
@@ -120,8 +116,6 @@ class LibChatAdapter(
     }
 
     interface Callback {
-        fun messageDeleteforAll()
         fun showDeleteButton(count: Int)
-        fun messageDeleteforMe()
     }
 }
