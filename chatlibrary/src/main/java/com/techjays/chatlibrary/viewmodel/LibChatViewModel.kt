@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
+import com.techjays.chatlibrary.model.LibChatMessages
 
 /**
  * Created by Mathan on 31/08/21.
@@ -13,6 +14,7 @@ import com.techjays.chatlibrary.api.ResponseListener
 class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseListener {
 
     private var chat = MutableLiveData<Response?>()
+    private var file = MutableLiveData<Response?>()
 
     fun getChatList(offset: Int, limit: Int) {
         LibAppServices.getChatList(mContext, offset, limit, this)
@@ -26,8 +28,16 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
         return chat
     }
 
+    fun getChatFileObserver(): MutableLiveData<Response?> {
+        return file
+    }
+
     fun deleteChats(ids: String) {
         LibAppServices.deleteChats(mContext, ids, this)
+    }
+
+    fun uploadFile(chatMessages: LibChatMessages) {
+        LibAppServices.fileUpload(mContext, chatMessages, this)
     }
 
     fun deleteMessages(Userid: Int, isforme: Boolean, ids: String) {
@@ -43,6 +53,7 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
                     LibAppServices.API.get_chat_message.hashCode() -> chat.value = r
                     LibAppServices.API.delete_chats.hashCode() -> chat.value = r
                     LibAppServices.API.delete_messages.hashCode() -> chat.value = r
+                    LibAppServices.API.upload_file.hashCode() -> file.value = r
                 }
 
             }

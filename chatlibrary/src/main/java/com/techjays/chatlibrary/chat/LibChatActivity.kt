@@ -129,9 +129,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         clickListener()
         initRecycler()
         initObserver()
+        initFileObserver()
         initView()
         getChatMessage(true)
     }
+
+
 
     private fun initView() {
         libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
@@ -188,7 +191,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             mLibChatViewModel.getChatObserver().observe(this, {
                 AppDialogs.hideProgressDialog()
                 when (it?.requestType) {
-
                     LibAppServices.API.delete_messages.hashCode() -> {
                         if (it.responseStatus!!) {
                             val iterator = mData.iterator()
@@ -199,6 +201,21 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                 }
                             }
                             mAdapterLib.notifyDataSetChanged()
+                        } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
+                    }
+                }
+            })
+        }
+    }
+
+    private fun initFileObserver() {
+        if (!mLibChatViewModel.getChatFileObserver().hasActiveObservers()) {
+            mLibChatViewModel.getChatFileObserver().observe(this, {
+                AppDialogs.hideProgressDialog()
+                when (it?.requestType) {
+                    LibAppServices.API.upload_file.hashCode() -> {
+                        if (it.responseStatus!!) {
+
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -393,7 +410,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 val uri =
                     data.getParcelableArrayListExtra<Uri>(FilePickerConst.KEY_SELECTED_DOCS)!![0]
                 mResumePath = ContentUriUtils.getFilePath(this, uri)!!
+                initFileUpload()
             }
+        }
+    }
+
+    private fun initFileUpload() {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(this)
+            val chatmessages = LibChatMessages()
+            chatmessages.mToUserId = mSelectedLibChatUser.mToUserId
+            chatmessages.mFile = mResumePath
+            mLibChatViewModel.uploadFile(chatmessages)
         }
     }
 }
