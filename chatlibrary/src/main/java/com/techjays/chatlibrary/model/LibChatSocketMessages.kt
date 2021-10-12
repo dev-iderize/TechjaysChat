@@ -38,4 +38,7 @@ open class LibChatSocketMessages : Response() {
 
     @SerializedName("profile_pic")
     var mProfilePic = ""
+
+    @SerializedName("file_url")
+    var mFile = ""
 }

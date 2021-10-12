@@ -66,6 +66,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var mBtnFile: ImageView
     var WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
     var READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
+    private lateinit var mLibChatSocketMessages: LibChatSocketMessages
 
     var DELETEFORME: Int = 0
     var DELETEFORALL: Int = 1
@@ -211,7 +212,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 when (it?.requestType) {
                     LibAppServices.API.upload_file.hashCode() -> {
                         if (it.responseStatus!!) {
-
+                            mLibChatSocketMessages = (it as LibChatSocketMessages).mData!!
+                            listener.sendChat(mLibChatSocketMessages.mFile, mSelectedLibChatUser.mToUserId)
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -364,7 +366,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             newMessage.mMessageId = receivedNewMessage.mData!!.mMessageId
             when {
                 isMySelf -> {
-                    newMessage.mMessage = libChatEdit.text.toString()
+                    newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
                     libChatEdit.text = "".toEditable()
                     mData.add(0, newMessage)

@@ -9,6 +9,7 @@ import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
+import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.Helper
 import com.techjays.chatlibrary.util.Utility
@@ -271,7 +272,7 @@ class LibAppServices {
                 mParam["to_user_id"] = requestBody(chatMessages.mToUserId)
 
                 val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
-                initService(c, call, LibChatMessages::class.java, mHashCode, listener)
+                initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
                 Log.d("Param --> ", mParam.toString())
             } catch (e: Exception) {
                 e.printStackTrace()

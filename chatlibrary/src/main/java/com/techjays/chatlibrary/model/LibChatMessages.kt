@@ -9,8 +9,6 @@ import com.techjays.chatlibrary.api.Response
 
 class LibChatMessages : Response() {
 
-
-
     @SerializedName("next_link")
     var mNextLink = false
 
