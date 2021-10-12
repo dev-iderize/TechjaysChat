@@ -20,6 +20,7 @@ import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
+import java.security.MessageDigest
 import java.util.*
 
 /**
@@ -56,26 +57,24 @@ class LibChatAdapter(
     ) {
         val chatList = mData[position]
         holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
-        holder.mCheckBox.isChecked = chatList.isChecked
-        holder.mChatItem.setOnLongClickListener {
 
+        holder.mChatItem.setOnLongClickListener {
             for (i in mData) {
                 i.isChecked = false
                 i.showCheckBox = !i.showCheckBox
                 notifyDataSetChanged()
             }
 
-            if (mData[position].mIsSentByMyself)
-                mCallback?.messageDeleteforAll()
-            else
-                mCallback?.messageDeleteforMe()
+
             true
         }
         holder.mCheckBox.setOnClickListener {
-            if (holder.mCheckBox.isChecked)
+            if (holder.mCheckBox.isChecked) {
+                chatList.isChecked = !chatList.isChecked
                 checkboxcount += 1
-            else
+            } else
                 checkboxcount -= 1
+
             mCallback?.showDeleteButton(checkboxcount)
         }
         holder.txtUserName.text = chatList.mMessage
