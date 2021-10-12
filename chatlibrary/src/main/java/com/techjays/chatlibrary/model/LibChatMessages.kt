@@ -32,6 +32,9 @@ class LibChatMessages : Response() {
     @SerializedName("to_user_id")
     var mToUserId = ""
 
+    @SerializedName("file")
+    var mFile = ""
+
     var isChecked: Boolean = false
     var showCheckBox: Boolean = false
     var deleteTypeForAll:Boolean=false

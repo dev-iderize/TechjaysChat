@@ -6,17 +6,19 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.Helper
-import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.constants.ProjectApplication
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
+import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.Helper
+import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.Utility.getMimeType
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.io.File
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
@@ -39,6 +41,7 @@ class LibAppServices {
         const val get_chat_message = "chat/chat-messages/"
         const val delete_chats = "chat/delete-chat-list/"
         const val delete_messages = "chat/delete-chat-messages/"
+        const val upload_file = "chat/file-upload/"
     }
 
     private interface ApiInterface {
@@ -248,6 +251,33 @@ class LibAppServices {
                 e.printStackTrace()
             }
         }
+
+        fun fileUpload(c: Context, chatMessages: LibChatMessages, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.upload_file
+                val mURL = API.constructUrl(mHashCode)
+                val mParam = HashMap<String, RequestBody>()
+
+                val file = File(chatMessages.mFile)
+                val requestBody =
+                    RequestBody.create(
+                        MediaType.parse(
+                            getMimeType(chatMessages.mFile)
+                        ), file
+                    )
+                mParam["file\"; filename=\"" + file.name] = requestBody
+                mParam["file_type"] = requestBody("pdf")
+                mParam["to_user_id"] = requestBody(chatMessages.mToUserId)
+
+                val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
+                initService(c, call, LibChatMessages::class.java, mHashCode, listener)
+                Log.d("Param --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
 // ################################################################################################
 
