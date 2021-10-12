@@ -69,7 +69,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     var DELETEFORME: Int = 0
     var DELETEFORALL: Int = 1
-    var deleteforAll = LibChatMessages().deleteTypeForAll
+    var deleteforAll = false
 
     val id = ArrayList<String>()
     var mResumePath = ""
@@ -129,7 +129,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         initView()
         getChatMessage(true)
     }
-
 
 
     private fun initView() {
@@ -202,6 +201,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                 getString(R.string.delete_string),
                                 Toast.LENGTH_SHORT
                             ).show()
+
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -234,19 +234,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 mLibChatViewModel.getChatObserver().observe(this, {
                     AppDialogs.hideProgressDialog()
                     //mSwipe.isRefreshing = false
-                    if (it?.responseStatus!!) {
+                    if (it?.requestType == LibAppServices.API.get_chat_message.hashCode() && it.responseStatus!!) {
                         isNextLink = (it as LibChatMessages).mNextLink
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapterLib.notifyDataSetChanged()
-                        LibChatMessages().isChecked = false
                         /* if (mData.isNotEmpty())
                              Handler(Looper.myLooper()!!).postDelayed({
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
                              }, 100)*/
                     } else {
-                        AppDialogs.customOkAction(this, it.responseMessage)
+                        AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
                         //mSwipe.isRefreshing = false
                     }
@@ -345,18 +344,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     private fun deleteChatMessages(deleteforme: Boolean) {
-
         for (i in mData) {
             if (i.isChecked)
                 id.add(i.mMessageId)
         }
-        if (id.isNotEmpty())
+        if (id.isNotEmpty()) {
             mLibChatViewModel.deleteMessages(
                 mSelectedLibChatUser.mToUserId.toInt(),
                 deleteforme,
                 TextUtils.join(",", id)
             )
-        else AppDialogs.showSnackbar(
+            id.clear()
+        } else AppDialogs.showSnackbar(
             mRecyclerView,
             "Please select something!"
         )

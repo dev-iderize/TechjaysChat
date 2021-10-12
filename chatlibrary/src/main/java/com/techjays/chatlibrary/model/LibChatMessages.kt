@@ -37,5 +37,4 @@ class LibChatMessages : Response() {
 
     var isChecked: Boolean = false
     var showCheckBox: Boolean = false
-    var deleteTypeForAll:Boolean=false
 }

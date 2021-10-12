@@ -53,7 +53,6 @@ class LibChatAdapter(
     ) {
         val chatList = mData[position]
         holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
-
         holder.mChatItem.setOnLongClickListener {
             for (i in mData) {
                 i.isChecked = false
@@ -62,6 +61,8 @@ class LibChatAdapter(
             }
             true
         }
+        holder.mCheckBox.isChecked=chatList.isChecked
+
         holder.mCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
             if (holder.mCheckBox.isChecked) {
