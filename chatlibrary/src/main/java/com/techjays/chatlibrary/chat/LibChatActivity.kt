@@ -196,11 +196,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                 }
                             }
                             mAdapterLib.notifyDataSetChanged()
-                            Toast.makeText(
-                                this,
-                                getString(R.string.delete_string),
-                                Toast.LENGTH_SHORT
-                            ).show()
 
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
@@ -245,7 +240,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
                              }, 100)*/
                     } else {
-                        AppDialogs.customOkAction(this, it!!.responseMessage)
+                        //AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
                         //mSwipe.isRefreshing = false
                     }
