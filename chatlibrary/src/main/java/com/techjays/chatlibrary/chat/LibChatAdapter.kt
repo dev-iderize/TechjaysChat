@@ -61,14 +61,12 @@ class LibChatAdapter(
             }
             true
         }
-        holder.mCheckBox.isChecked=chatList.isChecked
+        holder.mCheckBox.isChecked = chatList.isChecked
 
         holder.mCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
             if (holder.mCheckBox.isChecked) {
-
-                if (mData[position].mIsSentByMyself)
-                    checkboxcount += 1
+                checkboxcount += 1
             } else
                 checkboxcount -= 1
 
