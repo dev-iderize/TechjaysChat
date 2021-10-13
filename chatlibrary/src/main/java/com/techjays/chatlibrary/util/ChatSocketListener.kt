@@ -24,13 +24,14 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
     }
 
     fun getConnectionParams(): String {
-        return "{\n" +
-                "\n" +
-                "    \"token\": \"${ChatLibrary.instance.chatToken}\",\n" +
-                "\n" +
-                "    \"type\": \"connect\"\n" +
-                "\n" +
-                "}"
+
+        val obj = JSONObject()
+        obj.put("token", ChatLibrary.instance.chatToken)
+        obj.put("type", "connect")
+
+        Log.e("connect", obj.toString())
+
+        return obj.toString()
     }
 
     fun sendChatParams(msg: String, to: String, type: String): String {

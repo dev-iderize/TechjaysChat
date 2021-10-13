@@ -268,8 +268,8 @@ class LibAppServices {
                         ), file
                     )
                 mParam["file\"; filename=\"" + file.name] = requestBody
-                /*mParam["file_type"] = requestBody("pdf")
-                mParam["to_user_id"] = requestBody(chatMessages.mToUserId)*/
+                mParam["file_type"] = requestBody("pdf")
+                /*mParam["to_user_id"] = requestBody(chatMessages.mToUserId)*/
 
                 val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
                 initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
