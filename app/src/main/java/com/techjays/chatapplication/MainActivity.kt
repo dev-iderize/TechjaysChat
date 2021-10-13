@@ -31,22 +31,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun initView() {
         mButton = findViewById(R.id.nav_activity)
         mButton.setOnClickListener {
             val intent = Intent(this@MainActivity, LibChatListActivity::class.java)
-            intent.putExtra("base_url", "https://sprint.myvidhire.com/api/v1/")
-            intent.putExtra("socket_url", "ws://3.19.93.161:8765")
+            intent.putExtra("base_url", "https://dev.myfayvit.com/api/v1/")
+            intent.putExtra("socket_url", "ws://3.16.6.93:8765")
             intent.putExtra(
                 "chat_token",
-                "gAAAAABhZSW51UaxgpKuYVAbvP3a_r6zl_Emug25BLG2Xc2zT0PGx6_VW2Dw_niNrmP-D1_RX6ea46HkRH7roo_C2jRU4T3BWFOmBuI8C155UAnd3ATrrd5ej9bY_R1icmfF8jt7vqvJgmj6HjnmGTuxCII98WWnI2oalzmMflwul2dz8c1pipc0G0tAoe07iNx5GWgLKBbz6eiO5KQFUUwwhK0WvjXkCL7oE3KXN0kSlSHBjOwF40UWXZCQGsCkueOUlqDLtUsl7QWEOtZ1RdjV38edff4rQ0WYYPbaezmgy2YqddrbmYuPVSrj6h3VNfzim1yVV1H2"
-            )
-            intent.putExtra("auth_token", "5a501f8a779c544c2fdf18f28028bbc5a2e64fc3")
+                "gAAAAABhUpQJRce0WvkDNeS0HMmPA5mNQrIcXHliSpCfS-SZajSb_gsL6mnGjSXyCVwCLU8-9RrwULyjER9csrMMtS3IZf4t6iKWkB1ufurDVfIreP19Zuv-CaFgLnYG5G0ktwgh8cuklLStMtS38HtQ8SToCBd7L9Nv0jItjF63E0Lf3vWBVdMHPnVQzeeV5HBfDroLJvbh94gp7xjvT0jXqHszR83_DBABGKROILp7l_POzgEMsu_DzKHw8lxvbnMmhqFLt1wrrgZpLm-R_TRCbs0ZlvLm6Xgen_YvG_QGxgjLrIPy3HI="    )
+            intent.putExtra("auth_token", "d83c7b7472b2a2a57d5408bb4cd7e5d4b76c8039")
             intent.putExtra("color", "#FF878E")
 
             startActivity(intent)
         }
-
         mButton2 = findViewById(R.id.nav_fragment)
         mButton2.setOnClickListener {
 
@@ -70,3 +69,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+/**fayvit username :Dont Follow
+ *             intent.putExtra("base_url", "https://dev.myfayvit.com/api/v1/")
+intent.putExtra("socket_url", "ws://3.16.6.93:8765")
+intent.putExtra(
+"chat_token",
+"gAAAAABhUpQJRce0WvkDNeS0HMmPA5mNQrIcXHliSpCfS-SZajSb_gsL6mnGjSXyCVwCLU8-9RrwULyjER9csrMMtS3IZf4t6iKWkB1ufurDVfIreP19Zuv-CaFgLnYG5G0ktwgh8cuklLStMtS38HtQ8SToCBd7L9Nv0jItjF63E0Lf3vWBVdMHPnVQzeeV5HBfDroLJvbh94gp7xjvT0jXqHszR83_DBABGKROILp7l_POzgEMsu_DzKHw8lxvbnMmhqFLt1wrrgZpLm-R_TRCbs0ZlvLm6Xgen_YvG_QGxgjLrIPy3HI="
+)
+intent.putExtra("auth_token", "d83c7b7472b2a2a57d5408bb4cd7e5d4b76c8039")
+ */
