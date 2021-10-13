@@ -18,6 +18,8 @@ import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.base.LibBaseActivity
+import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
+import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -213,7 +215,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     LibAppServices.API.upload_file.hashCode() -> {
                         if (it.responseStatus!!) {
                             mLibChatSocketMessages = (it as LibChatSocketMessages).mData!!
-                            listener.sendChat(mLibChatSocketMessages.mFile, mSelectedLibChatUser.mToUserId)
+                            mLibChatSocketMessages.mMessageType = CHAT_TYPE_FILE
+                            listener.sendChat(
+                                mLibChatSocketMessages.mFile,
+                                mSelectedLibChatUser.mToUserId,
+                                CHAT_TYPE_FILE
+                            )
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -274,7 +281,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     libChatEdit.error = "Enter your message"
                     libChatEdit.requestFocus()
                 } else {
-                    listener.sendChat(libChatEdit.text.toString(), mSelectedLibChatUser.mToUserId)
+                    listener.sendChat(
+                        libChatEdit.text.toString(),
+                        mSelectedLibChatUser.mToUserId,
+                        CHAT_TYPE_MESSAGE
+                    )
                 }
             }
             libDeleteButton -> {

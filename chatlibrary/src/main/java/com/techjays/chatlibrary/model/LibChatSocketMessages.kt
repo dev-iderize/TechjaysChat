@@ -12,8 +12,8 @@ open class LibChatSocketMessages : Response() {
     @SerializedName("type")
     var mType = ""
 
-    @SerializedName("chat_type")
-    var mChatType = ""
+    @SerializedName("message_type")
+    var mMessageType = ""
 
     @SerializedName("message_id")
     var mMessageId = ""

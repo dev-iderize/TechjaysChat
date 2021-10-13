@@ -27,6 +27,9 @@ class LibChatMessages : Response() {
     @SerializedName("timestamp")
     var mTimeStamp = ""
 
+    @SerializedName("message_type")
+    var mMessageType = ""
+
     @SerializedName("to_user_id")
     var mToUserId = ""
 

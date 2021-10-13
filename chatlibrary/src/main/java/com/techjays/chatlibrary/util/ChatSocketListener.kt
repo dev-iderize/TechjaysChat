@@ -33,14 +33,18 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
                 "}"
     }
 
-    fun sendChatParams(msg: String, to: String): String {
-        return "{\n" +
-                "    \"token\": \"${ChatLibrary.instance.chatToken}\",\n" +
-                "    \"type\": \"chat\",\n" +
-                "    \"chat_type\": \"private\",\n" +
-                "    \"to\": $to,\n" +
-                "    \"message\": \"$msg\"\n" +
-                "}"
+    fun sendChatParams(msg: String, to: String, type: String): String {
+        val obj = JSONObject()
+        obj.put("token", ChatLibrary.instance.chatToken)
+        obj.put("type", "chat")
+        obj.put("chat_type", "private")
+        obj.put("to", to)
+        obj.put("message_type", type)
+        obj.put("message", msg)
+
+        Log.e("sent", obj.toString())
+
+        return obj.toString()
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String) {
@@ -79,9 +83,8 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
         t.message?.let { Log.e("Error : ", it) }
     }
 
-    fun sendChat(s: String, mToUserId: String) {
-        Log.e("sent", sendChatParams(s, mToUserId))
-        ws.send(sendChatParams(s, mToUserId))
+    fun sendChat(s: String, mToUserId: String, type: String) {
+        ws.send(sendChatParams(s, mToUserId, type))
     }
 
     companion object {
