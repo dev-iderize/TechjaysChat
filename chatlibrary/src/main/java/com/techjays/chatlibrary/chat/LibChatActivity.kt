@@ -410,6 +410,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     override fun showDeleteButton() {
+        Log.e("counter",Constant.COUNTER_DELETE_CHECKBOX.toString())
         libDeleteButton.visibility =
             if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
     }

@@ -55,6 +55,7 @@ class LibChatAdapter(
         val chatList = mData[position]
         holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
         holder.mChatItem.setOnLongClickListener {
+            deleteInvisible()
             for (i in mData) {
                 i.isChecked = false
                 i.showCheckBox = !i.showCheckBox
@@ -96,6 +97,11 @@ class LibChatAdapter(
 
     override fun getItemCount(): Int {
         return mData.size
+    }
+
+    private fun deleteInvisible() {
+        Constant.COUNTER_DELETE_CHECKBOX = 0
+        mCallback?.showDeleteButton()
     }
 
     open class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
