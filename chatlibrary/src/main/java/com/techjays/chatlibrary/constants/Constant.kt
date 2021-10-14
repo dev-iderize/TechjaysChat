@@ -28,6 +28,8 @@ object Constant {
     const val CHAT_TYPE_MESSAGE = "message"
     const val CHAT_TYPE_FILE = "file"
 
+    var COUNTER_DELETE_CHECKBOX=0
+
     const val CHAT_NOTIFICATION = "CHAT"
     const val VIDEO_NOTIFICATION = "VIDEO"
     const val TWILIO_NOTIFICATION = "TWILIO"

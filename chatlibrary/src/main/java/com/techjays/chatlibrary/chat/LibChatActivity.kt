@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -18,6 +19,7 @@ import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.base.LibBaseActivity
+import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
 import com.techjays.chatlibrary.model.LibChatList
@@ -251,6 +253,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     } else {
                         //AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
+                        Constant.COUNTER_DELETE_CHECKBOX = 0
+                        showDeleteButton()
                         //mSwipe.isRefreshing = false
                     }
                 })
@@ -337,12 +341,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             }
             mBtnFile -> {
                 Utility.isOpenRecently()
-                uploadResume()
+                uploadFile()
             }
         }
     }
 
-    private fun uploadResume() {
+    private fun uploadFile() {
         if (PermissionChecker().checkAllPermission(this, mPermission))
             FilePickerBuilder.instance
                 .setMaxCount(1)
@@ -405,8 +409,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
     }
 
-    override fun showDeleteButton(count: Int) {
-        libDeleteButton.visibility = if (count > 0) View.VISIBLE else View.GONE
+    override fun showDeleteButton() {
+        libDeleteButton.visibility =
+            if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

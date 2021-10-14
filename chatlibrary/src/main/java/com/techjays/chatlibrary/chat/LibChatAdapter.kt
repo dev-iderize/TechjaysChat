@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
@@ -33,7 +34,7 @@ class LibChatAdapter(
     private val MESSAGE_TYPE_SENT = 1
     private val DOCUMENT_TYPE_SENT = 3
     private val DOCUMENT_TYPE_RECIEVED = 4
-    private var checkboxcount: Int = 0
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return if (viewType == MESSAGE_TYPE_SENT) {
@@ -66,11 +67,11 @@ class LibChatAdapter(
         holder.mCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
             if (holder.mCheckBox.isChecked) {
-                checkboxcount += 1
+                Constant.COUNTER_DELETE_CHECKBOX += 1
             } else
-                checkboxcount -= 1
+                Constant.COUNTER_DELETE_CHECKBOX -= 1
 
-            mCallback?.showDeleteButton(checkboxcount)
+            mCallback?.showDeleteButton()
         }
         holder.txtUserName.text = chatList.mMessage
         holder.mChatTime.text = DateUtil.formatDisplayDate(
@@ -115,6 +116,6 @@ class LibChatAdapter(
     }
 
     interface Callback {
-        fun showDeleteButton(count: Int)
+        fun showDeleteButton()
     }
 }
