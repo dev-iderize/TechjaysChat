@@ -38,7 +38,7 @@
 
     <ImageView
         android:id="@+id/dialog_close_button"
-        style="@style/CloseButton"
+        style="@style/CloseButtonStyle"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
