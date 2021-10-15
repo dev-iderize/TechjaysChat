@@ -21,12 +21,10 @@
         <item name="android:minHeight">35dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    <style name="CloseButton">
+    <style name="CloseButtonStyle">
     <item name="android:layout_width">30dp</item>
     <item name="android:layout_height">30dp</item>
-    <item name="android:background">@drawable/bg_shadow_white_circle</item>
     <item name="android:padding">8dp</item>
-    <item name="android:src">@drawable/ic_close</item>
     </style>
 
     <style name="DialogMessage">
