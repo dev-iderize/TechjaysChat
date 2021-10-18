@@ -6,12 +6,13 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -263,6 +264,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
 
     }
+
     fun sendClickable(click: Boolean) {
         libSendButton.isClickable = click
     }
@@ -290,6 +292,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 onBackPressed()
             }
             libSendButton -> {
+                if (Utility.isOpenRecently())
+                    return
                 if (libChatEdit.text.isEmpty()) {
                     libChatEdit.error = "Enter your message"
                     libChatEdit.requestFocus()
