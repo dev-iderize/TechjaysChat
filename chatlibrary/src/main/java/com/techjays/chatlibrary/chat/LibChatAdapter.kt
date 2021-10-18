@@ -34,7 +34,7 @@ class LibChatAdapter(
     private val MESSAGE_TYPE_SENT = 1
     private val DOCUMENT_TYPE_SENT = 3
     private val DOCUMENT_TYPE_RECIEVED = 4
-
+    private var isVisibleCheckbox = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return if (viewType == MESSAGE_TYPE_SENT) {
@@ -53,14 +53,11 @@ class LibChatAdapter(
         @SuppressLint("RecyclerView") position: Int
     ) {
         val chatList = mData[position]
-        holder.mCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
+        holder.mCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
         holder.mChatItem.setOnLongClickListener {
             deleteInvisible()
-            for (i in mData) {
-                i.isChecked = false
-                i.showCheckBox = !i.showCheckBox
-                notifyDataSetChanged()
-            }
+            isVisibleCheckbox = !isVisibleCheckbox
+            notifyDataSetChanged()
             true
         }
         holder.mCheckBox.isChecked = chatList.isChecked
