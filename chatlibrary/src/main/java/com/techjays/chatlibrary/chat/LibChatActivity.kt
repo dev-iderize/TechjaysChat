@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -253,14 +255,21 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     } else {
                         //AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
-                        Constant.COUNTER_DELETE_CHECKBOX = 0
-                        showDeleteButton()
+                        deleteInvisible()
                         //mSwipe.isRefreshing = false
                     }
                 })
             }
         }
 
+    }
+    fun sendClickable(click: Boolean) {
+        libSendButton.isClickable = click
+    }
+
+    private fun deleteInvisible() {
+        Constant.COUNTER_DELETE_CHECKBOX = 0
+        showDeleteButton()
     }
 
     override fun clickListener() {
@@ -291,6 +300,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         CHAT_TYPE_MESSAGE
                     )
                 }
+
+                val iterator = mData.iterator()
+                while (iterator.hasNext()) {
+                    val item = iterator.next()
+                    if (item.showCheckBox) {
+                        item.showCheckBox = !item.showCheckBox
+                    }
+                }
+                deleteInvisible()
             }
             libDeleteButton -> {
                 deleteforAll = true
@@ -410,7 +428,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     override fun showDeleteButton() {
-        Log.e("counter",Constant.COUNTER_DELETE_CHECKBOX.toString())
+        Log.e("counter", Constant.COUNTER_DELETE_CHECKBOX.toString())
         libDeleteButton.visibility =
             if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
     }
