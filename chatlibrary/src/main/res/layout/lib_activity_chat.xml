@@ -96,8 +96,8 @@
 
             <ImageView
                 android:id="@+id/btnSendFile"
-                android:layout_width="20dp"
-                android:layout_height="30dp"
+                android:layout_width="16dp"
+                android:layout_height="24dp"
                 android:background="@drawable/ic_file"
                 android:padding="10dp"
                 android:rotation="360"
