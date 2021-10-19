@@ -9,15 +9,15 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.core.app.ActivityCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.hbisoft.pickit.PickiT
+import com.hbisoft.pickit.PickiTCallbacks
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.api.LibAppServices
@@ -32,13 +32,16 @@ import com.techjays.chatlibrary.model.common.Option
 import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import de.hdodenhof.circleimageview.CircleImageView
-import droidninja.filepicker.FilePickerBuilder
-import droidninja.filepicker.FilePickerConst
-import droidninja.filepicker.utils.ContentUriUtils
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
+import android.os.Build
+import android.os.Build.VERSION
+
+import android.os.Build.VERSION.SDK_INT
+import android.provider.Settings
+import com.techjays.chatlibrary.util.PermissionChecker
 
 
 /**
@@ -47,10 +50,11 @@ import java.util.*
 
 
 class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack,
-    LibChatAdapter.Callback {
+    LibChatAdapter.Callback, PickiTCallbacks {
 
     private lateinit var mRecyclerView: RecyclerView
     lateinit var mSelectedLibChatUser: LibChatList
+    lateinit var path: Uri
     var mOffset = 0
     var mLimit = 6
     var isNextLink = false
@@ -74,7 +78,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     var WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
     var READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
     private lateinit var mLibChatSocketMessages: LibChatSocketMessages
-
+    private lateinit var pickiT: PickiT
     var DELETEFORME: Int = 0
     var DELETEFORALL: Int = 1
     var deleteforAll = false
@@ -119,6 +123,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun init() {
         mLibChatViewModel = LibChatViewModel(this)
+        pickiT = PickiT(this, this, this)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         // mSwipe = findViewById(R.id.chat_swipe_refresh)
@@ -135,6 +140,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         initObserver()
         initFileObserver()
         initView()
+        PermissionChecker().askAllPermissions(this,mPermission)
         getChatMessage(true)
     }
 
@@ -362,19 +368,51 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             }
             mBtnFile -> {
-                Utility.isOpenRecently()
-                uploadFile()
+
+                if (PermissionChecker().checkAllPermission(this, mPermission)) {
+
+                    Utility.isOpenRecently()
+                   // uploadFile()
+                    selectFile()
+                }
             }
         }
     }
 
     private fun uploadFile() {
-        if (PermissionChecker().checkAllPermission(this, mPermission))
-            FilePickerBuilder.instance
-                .setMaxCount(1)
-                .setActivityTheme(R.style.PickerTheme).enableDocSupport(false)
-                .addFileSupport("Select your pdf", arrayOf("pdf", "PDF"))
-                .pickFile(this)
+
+            if (SDK_INT >= Build.VERSION_CODES.R) {
+                try {
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    intent.addCategory("android.intent.category.DEFAULT")
+                    intent.data =
+                        Uri.parse(String.format("package:%s", applicationContext.packageName))
+                    startActivityForResult(intent, 2296)
+                } catch (e: java.lang.Exception) {
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                    startActivityForResult(intent, 2296)
+                }
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    mPermission,
+                    Constant.REQUEST_CODE_PERMISSION
+                )
+            }
+        }
+
+
+
+
+    private fun selectFile() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "application/pdf"
+        startActivityForResult(
+            Intent.createChooser(intent, "Choose a file"),
+            234
+        )
     }
 
     private fun deleteChatMessages(deleteforme: Boolean) {
@@ -439,16 +477,16 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val uri =
+            Log.e("Pathtttttttttttttttt", data?.data.toString())
+        pickiT?.getPath(data?.data, 31)
 
-        if (requestCode == FilePickerConst.REQUEST_CODE_DOC) {
-            if (resultCode == RESULT_OK && data != null) {
-                val uri =
-                    data.getParcelableArrayListExtra<Uri>(FilePickerConst.KEY_SELECTED_DOCS)!![0]
-                mResumePath = ContentUriUtils.getFilePath(this, uri)!!
-                initFileUpload()
-            }
-        }
+        val string = String
+
+
+        //initFileUpload()
     }
+
 
     private fun initFileUpload() {
         if (checkInternet()) {
@@ -457,6 +495,29 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             chatmessages.mToUserId = mSelectedLibChatUser.mToUserId
             chatmessages.mFile = mResumePath
             mLibChatViewModel.uploadFile(chatmessages)
+        }
+    }
+
+    override fun PickiTonUriReturned() {
+    }
+
+    override fun PickiTonStartListener() {
+    }
+
+    override fun PickiTonProgressUpdate(progress: Int) {
+    }
+
+    override fun PickiTonCompleteListener(
+        path: String?,
+        wasDriveFile: Boolean,
+        wasUnknownProvider: Boolean,
+        wasSuccessful: Boolean,
+        Reason: String?
+    ) {
+        Toast.makeText(this, path, Toast.LENGTH_SHORT).show()
+        if (path != null) {
+            mResumePath = path
+            initFileUpload()
         }
     }
 }
