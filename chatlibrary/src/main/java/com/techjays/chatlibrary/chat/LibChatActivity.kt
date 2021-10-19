@@ -140,7 +140,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         initObserver()
         initFileObserver()
         initView()
-        PermissionChecker().askAllPermissions(this,mPermission)
+        PermissionChecker().askAllPermissions(this, mPermission)
         getChatMessage(true)
     }
 
@@ -372,7 +372,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 if (PermissionChecker().checkAllPermission(this, mPermission)) {
 
                     Utility.isOpenRecently()
-                   // uploadFile()
+                    // uploadFile()
                     selectFile()
                 }
             }
@@ -381,28 +381,26 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     private fun uploadFile() {
 
-            if (SDK_INT >= Build.VERSION_CODES.R) {
-                try {
-                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    intent.addCategory("android.intent.category.DEFAULT")
-                    intent.data =
-                        Uri.parse(String.format("package:%s", applicationContext.packageName))
-                    startActivityForResult(intent, 2296)
-                } catch (e: java.lang.Exception) {
-                    val intent = Intent()
-                    intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-                    startActivityForResult(intent, 2296)
-                }
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    mPermission,
-                    Constant.REQUEST_CODE_PERMISSION
-                )
+        if (SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.addCategory("android.intent.category.DEFAULT")
+                intent.data =
+                    Uri.parse(String.format("package:%s", applicationContext.packageName))
+                startActivityForResult(intent, 2296)
+            } catch (e: java.lang.Exception) {
+                val intent = Intent()
+                intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                startActivityForResult(intent, 2296)
             }
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                mPermission,
+                Constant.REQUEST_CODE_PERMISSION
+            )
         }
-
-
+    }
 
 
     private fun selectFile() {
@@ -477,8 +475,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val uri =
-            Log.e("Pathtttttttttttttttt", data?.data.toString())
         pickiT?.getPath(data?.data, 31)
 
         val string = String
@@ -514,7 +510,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         wasSuccessful: Boolean,
         Reason: String?
     ) {
-        Toast.makeText(this, path, Toast.LENGTH_SHORT).show()
         if (path != null) {
             mResumePath = path
             initFileUpload()
