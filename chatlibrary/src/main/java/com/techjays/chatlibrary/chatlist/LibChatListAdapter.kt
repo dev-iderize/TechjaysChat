@@ -49,12 +49,14 @@ class LibChatListAdapter(
             holder.mIndicator.visibility = View.VISIBLE
         else
             holder.mIndicator.visibility = View.GONE
-
-        Utility.loadUserImage(
-            chatList.mProfilePic,
-            holder.mUserImage,
-            mContext
-        )
+        if (chatList.mProfilePic != null)
+            Utility.loadUserImage(
+                chatList.mProfilePic,
+                holder.mUserImage,
+                mContext
+            )
+        else
+            Utility.loadPlaceholder(R.drawable.lib_ic_user_placeholder, holder.mUserImage)
         holder.mCardView.setOnClickListener {
             mCallback?.initChatMessage(chatList)
         }
