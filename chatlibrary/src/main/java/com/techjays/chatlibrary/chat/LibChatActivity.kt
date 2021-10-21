@@ -88,7 +88,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private var mPermission =
         arrayOf(
             READ_EXTERNAL_STORAGE,
-            WRITE_EXTERNAL_STORAGE,
+            WRITE_EXTERNAL_STORAGE
         )
 
 
@@ -477,10 +477,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         super.onActivityResult(requestCode, resultCode, data)
         pickiT?.getPath(data?.data, 31)
 
-        val string = String
-
-
-        //initFileUpload()
     }
 
 
