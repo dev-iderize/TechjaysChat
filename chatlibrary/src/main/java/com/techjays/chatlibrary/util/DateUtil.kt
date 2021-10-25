@@ -272,6 +272,21 @@ object DateUtil {
         return ""
     }
 
+    fun convertToRelativeTime(utcDate: String): Long {
+        try {
+            if (utcDate.isEmpty())
+                return 0
+            val utcFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            utcFormatter.timeZone = TimeZone.getTimeZone("UTC")
+            formatter.timeZone = TimeZone.getDefault()
+            return getMilliSeconds(formatter.format(utcFormatter.parse(utcDate)!!))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return 0
+    }
+
     private val myFormatDate = SimpleDateFormat("dd MMM yyyy", Locale.US)
     fun findDifferenceofTwoDays(from_date: String, to_date: String): Long? {
         try {

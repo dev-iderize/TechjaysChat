@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/chat_item"
     android:layout_width="match_parent"
-    android:background="@color/pure_white"
     android:layout_height="wrap_content"
+    android:background="@color/pure_white"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        app:cardElevation="0dp"
-        android:background="@color/pure_white"
+        android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
-        android:layout_height="wrap_content">
+        android:background="@color/pure_white"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,10 +62,19 @@
                         style="@style/Title"
                         android:layout_width="0dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:textStyle="bold" />
+
+                    <com.github.curioustechizen.ago.RelativeTimeTextView
+                        android:id="@+id/chat_time"
+                        style="@style/SubTitle"
+                        android:layout_width="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="2" />
 
                     <RelativeLayout
                         android:id="@+id/lib_new_indicator"

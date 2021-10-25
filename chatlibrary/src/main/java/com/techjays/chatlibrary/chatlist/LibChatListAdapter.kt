@@ -10,9 +10,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.github.curioustechizen.ago.RelativeTimeTextView
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.model.LibChatList
+import com.techjays.chatlibrary.util.DateUtil
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
@@ -76,6 +78,7 @@ class LibChatListAdapter(
         holder.mChatCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
         }
+        holder.mTime.setReferenceTime(DateUtil.convertToRelativeTime(chatList.mTimeStamp))
     }
 
 
@@ -90,6 +93,8 @@ class LibChatListAdapter(
         var mChatMessage: TextView = view.findViewById(R.id.chat_msg)
         var mChatCheckBox = view.findViewById<CheckBox>(R.id.check_box_)
         var mIndicator = view.findViewById<RelativeLayout>(R.id.lib_new_indicator)
+        var mTime = view.findViewById<RelativeTimeTextView>(R.id.chat_time)
+
     }
 
     interface Callback {
