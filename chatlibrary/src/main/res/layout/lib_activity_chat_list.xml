@@ -109,7 +109,7 @@
         app:borderWidth="0dp"
         app:rippleColor="@color/app_blue"
         android:backgroundTint="@color/app_white"
-        android:elevation="5dp"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_message" />
 </RelativeLayout>
