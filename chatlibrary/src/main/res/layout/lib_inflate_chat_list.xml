@@ -72,8 +72,9 @@
                         style="@style/SubTitle"
                         android:layout_width="0dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:ellipsize="end"
+                        android:textStyle="bold"
                         android:maxLines="2" />
 
                     <RelativeLayout

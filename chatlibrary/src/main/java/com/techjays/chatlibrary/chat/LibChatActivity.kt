@@ -5,11 +5,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
@@ -36,12 +42,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
-import android.os.Build
-import android.os.Build.VERSION
-
-import android.os.Build.VERSION.SDK_INT
-import android.provider.Settings
-import com.techjays.chatlibrary.util.PermissionChecker
 
 
 /**

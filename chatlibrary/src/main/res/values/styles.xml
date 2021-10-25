@@ -68,9 +68,12 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-
-
+    <style name="SearchText">
+        <item name="android:textColor">@color/app_black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
     <style name="Title">
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textColor">@color/title_black</item>
@@ -78,4 +81,5 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-</resources>
+
+    </resources>

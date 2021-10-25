@@ -7,15 +7,18 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.api.LibAppServices.API.chat_list
 import com.techjays.chatlibrary.api.LibAppServices.API.delete_chats
 import com.techjays.chatlibrary.base.LibBaseActivity
+import com.techjays.chatlibrary.base.LibFragmentManager
 import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -37,6 +40,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     var mLimit = 6
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
+    private lateinit var mFragmentManager: LibFragmentManager
     private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var mLibChatViewModel: LibChatViewModel
     var mData = ArrayList<LibChatList>()
@@ -44,11 +48,13 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     private var ws: WebSocket? = null
     private lateinit var listener: ChatSocketListener
     private lateinit var mDelete: ImageView
+    private lateinit var mFabButton: FloatingActionButton
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat_list)
+        Utility.statusBarColor(window, this, R.color.pure_white)
 
         try {
             val data = intent
@@ -100,6 +106,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         mRecyclerView = findViewById(R.id.recycler_chat_list)
         mSwipe = findViewById(R.id.chat_swipe)
         mDelete = findViewById(R.id.delete_button)
+        mFabButton = findViewById(R.id.fab_button)
         initRecycler()
         getChatList(true)
         initObserver()
@@ -202,6 +209,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             mDelete.visibility = View.GONE
         }
         mDelete.setOnClickListener(this)
+        mFabButton.setOnClickListener(this)
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
@@ -223,16 +231,25 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun onClick(view: View) {
-        if (view == mDelete) {
-            val id = ArrayList<String>()
-            for (i in mData) {
-                if (i.isChecked)
-                    id.add(i.mToUserId)
+        when (view) {
+            mDelete -> {
+                val id = ArrayList<String>()
+                for (i in mData) {
+                    if (i.isChecked)
+                        id.add(i.mToUserId)
+                }
+                if (id.isNotEmpty())
+                    mLibChatViewModel.deleteChats(TextUtils.join(",", id))
+                else AppDialogs.showSnackbar(mDelete, "Please select something!")
             }
-            if (id.isNotEmpty())
-                mLibChatViewModel.deleteChats(TextUtils.join(",", id))
-            else AppDialogs.showSnackbar(mDelete, "Please select something!")
+            mFabButton -> {
+                openNewMessage()
+            }
         }
+    }
+
+    private fun openNewMessage() {
+
     }
 
     override fun onMessageReceive(libChatMessage: LibChatSocketMessages) {
