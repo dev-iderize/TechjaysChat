@@ -216,9 +216,12 @@ class Followings : DialogFragment(),
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        if (getETValue(mSearch).isNotEmpty())
+        if (getETValue(mSearch).isNotEmpty()) {
             mSearchClear.visibility = View.VISIBLE
-        else mSearchClear.visibility = View.GONE
+        } else {
+            mSearchClear.visibility = View.GONE
+            AppDialogs.hideSoftKeyboard(requireActivity(), mSearch)
+        }
         refresh()
     }
 
@@ -238,21 +241,21 @@ class Followings : DialogFragment(),
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun selectUser(user: LibChatList) {
         if (mData.size > 0) {
             try {
                 mData[mData.indexOf(user)].newMessage = false
-                mFollowAdapter
-                    .notifyDataSetChanged();
+                mFollowAdapter.notifyDataSetChanged();
             } catch (e: Exception) {
                 throw e
             }
         }
-        val b = Bundle()
-        val send = Intent(requireActivity(), LibChatActivity::class.java)
-        b.putSerializable("chat_user", user)
-        send.putExtras(b)
-        startActivity(send)
+        val bundle = Bundle()
+        val i = Intent(requireActivity(), LibChatActivity::class.java)
+        bundle.putSerializable("chat_user", user)
+        i.putExtras(bundle)
+        startActivity(i)
     }
 
 

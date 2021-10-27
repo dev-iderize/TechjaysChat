@@ -204,7 +204,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
-            mLibChatViewModel.getChatList(mOffset, "", mLimit)
+            mLibChatViewModel.getChatList(mOffset, getTXTValue(mSearchBox), mLimit)
         }
     }
 
@@ -327,7 +327,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 this, mSearchBox
             )
             if (checkInternet())
-                mLibChatViewModel.getChatList(mOffset, "", mLimit)
+                mLibChatViewModel.getChatList(mOffset, getTXTValue(mSearchBox), mLimit)
         }
     }
 
