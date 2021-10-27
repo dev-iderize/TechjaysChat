@@ -37,6 +37,9 @@ class LibChatList: Response() {
     @SerializedName("last_name")
     var mLastName = ""
 
+    @SerializedName("username")
+    var mUserName = ""
+
     @SerializedName("company_name")
     var mCompanyName = ""
 

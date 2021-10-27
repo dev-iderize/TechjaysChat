@@ -11,13 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.model.Follow
+import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.ArrayList
 
 class FollowAdapter(
     var mContext: Context,
-    var mData: ArrayList<Follow>,
+    var mData: ArrayList<LibChatList>,
     private var isSearch: Boolean,
     var mType: Int,
     var mCallback: Callback
@@ -43,12 +44,12 @@ class FollowAdapter(
     ) {
 
         val user = mData[position]
-        holder.mUserFullName.text = String.format("%s %s", user.mUserFirstName, user.mUserLastName)
+        holder.mUserFullName.text = String.format("%s %s", user.mFirstName, user.mLastName)
         holder.mUserName.text = String.format("@%s", user.mUserName)
-        Utility.loadUserImage(user.mThumbPicture, holder.mUserImage,mContext)
+        Utility.loadUserImage(user.mProfilePic, holder.mUserImage,mContext)
 
         holder.mMainLayout.setOnClickListener {
-            mCallback.selectUser()
+            mCallback.selectUser(user)
         }
     }
 
@@ -65,6 +66,6 @@ class FollowAdapter(
     }
 
     interface Callback {
-     fun selectUser()
+     fun selectUser(user:LibChatList)
     }
 }

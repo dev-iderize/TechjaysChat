@@ -15,7 +15,7 @@ class Follow : Response() {
     @SerializedName("data")
     var mData = ArrayList<Follow>()
 
-    @SerializedName("user_id")
+    @SerializedName("to_user_id")
     var mUserId = ""
 
     @SerializedName("first_name")

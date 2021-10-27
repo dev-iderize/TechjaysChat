@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
+import com.techjays.chatlibrary.fragments.follow.Followings
 import com.techjays.chatlibrary.model.Profile
 
 
@@ -21,12 +22,14 @@ class ProfileViewModel(private val mContext: Context) :
      * Followers or Followings users
      */
     fun followsList(
-        userId: String,
         searchText: String,
+        is_following: Boolean,
         offset: Int,
         limit: Int,
     ) {
-        LibAppServices.getFollows(mContext, userId, searchText, offset, limit, this)
+        LibAppServices.getFollows(
+            mContext, searchText, is_following, offset, limit, this
+        )
     }
 
     fun getFollowingsObserver(): MutableLiveData<Response> {
@@ -36,7 +39,7 @@ class ProfileViewModel(private val mContext: Context) :
     override fun onResponse(r: Response?) {
         try {
             if (r != null) {
-               if (
+                if (
                     r.requestType == LibAppServices.API.following_list.hashCode()
                 )
                     follows.value = r!!

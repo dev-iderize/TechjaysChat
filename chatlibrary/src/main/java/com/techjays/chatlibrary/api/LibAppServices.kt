@@ -44,7 +44,7 @@ class LibAppServices {
         const val delete_chats = "chat/delete-chat-list/"
         const val delete_messages = "chat/delete-chat-messages/"
         const val upload_file = "chat/file-upload/"
-        const val following_list = "following-list/"
+        const val following_list = "/chat/get-users-list/"
         const val searchlist = "chat/search-in-chat-list/"
     }
 
@@ -222,8 +222,8 @@ class LibAppServices {
          * */
         fun getFollows(
             c: Context,
-            userId: String,
             searchText: String,
+            isfollowing: Boolean,
             offset: Int,
             limit: Int,
             listener: ResponseListener
@@ -238,11 +238,9 @@ class LibAppServices {
                 mParam["limit"] = limit.toString()
                 if (searchText.isNotEmpty())
                     mParam["search"] = searchText
-                if (userId.isNotEmpty())
-                    mParam["user_id"] = userId
-
+                mParam["is_following"] = isfollowing.toString()
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
-                initService(c, call, Follow::class.java, mHashCode, listener)
+                initService(c, call, LibChatList::class.java, mHashCode, listener)
                 Log.d("mParam --> ", mParam.toString())
             } catch (e: Exception) {
                 e.printStackTrace()

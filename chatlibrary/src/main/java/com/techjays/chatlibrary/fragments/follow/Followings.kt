@@ -2,6 +2,7 @@ package com.techjays.chatlibrary.fragments.follow
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -29,6 +30,10 @@ import com.techjays.chatlibrary.util.Utility.getETValue
 import com.techjays.chatlibrary.viewmodel.ProfileViewModel
 import java.util.*
 import android.util.DisplayMetrics
+import android.widget.Toast
+import com.google.gson.Gson
+import com.techjays.chatlibrary.chat.LibChatActivity
+import com.techjays.chatlibrary.model.LibChatList
 
 
 class Followings : DialogFragment(),
@@ -45,12 +50,12 @@ class Followings : DialogFragment(),
     private lateinit var mSearchClear: ImageView
     private lateinit var mSearchCancel: TextView
     private lateinit var mBack: TextView
-
+    var mData = ArrayList<LibChatList>()
     private lateinit var mViewModel: ProfileViewModel
     var mFollowingOffset = 0
     var mFollowingLimit = 10
     var isNextLink = false
-    var mFollowings = ArrayList<Follow>()
+    var mFollowings = ArrayList<LibChatList>()
     private lateinit var mListener: EndlessRecyclerViewScrollListener
 
     companion object {
@@ -100,8 +105,7 @@ class Followings : DialogFragment(),
     private fun getFollowList() {
         if (checkInternet()) {
             mViewModel.followsList(
-                mUserId,
-                getETValue(mSearch),
+                getETValue(mSearch), true,
                 mFollowingOffset,
                 mFollowingLimit
             )
@@ -118,7 +122,7 @@ class Followings : DialogFragment(),
         if (!mViewModel.getFollowingsObserver().hasActiveObservers()) {
             mViewModel.getFollowingsObserver().observe(requireActivity(), {
                 if (it.requestType == LibAppServices.API.following_list.hashCode()) {
-                    isNextLink = (it as Follow).mNextLink
+                    isNextLink = (it as LibChatList).mNextLink
                     if (mFollowingOffset == 0)
                         mFollowings.clear()
                     mFollowings.addAll(it.mData)
@@ -234,7 +238,22 @@ class Followings : DialogFragment(),
         }
     }
 
-    override fun selectUser() {
-
+    override fun selectUser(user: LibChatList) {
+        if (mData.size > 0) {
+            try {
+                mData[mData.indexOf(user)].newMessage = false
+                mFollowAdapter
+                    .notifyDataSetChanged();
+            } catch (e: Exception) {
+                throw e
+            }
+        }
+        val b = Bundle()
+        val send = Intent(requireActivity(), LibChatActivity::class.java)
+        b.putSerializable("chat_user", user)
+        send.putExtras(b)
+        startActivity(send)
     }
+
+
 }
