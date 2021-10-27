@@ -7,44 +7,55 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
 
-    android:paddingVertical="10dp"
-    android:paddingHorizontal="10dp">
-    <TextView
-        android:id="@+id/back_arrow"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_back_arrow"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="New Message"
-        style="@style/TitleHeading"/>
-</LinearLayout>
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp">
+
+        <TextView
+            android:id="@+id/back_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_back_arrow" />
+
+        <TextView
+            style="@style/TitleHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="New Message" />
+        <TextView
+            style="@style/TitleHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:text="To"
         android:textColor="@color/app_black"
-        android:textStyle="bold"
-        android:text="To"/>
+        android:textStyle="bold" />
 
     <include layout="@layout/layout_search_view" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:textSize="14sp"
-        android:textColor="@color/app_black"
         android:layout_marginBottom="20dp"
-        android:textStyle="bold"
-        android:text="@string/Suggested"/>
+        android:text="@string/Suggested"
+        android:textColor="@color/app_black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
