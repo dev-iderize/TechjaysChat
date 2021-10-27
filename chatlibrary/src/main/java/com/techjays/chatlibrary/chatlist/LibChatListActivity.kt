@@ -24,6 +24,7 @@ import com.techjays.chatlibrary.api.LibAppServices.API.searchlist
 import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.base.LibFragmentManager
 import com.techjays.chatlibrary.chat.LibChatActivity
+import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.fragments.follow.Followings
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -255,17 +256,16 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 else AppDialogs.showSnackbar(mDelete, "Please select something!")
             }
             mNewMessageBtn -> {
-                openChat(this, this, "775")
+                openChat(this, this)
             }
         }
     }
 
     fun openChat(
         activity: FragmentActivity,
-        callback: Followings.Callback,
-        mUserId: String
+        callback: Followings.Callback
     ) {
-        Followings.newInstance(mUserId, callback).show(
+        Followings.newInstance(callback).show(
             activity.supportFragmentManager.beginTransaction(),
             Followings.TAG
         )

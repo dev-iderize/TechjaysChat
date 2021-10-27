@@ -63,11 +63,9 @@ class Followings : DialogFragment(),
 
         private lateinit var mSearch: EditText
         private lateinit var mCallback: Callback
-        var mUserId = ""
 
 
-        fun newInstance(userId: String, callback: Callback): Followings {
-            mUserId = userId
+        fun newInstance(callback: Callback): Followings {
             mCallback = callback
 
             return Followings()
@@ -136,7 +134,7 @@ class Followings : DialogFragment(),
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(requireActivity())
         mFollowRecycler.layoutManager = layoutManager
-        mFollowAdapter = FollowAdapter(requireActivity(), mFollowings, false, 1, this)
+        mFollowAdapter = FollowAdapter(requireActivity(), mFollowings, this)
         mFollowRecycler.adapter = mFollowAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager, 10) {

@@ -19,8 +19,6 @@ import java.util.ArrayList
 class FollowAdapter(
     var mContext: Context,
     var mData: ArrayList<LibChatList>,
-    private var isSearch: Boolean,
-    var mType: Int,
     var mCallback: Callback
 ) : RecyclerView.Adapter<FollowAdapter.ItemViewHolder>() {
 
@@ -61,7 +59,6 @@ class FollowAdapter(
         var mUserImage: CircleImageView = view.findViewById(R.id.user_image)
         var mUserFullName: TextView = view.findViewById(R.id.user_full_name)
         var mUserName: TextView = view.findViewById(R.id.user_name)
-        var mUserFollow: ImageView = view.findViewById(R.id.user_follow)
         var mMainLayout: LinearLayout = view.findViewById(R.id.main_layout)
     }
 
