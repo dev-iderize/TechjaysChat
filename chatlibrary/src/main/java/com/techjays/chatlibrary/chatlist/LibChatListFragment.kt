@@ -170,7 +170,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(requireContext())
-            mLibChatViewModel.getChatList(mOffset, mLimit)
+            mLibChatViewModel.getChatList(mOffset, "",mLimit)
         }
     }
 

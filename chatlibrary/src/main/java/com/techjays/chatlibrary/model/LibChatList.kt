@@ -34,6 +34,9 @@ class LibChatList: Response() {
     @SerializedName("first_name")
     var mFirstName = ""
 
+    @SerializedName("last_name")
+    var mLastName = ""
+
     @SerializedName("company_name")
     var mCompanyName = ""
 
@@ -47,4 +50,5 @@ class LibChatList: Response() {
     var showCheckBox = false
 
     var newMessage:Boolean = false
+    var userid=""
 }

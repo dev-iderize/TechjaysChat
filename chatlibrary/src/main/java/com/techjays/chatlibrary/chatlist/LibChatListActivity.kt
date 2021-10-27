@@ -3,23 +3,28 @@ package com.techjays.chatlibrary.chatlist
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.api.LibAppServices.API.chat_list
 import com.techjays.chatlibrary.api.LibAppServices.API.delete_chats
+import com.techjays.chatlibrary.api.LibAppServices.API.searchlist
 import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.base.LibFragmentManager
 import com.techjays.chatlibrary.chat.LibChatActivity
+import com.techjays.chatlibrary.fragments.follow.Followings
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
@@ -33,11 +38,11 @@ import okhttp3.Request
 import okhttp3.WebSocket
 
 class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
-    View.OnClickListener, ChatSocketListener.CallBack {
+    View.OnClickListener, ChatSocketListener.CallBack, Followings.Callback, TextWatcher {
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
-    var mLimit = 6
+    var mLimit = 10
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
     private lateinit var mFragmentManager: LibFragmentManager
@@ -48,7 +53,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     private var ws: WebSocket? = null
     private lateinit var listener: ChatSocketListener
     private lateinit var mDelete: ImageView
-    private lateinit var mFabButton: FloatingActionButton
+    private lateinit var mSearchBox: EditText
+    private lateinit var mNewMessageBtn: TextView
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,14 +78,6 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                         data.getStringExtra("chat_user_data").toString(),
                         LibUser::class.java
                     )
-                when (ChatLibrary.instance.mColor) {
-                    "#FF878E" -> {
-                        if (!Utility.isUsingNightModeResources(this))
-                            Utility.statusBarColor(window, this, R.color.status_pink)
-                        else
-                            Utility.statusBarColor(window, this, R.color.dark_grey)
-                    }
-                }
                 val chatData = LibChatList()
                 chatData.mProfilePic = chatUserData.mProfilePic
                 chatData.mCompanyName = chatUserData.mUserName
@@ -102,11 +100,13 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun init() {
+        mFragmentManager = LibFragmentManager(this)
         mLibChatViewModel = LibChatViewModel(this)
         mRecyclerView = findViewById(R.id.recycler_chat_list)
         mSwipe = findViewById(R.id.chat_swipe)
         mDelete = findViewById(R.id.delete_button)
-        mFabButton = findViewById(R.id.fab_button)
+        mSearchBox = findViewById(R.id.layout_search_text)
+        mNewMessageBtn = findViewById(R.id.new_message)
         initRecycler()
         getChatList(true)
         initObserver()
@@ -132,36 +132,42 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         ws = null;
     }
 
+    private fun getUserList() {
+        if (checkInternet()) {
+            mLibChatViewModel.getChatList(
+                mOffset,
+                Utility.getETValue(mSearchBox), mLimit
+
+            )
+        }
+    }
+
 
     private fun initObserver() {
         if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
             mLibChatViewModel.getChatObserver().observe(this, {
                 AppDialogs.hideProgressDialog()
                 mSwipe.isRefreshing = false
-                when (it?.requestType) {
-                    chat_list.hashCode() -> {
-                        if (it.responseStatus!!) {
-                            isNextLink = (it as LibChatList).mNextLink
-                            if (mOffset == 0)
-                                mData.clear()
-                            mData.addAll(it.mData)
-                            mListAdapterLib.notifyDataSetChanged()
-                        } else
-                            AppDialogs.customOkAction(this, it.responseMessage)
-                    }
-
-                    delete_chats.hashCode() -> {
-                        if (it.responseStatus!!) {
-                            val iterator = mData.iterator()
-                            while (iterator.hasNext()) {
-                                val item = iterator.next()
-                                if (item.isChecked) {
-                                    iterator.remove()
-                                }
+                if (it?.requestType == chat_list.hashCode() || it?.requestType == searchlist.hashCode()) {
+                    if (it.responseStatus!!) {
+                        isNextLink = (it as LibChatList).mNextLink
+                        if (mOffset == 0)
+                            mData.clear()
+                        mData.addAll(it.mData)
+                        mListAdapterLib.notifyDataSetChanged()
+                    } else
+                        AppDialogs.customOkAction(this, it.responseMessage)
+                } else if (it?.requestType == delete_chats.hashCode()) {
+                    if (it.responseStatus!!) {
+                        val iterator = mData.iterator()
+                        while (iterator.hasNext()) {
+                            val item = iterator.next()
+                            if (item.isChecked) {
+                                iterator.remove()
                             }
-                            mListAdapterLib.notifyDataSetChanged()
-                        } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
-                    }
+                        }
+                        mListAdapterLib.notifyDataSetChanged()
+                    } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                 }
             })
         }
@@ -192,11 +198,13 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     private fun getChatList(show: Boolean) {
+        mSearchBox.setText("")
+        AppDialogs.hideSoftKeyboard(this, mSearchBox)
         mSwipe.isRefreshing = !checkInternet()
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
-            mLibChatViewModel.getChatList(mOffset, mLimit)
+            mLibChatViewModel.getChatList(mOffset, "", mLimit)
         }
     }
 
@@ -208,10 +216,14 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             getChatList(false)
             mDelete.visibility = View.GONE
         }
+
         mDelete.setOnClickListener(this)
-        mFabButton.setOnClickListener(this)
+        mNewMessageBtn.setOnClickListener(this)
+        mSearchBox.addTextChangedListener(this)
+
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initChatMessage(selectedLibChat: LibChatList) {
         if (mData.size > 0) {
             try {
@@ -242,14 +254,21 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                     mLibChatViewModel.deleteChats(TextUtils.join(",", id))
                 else AppDialogs.showSnackbar(mDelete, "Please select something!")
             }
-            mFabButton -> {
-                openNewMessage()
+            mNewMessageBtn -> {
+                openChat(this, this, "775")
             }
         }
     }
 
-    private fun openNewMessage() {
-
+    fun openChat(
+        activity: FragmentActivity,
+        callback: Followings.Callback,
+        mUserId: String
+    ) {
+        Followings.newInstance(mUserId, callback).show(
+            activity.supportFragmentManager.beginTransaction(),
+            Followings.TAG
+        )
     }
 
     override fun onMessageReceive(libChatMessage: LibChatSocketMessages) {
@@ -258,8 +277,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             val isMySelf = libChatMessage.mData?.mSender == null
             if (!isMySelf) {
                 for (item in mData) {
-                    if (libChatMessage.mData?.mSender!!.mUserId.toString()
-                            .equals(item.mToUserId.toString())
+                    if (libChatMessage.mData?.mSender!!.mUserId.toString() == item.mToUserId
                     ) {
                         isAlreadyInList = true
                         Log.e("te", mData.indexOf(item).toString());
@@ -277,7 +295,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 }
 
                 if (!isAlreadyInList) {
-                    var newChat: LibChatList = LibChatList()
+                    var newChat = LibChatList()
                     newChat.mMessage = libChatMessage.mData?.mMessage!!
                     newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
                     newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
@@ -289,5 +307,30 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             }
 
         }
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        if (p0!!.isNotEmpty()) {
+            if (checkInternet()) {
+                mOffset = 0
+                mListener.resetState()
+                getUserList()
+                mSwipe.isRefreshing = false
+            } else {
+                mSwipe.isRefreshing = false
+            }
+        } else {
+            AppDialogs.hideSoftKeyboard(
+                this, mSearchBox
+            )
+            if (checkInternet())
+                mLibChatViewModel.getChatList(mOffset, "", mLimit)
+        }
+    }
+
+    override fun afterTextChanged(p0: Editable?) {
     }
 }

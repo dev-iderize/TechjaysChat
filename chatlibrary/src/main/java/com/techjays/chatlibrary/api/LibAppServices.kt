@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
+import com.techjays.chatlibrary.model.Follow
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -43,6 +44,8 @@ class LibAppServices {
         const val delete_chats = "chat/delete-chat-list/"
         const val delete_messages = "chat/delete-chat-messages/"
         const val upload_file = "chat/file-upload/"
+        const val following_list = "following-list/"
+        const val searchlist = "chat/search-in-chat-list/"
     }
 
     private interface ApiInterface {
@@ -163,13 +166,20 @@ class LibAppServices {
          * Auth token needed
          */
 
-        fun getChatList(c: Context, offset: Int, limit: Int, listener: ResponseListener) {
+        fun getChatList(
+            c: Context,
+            offset: Int,
+            limit: Int,
+            searchTerm: String,
+            listener: ResponseListener
+        ) {
             try {
                 val apiService = getClient().create(ApiInterface::class.java)
-                val mHashCode = API.chat_list
+                val mHashCode = if (searchTerm.isEmpty()) API.chat_list else API.searchlist
                 val mURL = API.constructUrl(mHashCode)
-
                 val mParam = HashMap<String, String>()
+                if (searchTerm.isNotEmpty())
+                    mParam["search"] = searchTerm
                 mParam["offset"] = offset.toString()
                 mParam["limit"] = limit.toString()
 
@@ -205,6 +215,40 @@ class LibAppServices {
                 e.printStackTrace()
             }
         }
+
+        /**
+         * Get Following users list and search results are also displayed
+         *
+         * */
+        fun getFollows(
+            c: Context,
+            userId: String,
+            searchText: String,
+            offset: Int,
+            limit: Int,
+            listener: ResponseListener
+        ) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.following_list
+                val mURL = API.constructUrl(mHashCode)
+
+                val mParam = HashMap<String, String>()
+                mParam["offset"] = offset.toString()
+                mParam["limit"] = limit.toString()
+                if (searchText.isNotEmpty())
+                    mParam["search"] = searchText
+                if (userId.isNotEmpty())
+                    mParam["user_id"] = userId
+
+                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
+                initService(c, call, Follow::class.java, mHashCode, listener)
+                Log.d("mParam --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
         /**
          * Delete Chat list - Multiple / Single
@@ -269,8 +313,6 @@ class LibAppServices {
                     )
                 mParam["file\"; filename=\"" + file.name] = requestBody
                 mParam["file_type"] = requestBody("pdf")
-                /*mParam["to_user_id"] = requestBody(chatMessages.mToUserId)*/
-
                 val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
                 initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
                 Log.d("Param --> ", mParam.toString())
@@ -278,7 +320,6 @@ class LibAppServices {
                 e.printStackTrace()
             }
         }
-
 
 // ################################################################################################
 

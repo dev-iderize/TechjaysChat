@@ -7,4 +7,6 @@
     <string name="delete_string">Successfully deleted.</string>
     <string name="cancel">Cancel</string>
     <string name="Search">Search</string>
+    <string name="Search_friends">"Search..."</string>
+    <string name="Suggested">Suggested</string>
 </resources>

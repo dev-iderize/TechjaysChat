@@ -16,8 +16,8 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
     private var chat = MutableLiveData<Response?>()
     private var file = MutableLiveData<Response?>()
 
-    fun getChatList(offset: Int, limit: Int) {
-        LibAppServices.getChatList(mContext, offset, limit, this)
+    fun getChatList(offset: Int, searchterm:String,limit: Int) {
+        LibAppServices.getChatList(mContext, offset, limit,searchterm, this)
     }
 
     fun getChatMessage(offset: Int, limit: Int, userId: String) {
@@ -50,6 +50,7 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
             if (r != null) {
                 when (r.requestType) {
                     LibAppServices.API.chat_list.hashCode() -> chat.value = r
+                    LibAppServices.API.searchlist.hashCode() -> chat.value = r
                     LibAppServices.API.get_chat_message.hashCode() -> chat.value = r
                     LibAppServices.API.delete_chats.hashCode() -> chat.value = r
                     LibAppServices.API.delete_messages.hashCode() -> chat.value = r

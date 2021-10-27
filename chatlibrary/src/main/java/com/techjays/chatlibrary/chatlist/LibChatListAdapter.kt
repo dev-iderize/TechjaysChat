@@ -44,7 +44,7 @@ class LibChatListAdapter(
 
         val chatList = mData[position]
         holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
-        holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}"
+        holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}${" "}${chatList.mLastName}"
         holder.mChatMessage.text = chatList.mMessage
 
         if (chatList.newMessage)
