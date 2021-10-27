@@ -38,10 +38,11 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_marginVertical="13dp"
                 android:gravity="center_vertical"
                 android:src="@drawable/lib_ic_baseline_delete_24"
-                android:visibility="gone" />
+                android:visibility="gone"
+                />
             <TextView
                 android:id="@+id/new_message"
                 android:layout_width="35dp"
