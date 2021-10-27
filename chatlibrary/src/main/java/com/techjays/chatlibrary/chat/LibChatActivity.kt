@@ -146,7 +146,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
 
     private fun initView() {
-        libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
+        libTxtName.text =
+            "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}${" "}${mSelectedLibChatUser.mLastName}"
         Utility.loadUserImage(
             mSelectedLibChatUser.mProfilePic,
             libProfileImage,
