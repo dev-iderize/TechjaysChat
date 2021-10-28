@@ -70,7 +70,7 @@ class FollowingsList : DialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mView = inflater.inflate(R.layout.fragment_follows, container, false)
+        mView = inflater.inflate(R.layout.lib_fragment_follows, container, false)
         init(mView)
         return mView
     }

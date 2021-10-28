@@ -54,7 +54,7 @@
         android:textColor="@color/app_black"
         android:textStyle="bold" />
 
-    <include layout="@layout/layout_search_view" />
+    <include layout="@layout/lib_layout_search_view" />
 
     <TextView
         android:layout_width="wrap_content"

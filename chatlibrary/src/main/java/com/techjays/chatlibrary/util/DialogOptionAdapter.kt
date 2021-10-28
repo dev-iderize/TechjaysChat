@@ -25,7 +25,7 @@ class DialogOptionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.inflate_dialog_option, parent, false)
+                .inflate(R.layout.lib_inflate_dialog_option, parent, false)
         return ItemViewHolder(itemView)
     }
 

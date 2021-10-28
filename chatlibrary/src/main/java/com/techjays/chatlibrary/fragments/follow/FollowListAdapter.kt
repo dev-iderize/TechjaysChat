@@ -23,7 +23,7 @@ class FollowListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(
-                R.layout.inflate_follows,
+                R.layout.lib_inflate_follows,
                 parent,
                 false
             )

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <include layout="@layout/checkbox"/>
+    <include layout="@layout/lib_checkbox"/>
     <LinearLayout
     android:id="@+id/layoutUser"
     android:layout_width="match_parent"

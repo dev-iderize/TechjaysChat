@@ -18,7 +18,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.model.common.Option
 import java.util.*
 
@@ -282,7 +281,7 @@ object AppDialogs {
     ) {
         hidecustomView()
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(com.techjays.chatlibrary.R.layout.dialog_option_selection, null)
+        val view = inflater.inflate(com.techjays.chatlibrary.R.layout.lib_dialog_option_selection, null)
 
         val builder =
             AlertDialog.Builder(context, com.techjays.chatlibrary.R.style.BottomSheetDialog)
