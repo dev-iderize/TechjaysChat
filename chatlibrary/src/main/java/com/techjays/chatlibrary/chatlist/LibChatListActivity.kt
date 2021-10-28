@@ -24,8 +24,7 @@ import com.techjays.chatlibrary.api.LibAppServices.API.searchlist
 import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.base.LibFragmentManager
 import com.techjays.chatlibrary.chat.LibChatActivity
-import com.techjays.chatlibrary.constants.Constant
-import com.techjays.chatlibrary.fragments.follow.Followings
+import com.techjays.chatlibrary.fragments.follow.FollowingsList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
@@ -39,7 +38,7 @@ import okhttp3.Request
 import okhttp3.WebSocket
 
 class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
-    View.OnClickListener, ChatSocketListener.CallBack, Followings.Callback, TextWatcher {
+    View.OnClickListener, ChatSocketListener.CallBack, FollowingsList.Callback, TextWatcher {
 
     private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
@@ -270,11 +269,11 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
     fun openChat(
         activity: FragmentActivity,
-        callback: Followings.Callback
+        callback: FollowingsList.Callback
     ) {
-        Followings.newInstance(callback).show(
+        FollowingsList.newInstance(callback).show(
             activity.supportFragmentManager.beginTransaction(),
-            Followings.TAG
+            FollowingsList.TAG
         )
     }
 

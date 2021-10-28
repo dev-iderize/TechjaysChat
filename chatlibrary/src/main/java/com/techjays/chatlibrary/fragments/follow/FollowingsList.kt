@@ -28,15 +28,15 @@ import com.techjays.chatlibrary.viewmodel.ProfileViewModel
 import java.util.*
 
 
-class Followings : DialogFragment(),
-    FollowAdapter.Callback, TextWatcher {
+class FollowingsList : DialogFragment(),
+    FollowListAdapter.Callback, TextWatcher {
 
     private lateinit var mView: View
 
     private lateinit var mSwipe: SwipeRefreshLayout
 
     private lateinit var mFollowRecycler: RecyclerView
-    private lateinit var mFollowAdapter: FollowAdapter
+    private lateinit var mFollowListAdapter: FollowListAdapter
 
     private lateinit var mSearch: EditText
     private lateinit var mSearchClear: ImageView
@@ -51,16 +51,16 @@ class Followings : DialogFragment(),
     private lateinit var mListener: EndlessRecyclerViewScrollListener
 
     companion object {
-        var TAG: String = Followings::class.java.simpleName
+        var TAG: String = FollowingsList::class.java.simpleName
 
         private lateinit var mSearch: EditText
         private lateinit var mCallback: Callback
 
 
-        fun newInstance(callback: Callback): Followings {
+        fun newInstance(callback: Callback): FollowingsList {
             mCallback = callback
 
-            return Followings()
+            return FollowingsList()
 
         }
     }
@@ -85,7 +85,7 @@ class Followings : DialogFragment(),
         mSearchClear = view.findViewById(R.id.layout_search_clear)
         mSearch = view.findViewById(R.id.layout_search_text)
         mSearchCancel = view.findViewById(R.id.layout_search_cancel)
-        mBack = view.findViewById(R.id.back_arrow)
+        mBack = view.findViewById(R.id.back)
 
         clickListener()
         initRecycler()
@@ -116,7 +116,7 @@ class Followings : DialogFragment(),
                     if (mFollowingOffset == 0)
                         mFollowings.clear()
                     mFollowings.addAll(it.mData)
-                    mFollowAdapter.notifyDataSetChanged()
+                    mFollowListAdapter.notifyDataSetChanged()
                 }
                 mSwipe.isRefreshing = false
             })
@@ -126,8 +126,8 @@ class Followings : DialogFragment(),
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(requireActivity())
         mFollowRecycler.layoutManager = layoutManager
-        mFollowAdapter = FollowAdapter(requireActivity(), mFollowings, this)
-        mFollowRecycler.adapter = mFollowAdapter
+        mFollowListAdapter = FollowListAdapter(requireActivity(), mFollowings, this)
+        mFollowRecycler.adapter = mFollowListAdapter
 
         mListener = object : EndlessRecyclerViewScrollListener(layoutManager, 10) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -225,7 +225,7 @@ class Followings : DialogFragment(),
         if (mData.size > 0) {
             try {
                 mData[mData.indexOf(user)].newMessage = false
-                mFollowAdapter.notifyDataSetChanged();
+                mFollowListAdapter.notifyDataSetChanged();
             } catch (e: Exception) {
                 throw e
             }

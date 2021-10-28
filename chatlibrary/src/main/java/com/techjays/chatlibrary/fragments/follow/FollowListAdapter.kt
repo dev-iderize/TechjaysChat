@@ -14,11 +14,11 @@ import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
-class FollowAdapter(
+class FollowListAdapter(
     var mContext: Context,
     var mData: ArrayList<LibChatList>,
     var mCallback: Callback
-) : RecyclerView.Adapter<FollowAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<FollowListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView =
