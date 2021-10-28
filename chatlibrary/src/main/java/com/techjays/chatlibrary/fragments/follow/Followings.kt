@@ -180,17 +180,6 @@ class Followings : DialogFragment(),
     override fun onStart() {
         super.onStart()
         dialog?.window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        val windowManager =
-            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val deviceScreenHeight = displayMetrics.heightPixels
-
-        // Change height child At index zero
-
-        // Change height child At index zero
-        (dialog!!.window!!.decorView.rootView as ViewGroup).getChildAt(0).layoutParams.height =
-            deviceScreenHeight
         dialog?.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT
