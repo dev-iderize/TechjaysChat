@@ -31,16 +31,24 @@
             android:text="New Message" />
 
         <TextView
-            style="@style/TitleHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="Chat"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:textColor="@color/app_black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
     </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp"
         android:text="To"
         android:textColor="@color/app_black"
         android:textStyle="bold" />
