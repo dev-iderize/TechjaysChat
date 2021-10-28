@@ -1,13 +1,10 @@
 package com.techjays.chatlibrary.fragments.follow
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,19 +18,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.api.LibAppServices
-import com.techjays.chatlibrary.base.LibBaseFragment
-import com.techjays.chatlibrary.model.Follow
+import com.techjays.chatlibrary.chat.LibChatActivity
+import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.util.Utility.getETValue
 import com.techjays.chatlibrary.viewmodel.ProfileViewModel
 import java.util.*
-import android.util.DisplayMetrics
-import android.widget.Toast
-import com.google.gson.Gson
-import com.techjays.chatlibrary.chat.LibChatActivity
-import com.techjays.chatlibrary.model.LibChatList
 
 
 class Followings : DialogFragment(),
@@ -179,7 +171,7 @@ class Followings : DialogFragment(),
     @SuppressLint("ResourceAsColor")
     override fun onStart() {
         super.onStart()
-        dialog?.window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        dialog?.window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         dialog?.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT

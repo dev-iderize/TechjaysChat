@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
-import com.techjays.chatlibrary.fragments.follow.Followings
-import com.techjays.chatlibrary.model.Profile
 
 
 /**

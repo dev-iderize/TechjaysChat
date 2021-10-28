@@ -5,16 +5,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.model.Follow
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
-import java.util.ArrayList
+import java.util.*
 
 class FollowAdapter(
     var mContext: Context,

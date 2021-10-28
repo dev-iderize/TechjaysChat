@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
-import com.techjays.chatlibrary.model.Follow
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
