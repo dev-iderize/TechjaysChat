@@ -55,6 +55,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     private lateinit var listener: ChatSocketListener
     private lateinit var mDelete: ImageView
     private lateinit var mSearchBox: EditText
+    private lateinit var mSearchClear: ImageView
     private lateinit var mNewMessageBtn: TextView
 
     @SuppressLint("SetTextI18n")
@@ -107,6 +108,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         mSwipe = findViewById(R.id.chat_swipe)
         mDelete = findViewById(R.id.delete_button)
         mSearchBox = findViewById(R.id.layout_search_text)
+        mSearchClear = findViewById(R.id.layout_search_clear)
         mNewMessageBtn = findViewById(R.id.new_message)
         initRecycler()
         getChatList(true)
@@ -211,6 +213,10 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
 
     override fun clickListener() {
+        mSearchClear.setOnClickListener {
+            mSearchBox.setText("")
+            mSearchBox.clearFocus()
+        }
         mSwipe.setOnRefreshListener {
             mListener.resetState()
             mOffset = 0
@@ -240,7 +246,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun initDelete() {
-        mDelete.visibility = if (mDelete.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
+        mDelete.visibility =
+            if (mDelete.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
     }
 
     override fun onClick(view: View) {
@@ -315,6 +322,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         if (p0!!.isNotEmpty()) {
             if (checkInternet()) {
+                mSearchClear.visibility = View.VISIBLE
                 mOffset = 0
                 mListener.resetState()
                 getUserList()
@@ -323,6 +331,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 mSwipe.isRefreshing = false
             }
         } else {
+            mSearchClear.visibility = View.GONE
             AppDialogs.hideSoftKeyboard(
                 this, mSearchBox
             )
