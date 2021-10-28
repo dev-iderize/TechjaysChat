@@ -41,7 +41,7 @@ class FollowingsList : DialogFragment(),
     private lateinit var mSearch: EditText
     private lateinit var mSearchClear: ImageView
     private lateinit var mSearchCancel: TextView
-    private lateinit var mBack: TextView
+    private lateinit var mBack: ImageView
     var mData = ArrayList<LibChatList>()
     private lateinit var mViewModel: ProfileViewModel
     var mFollowingOffset = 0
