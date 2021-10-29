@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_margin="20dp"
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp">
 
@@ -19,7 +20,7 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitStart"
+            android:scaleType="center"
             android:layout_weight="1"
             android:src="@drawable/ic_back_arrow" />
 
