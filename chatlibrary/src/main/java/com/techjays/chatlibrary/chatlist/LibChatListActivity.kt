@@ -28,10 +28,7 @@ import com.techjays.chatlibrary.fragments.follow.FollowingsList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.ChatSocketListener
-import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -143,7 +140,6 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             )
         }
     }
-
 
     private fun initObserver() {
         if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
@@ -286,11 +282,14 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                     if (libChatMessage.mData?.mSender!!.mUserId.toString() == item.mToUserId
                     ) {
                         isAlreadyInList = true
-                        Log.e("te", mData.indexOf(item).toString());
+                        Log.e("te", mData.indexOf(item).toString())
                         mData[mData.indexOf(item)].mMessage =
                             libChatMessage.mData?.mMessage!!
                         mData[mData.indexOf(item)].mProfilePic =
                             libChatMessage.mData?.mProfilePic!!
+                        mData[mData.indexOf(item)].mTimeStamp =
+                            DateUtil.getCurrentDataTime(true,"yyyy-MM-dd'T'HH:mm:ss")
+
                         mData[mData.indexOf(item)].newMessage = true
                         var newChat: LibChatList = mData[mData.indexOf(item)]
                         mData.remove(item)
@@ -306,6 +305,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                     newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
                     newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
                     newChat.mProfilePic = libChatMessage.mData?.mProfilePic!!
+                    newChat.mTimeStamp= DateUtil.getCurrentDataTime(true,"yyyy-MM-dd'T'HH:mm:ss")
                     newChat.newMessage = true
                     mData.add(0, newChat)
                     mListAdapterLib.notifyDataSetChanged()

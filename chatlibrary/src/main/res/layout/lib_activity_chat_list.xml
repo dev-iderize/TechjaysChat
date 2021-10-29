@@ -82,6 +82,7 @@
                     android:drawableTint="@color/app_black"
                     android:hint="@string/Search"
                     android:imeOptions="actionSearch"
+                    android:inputType="textNoSuggestions"
                     android:padding="8dp"
                     android:singleLine="true"
                     android:textColorHint="@color/app_black"

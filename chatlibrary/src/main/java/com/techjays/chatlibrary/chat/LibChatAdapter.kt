@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.constants.Constant
+import com.techjays.chatlibrary.constants.Constant.COUNTER_DELETE_CHECKBOX
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
@@ -55,7 +56,8 @@ class LibChatAdapter(
         val chatList = mData[position]
         holder.mCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
         holder.mChatItem.setOnLongClickListener {
-            deleteInvisible()
+            if (!isVisibleCheckbox && !chatList.isChecked)
+                deleteInvisible()
             isVisibleCheckbox = !isVisibleCheckbox
             notifyDataSetChanged()
             true
@@ -65,9 +67,9 @@ class LibChatAdapter(
         holder.mCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
             if (holder.mCheckBox.isChecked) {
-                Constant.COUNTER_DELETE_CHECKBOX += 1
+                COUNTER_DELETE_CHECKBOX += 1
             } else
-                Constant.COUNTER_DELETE_CHECKBOX -= 1
+                COUNTER_DELETE_CHECKBOX -= 1
 
             mCallback?.showDeleteButton()
         }
@@ -97,7 +99,7 @@ class LibChatAdapter(
     }
 
     private fun deleteInvisible() {
-        Constant.COUNTER_DELETE_CHECKBOX = 0
+        COUNTER_DELETE_CHECKBOX = 0
         mCallback?.showDeleteButton()
     }
 

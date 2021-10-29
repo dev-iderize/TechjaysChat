@@ -379,31 +379,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             }
         }
     }
-
-    private fun uploadFile() {
-
-        if (SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.addCategory("android.intent.category.DEFAULT")
-                intent.data =
-                    Uri.parse(String.format("package:%s", applicationContext.packageName))
-                startActivityForResult(intent, 2296)
-            } catch (e: java.lang.Exception) {
-                val intent = Intent()
-                intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-                startActivityForResult(intent, 2296)
-            }
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                mPermission,
-                Constant.REQUEST_CODE_PERMISSION
-            )
-        }
-    }
-
-
     private fun selectFile() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT

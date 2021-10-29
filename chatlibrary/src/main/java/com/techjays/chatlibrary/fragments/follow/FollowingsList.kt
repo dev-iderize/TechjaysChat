@@ -112,11 +112,14 @@ class FollowingsList : DialogFragment(),
         if (!mViewModel.getFollowingsObserver().hasActiveObservers()) {
             mViewModel.getFollowingsObserver().observe(requireActivity(), {
                 if (it.requestType == LibAppServices.API.following_list.hashCode()) {
-                    isNextLink = (it as LibChatList).mNextLink
-                    if (mFollowingOffset == 0)
-                        mFollowings.clear()
-                    mFollowings.addAll(it.mData)
-                    mFollowListAdapter.notifyDataSetChanged()
+                    if (it?.responseStatus!!) {
+                        isNextLink = (it as LibChatList).mNextLink
+                        if (mFollowingOffset == 0)
+                            mFollowings.clear()
+                        mFollowings.addAll(it.mData)
+                        mFollowListAdapter.notifyDataSetChanged()
+                    } else
+                        AppDialogs.customOkAction(requireActivity(), it.responseMessage)
                 }
                 mSwipe.isRefreshing = false
             })
