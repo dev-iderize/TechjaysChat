@@ -11,6 +11,6 @@
         android:endColor="@color/app_only_white"
         android:startColor="@color/app_only_white" />
     <size
-        android:width="20dp"
-        android:height="20dp" />
+        android:width="25dp"
+        android:height="25dp" />
 </shape>

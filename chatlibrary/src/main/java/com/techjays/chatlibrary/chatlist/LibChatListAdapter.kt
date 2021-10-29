@@ -71,7 +71,7 @@ class LibChatListAdapter(
                 i.showCheckBox = !i.showCheckBox
                 notifyDataSetChanged()
             }
-            mCallback?.initDelete()
+//            mCallback?.initDelete()
             return@setOnLongClickListener true
         }
 
@@ -99,7 +99,7 @@ class LibChatListAdapter(
 
     interface Callback {
         fun initChatMessage(selectedLibChat: LibChatList)
-        fun initDelete()
+//        fun initDelete()
     }
 
 }

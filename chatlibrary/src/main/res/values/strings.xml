@@ -9,4 +9,5 @@
     <string name="Search">Search</string>
     <string name="Search_friends">"Search..."</string>
     <string name="Suggested">Suggested</string>
+    <string name="select_something">Please select something!\n<i>Long Press to select something!</i></string>
 </resources>

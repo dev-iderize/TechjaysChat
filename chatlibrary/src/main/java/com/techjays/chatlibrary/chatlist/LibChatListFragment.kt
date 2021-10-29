@@ -170,7 +170,7 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(requireContext())
-            mLibChatViewModel.getChatList(mOffset, "",mLimit)
+            mLibChatViewModel.getChatList(mOffset, "", mLimit)
         }
     }
 
@@ -266,9 +266,9 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
         startActivity(i)
     }
 
-    override fun initDelete() {
-        mDelete.visibility = if (mDelete.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-    }
+    /* override fun initDelete() {
+         mDelete.visibility = if (mDelete.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+     }*/
 
     override fun onClick(view: View) {
         if (view == mDelete) {
@@ -279,7 +279,10 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
             }
             if (id.isNotEmpty())
                 mLibChatViewModel.deleteChats(TextUtils.join(",", id))
-            else AppDialogs.showSnackbar(mDelete, "Please select something!")
+            else AppDialogs.showSnackbar(
+                mDelete,
+                "Please select something!!Long Press to select something!"
+            )
         }
     }
 }

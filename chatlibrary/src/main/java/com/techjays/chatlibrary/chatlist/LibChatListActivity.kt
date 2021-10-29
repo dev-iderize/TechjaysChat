@@ -240,10 +240,10 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         startActivity(i)
     }
 
-    override fun initDelete() {
+  /*  override fun initDelete() {
         mDelete.visibility =
             if (mDelete.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
-    }
+    }*/
 
     override fun onClick(view: View) {
         when (view) {

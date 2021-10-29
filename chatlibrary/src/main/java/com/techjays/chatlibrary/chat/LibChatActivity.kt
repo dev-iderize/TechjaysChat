@@ -402,8 +402,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             )
             id.clear()
         } else AppDialogs.showSnackbar(
-            mRecyclerView,
-            "Please select something!"
+            mRecyclerView,"Please select something!\nLong Press to select something!"
         )
     }
 
@@ -446,7 +445,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     override fun showDeleteButton() {
         Log.e("counter", Constant.COUNTER_DELETE_CHECKBOX.toString())
         libDeleteButton.visibility =
-            if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
+            if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
