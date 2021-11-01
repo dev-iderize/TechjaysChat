@@ -27,6 +27,7 @@ class LibChatListAdapter(
     val mData: ArrayList<LibChatList>,
     private var mCallback: Callback?
 ) : RecyclerView.Adapter<LibChatListAdapter.ItemViewHolder>() {
+    private var isVisibleCheckbox = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView =
@@ -43,8 +44,9 @@ class LibChatListAdapter(
         //val isEmployer = LocalStorageSP.isEmployer(mContext)
 
         val chatList = mData[position]
-        holder.mChatCheckBox.visibility = if (chatList.showCheckBox) View.VISIBLE else View.GONE
-        holder.mChatName.text = "${chatList.mFirstName}${chatList.mCompanyName}${" "}${chatList.mLastName}"
+        holder.mChatCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
+        holder.mChatName.text =
+            "${chatList.mFirstName}${chatList.mCompanyName}${" "}${chatList.mLastName}"
         holder.mChatMessage.text = chatList.mMessage
 
         if (chatList.newMessage)
@@ -63,17 +65,16 @@ class LibChatListAdapter(
             mCallback?.initChatMessage(chatList)
         }
 
-        holder.mChatCheckBox.isChecked = chatList.isChecked
+        holder.mChatCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
 
         holder.mCardView.setOnLongClickListener {
-            for (i in mData) {
-                i.isChecked = false
-                i.showCheckBox = !i.showCheckBox
-                notifyDataSetChanged()
-            }
-//            mCallback?.initDelete()
+            //deleteInvisible()
+            isVisibleCheckbox = !isVisibleCheckbox
+            notifyDataSetChanged()
+            // mCallback?.initDelete()
             return@setOnLongClickListener true
         }
+        holder.mChatCheckBox.isChecked = chatList.isChecked
 
         holder.mChatCheckBox.setOnClickListener {
             chatList.isChecked = !chatList.isChecked
