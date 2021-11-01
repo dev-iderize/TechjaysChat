@@ -215,7 +215,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             mListener.resetState()
             mOffset = 0
             getChatList(false)
-            mDelete.visibility = View.GONE
+            //mDelete.visibility = View.GONE
         }
 
         mDelete.setOnClickListener(this)
