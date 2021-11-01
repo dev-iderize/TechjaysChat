@@ -31,6 +31,7 @@ import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
+import com.techjays.chatlibrary.constants.Constant.COUNTER_DELETE_CHECKBOX
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -241,7 +242,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     private fun getChatMessage(show: Boolean) {
-        //mSwipe.isRefreshing = !checkInternet()
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
@@ -256,13 +256,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                             mData.clear()
                         mData.addAll(it.mData)
                         mAdapterLib.notifyDataSetChanged()
-                        /* if (mData.isNotEmpty())
-                             Handler(Looper.myLooper()!!).postDelayed({
-                                 mRecyclerView.smoothScrollToPosition(mData.size+1)
-                             }, 100)*/
                     } else {
                         //AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
+                        LibChatList().isChecked = !LibChatList().isChecked
                         deleteInvisible()
                         //mSwipe.isRefreshing = false
                     }
@@ -272,21 +269,13 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     }
 
-    fun sendClickable(click: Boolean) {
-        libSendButton.isClickable = click
-    }
-
     private fun deleteInvisible() {
-        Constant.COUNTER_DELETE_CHECKBOX = 0
+        if (!LibChatList().isChecked)
+            COUNTER_DELETE_CHECKBOX = 0
         showDeleteButton()
     }
 
     override fun clickListener() {
-//        mSwipe.setOnRefreshListener {
-//            mListener.resetState()
-//            mOffset = 0
-//            getChatMessage(false)
-//        }
         libDeleteButton.setOnClickListener(this)
         libImgBack.setOnClickListener(this)
         libSendButton.setOnClickListener(this)
@@ -322,29 +311,35 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 deleteInvisible()
             }
             libDeleteButton -> {
-                deleteforAll = true
-
-                for (i in mData) {
-                    if (i.isChecked && !i.mIsSentByMyself) {
-                        deleteforAll = false
-                        break
-                    }
-                }
-                if (checkInternet()) {
-                    val option = ArrayList<Option>()
-                    option.add(
-                        Option(
-                            DELETEFORME,
-                            getString(R.string.deleteforme),
-                            Utility.getDrawable(this, R.drawable.lib_ic_baseline_delete_24)
-                        )
+                if (COUNTER_DELETE_CHECKBOX <= 0) {
+                    AppDialogs.showSnackbar(
+                        mRecyclerView,
+                        "Please Select something!\n Long press on the chat select something!"
                     )
-                    if (deleteforAll)
+                } else {
+                    deleteforAll = true
+
+                    for (i in mData) {
+                        if (i.isChecked && !i.mIsSentByMyself) {
+                            deleteforAll = false
+                            break
+                        }
+                    }
+                    if (checkInternet()) {
+                        val option = ArrayList<Option>()
                         option.add(
                             Option(
-                                DELETEFORALL,
-                                getString(R.string.deleteforall),
+                                DELETEFORME,
+                                getString(R.string.deleteforme),
                                 Utility.getDrawable(this, R.drawable.lib_ic_baseline_delete_24)
+                            )
+                        )
+                        if (deleteforAll)
+                            option.add(
+                                Option(
+                                    DELETEFORALL,
+                                    getString(R.string.deleteforall),
+                                    Utility.getDrawable(this, R.drawable.lib_ic_baseline_delete_24)
 
                             )
                         )
@@ -358,14 +353,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                         DELETEFORALL -> {
                                             deleteChatMessages(false)
 
-                                        }
-                                        DELETEFORME -> {
-                                            deleteChatMessages(true)
+                                            }
+                                            DELETEFORME -> {
+                                                deleteChatMessages(true)
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        })
+                            })
+                    }
                 }
             }
             mBtnFile -> {
@@ -373,12 +369,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 if (PermissionChecker().checkAllPermission(this, mPermission)) {
 
                     Utility.isOpenRecently()
-                    // uploadFile()
                     selectFile()
                 }
             }
         }
     }
+
     private fun selectFile() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
@@ -402,7 +398,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             )
             id.clear()
         } else AppDialogs.showSnackbar(
-            mRecyclerView,"Please select something!\nLong Press to select something!"
+            mRecyclerView, "Please select something!\n Long Press on the  chat to select something!"
         )
     }
 
@@ -443,9 +439,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     override fun showDeleteButton() {
-        Log.e("counter", Constant.COUNTER_DELETE_CHECKBOX.toString())
+        //Log.e("counter", COUNTER_DELETE_CHECKBOX.toString())
         libDeleteButton.visibility =
-            if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.VISIBLE
+            if (COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
