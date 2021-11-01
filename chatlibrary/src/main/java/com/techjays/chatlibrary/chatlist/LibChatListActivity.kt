@@ -173,7 +173,6 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
 
     private fun initRecycler() {
-
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
         mListAdapterLib = LibChatListAdapter(this, mData, this)
@@ -240,10 +239,10 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         startActivity(i)
     }
 
-  /*  override fun initDelete() {
-        mDelete.visibility =
-            if (mDelete.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
-    }*/
+    /*  override fun initDelete() {
+          mDelete.visibility =
+              if (mDelete.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
+      }*/
 
     override fun onClick(view: View) {
         when (view) {
@@ -255,7 +254,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 }
                 if (id.isNotEmpty())
                     mLibChatViewModel.deleteChats(TextUtils.join(",", id))
-                else AppDialogs.showSnackbar(mDelete, "Please select something!")
+                else AppDialogs.showSnackbar(mDelete, "Please select something!\n Long press on the user to select something!")
             }
             mNewMessageBtn -> {
                 openChat(this, this)
@@ -288,7 +287,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                         mData[mData.indexOf(item)].mProfilePic =
                             libChatMessage.mData?.mProfilePic!!
                         mData[mData.indexOf(item)].mTimeStamp =
-                            DateUtil.getCurrentDataTime(true,"yyyy-MM-dd'T'HH:mm:ss")
+                            DateUtil.getCurrentDataTime(true, "yyyy-MM-dd'T'HH:mm:ss")
 
                         mData[mData.indexOf(item)].newMessage = true
                         var newChat: LibChatList = mData[mData.indexOf(item)]
@@ -305,7 +304,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                     newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
                     newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
                     newChat.mProfilePic = libChatMessage.mData?.mProfilePic!!
-                    newChat.mTimeStamp= DateUtil.getCurrentDataTime(true,"yyyy-MM-dd'T'HH:mm:ss")
+                    newChat.mTimeStamp = DateUtil.getCurrentDataTime(true, "yyyy-MM-dd'T'HH:mm:ss")
                     newChat.newMessage = true
                     mData.add(0, newChat)
                     mListAdapterLib.notifyDataSetChanged()
