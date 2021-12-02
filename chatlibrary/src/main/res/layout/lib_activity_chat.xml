@@ -111,7 +111,7 @@
                 android:background="@drawable/lib_button_background"
                 android:padding="10dp"
                 android:rotation="360"
-                android:src="@drawable/lib_send" />
+                android:src="@drawable/lib_sendwhite" />
 
         </LinearLayout>
 
