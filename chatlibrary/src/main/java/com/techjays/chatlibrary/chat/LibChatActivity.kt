@@ -1,6 +1,7 @@
 package com.techjays.chatlibrary.chat
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -146,6 +147,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         libTxtName.text =
             "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}${" "}${mSelectedLibChatUser.mLastName}"
@@ -197,6 +199,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         mRecyclerView.addOnScrollListener(mListener)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObserver() {
         if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
             mLibChatViewModel.getChatObserver().observe(this, {
@@ -241,6 +244,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun getChatMessage(show: Boolean) {
         if (checkInternet()) {
             if (show)
@@ -314,7 +318,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 if (COUNTER_DELETE_CHECKBOX <= 0) {
                     AppDialogs.showSnackbar(
                         mRecyclerView,
-                        "Please Select something!\n Long press on the chat select something!"
+                        "Please Select some chats!\n Long press on the chat to select chats!"
                     )
                 } else {
                     deleteforAll = true
@@ -402,6 +406,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         )
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {
         val isMySelf = receivedNewMessage.mData?.mSender == null
         runOnUiThread {

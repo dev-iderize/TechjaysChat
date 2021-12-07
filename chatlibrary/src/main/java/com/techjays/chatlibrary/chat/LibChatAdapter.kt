@@ -49,6 +49,7 @@ class LibChatAdapter(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(
         holder: ItemViewHolder,
         @SuppressLint("RecyclerView") position: Int
