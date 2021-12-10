@@ -87,9 +87,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:inputType="textMultiLine|textCapSentences"
                 android:background="@color/colorTextBackground"
                 android:hint="@string/type_message"
-                android:inputType="text"
+
                 android:padding="6dp"
                 android:textColor="@color/chat_black"
                 android:textSize="14sp" />
@@ -98,10 +99,10 @@
                 android:id="@+id/btnSendFile"
                 android:layout_width="16dp"
                 android:layout_height="24dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_file"
                 android:padding="10dp"
                 android:rotation="360"
-                android:layout_marginEnd="10dp"
                 android:src="@drawable/lib_send" />
 
             <ImageView
