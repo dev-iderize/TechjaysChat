@@ -90,8 +90,9 @@
                 android:inputType="textMultiLine|textCapSentences"
                 android:background="@color/colorTextBackground"
                 android:hint="@string/type_message"
-
-                android:padding="6dp"
+                android:maxLines="6"
+                android:scrollbars="vertical"
+                android:padding="10dp"
                 android:textColor="@color/chat_black"
                 android:textSize="14sp" />
 
