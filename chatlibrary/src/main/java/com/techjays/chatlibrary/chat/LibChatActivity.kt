@@ -345,17 +345,17 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                     getString(R.string.deleteforall),
                                     Utility.getDrawable(this, R.drawable.lib_ic_baseline_delete_24)
 
+                                )
                             )
-                        )
-                    AppDialogs.initOptionDialog(this,
-                        option,
-                        object : DialogOptionAdapter.Callback {
-                            override fun select(position: Int, option: Option) {
-                                if (checkInternet()) {
-                                    AppDialogs.hidecustomView()
-                                    when (option.mId) {
-                                        DELETEFORALL -> {
-                                            deleteChatMessages(false)
+                        AppDialogs.initOptionDialog(this,
+                            option,
+                            object : DialogOptionAdapter.Callback {
+                                override fun select(position: Int, option: Option) {
+                                    if (checkInternet()) {
+                                        AppDialogs.hidecustomView()
+                                        when (option.mId) {
+                                            DELETEFORALL -> {
+                                                deleteChatMessages(false)
 
                                             }
                                             DELETEFORME -> {
@@ -451,7 +451,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        pickiT?.getPath(data?.data, 31)
+        if (data != null)
+            pickiT?.getPath(data?.data, 31)
 
     }
 
