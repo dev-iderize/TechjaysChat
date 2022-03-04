@@ -5,4 +5,5 @@
     <string name="deleteforme">Delete for Me</string>
     <string name="deleteforall">Delete for Everyone</string>
     <string name="delete_string">Successfully deleted.</string>
+    <string name="name">Name</string>
 </resources>
