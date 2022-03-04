@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_activity_background"
     tools:context=".chat.LibChatActivity">
 
     <LinearLayout
@@ -40,6 +40,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/pure_white"
             android:textSize="16sp" />
+
         <ImageView
             android:id="@+id/delete_button"
             android:layout_width="35dp"
@@ -98,10 +99,10 @@
                 android:id="@+id/btnSendFile"
                 android:layout_width="16dp"
                 android:layout_height="24dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_file"
                 android:padding="10dp"
                 android:rotation="360"
-                android:layout_marginEnd="10dp"
                 android:src="@drawable/lib_send" />
 
             <ImageView
@@ -111,7 +112,7 @@
                 android:background="@drawable/lib_button_background"
                 android:padding="10dp"
                 android:rotation="360"
-                android:src="@drawable/lib_send" />
+                android:src="@drawable/lib_sendwhite" />
 
         </LinearLayout>
 

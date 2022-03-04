@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pure_white"
+    android:background="@drawable/bg_activity_background"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
@@ -13,7 +13,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pure_white"
         android:orientation="horizontal">
 
         <TextView
@@ -48,7 +47,6 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@color/pure_white"
             android:id="@+id/recycler_chat_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

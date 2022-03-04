@@ -475,7 +475,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        pickiT?.getPath(data?.data, 31)
+        if (data != null)
+            pickiT?.getPath(data?.data, 31)
 
     }
 

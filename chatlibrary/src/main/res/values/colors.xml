@@ -43,4 +43,7 @@
     <color name="title_black">#121212</color>
     <color name="pure_white">#FDFDFD</color>
     <color name="chat_black">#121212</color>
+
+    <color name="bg_gradient_blue">#bedff3</color>
+
 </resources>
