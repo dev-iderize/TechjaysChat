@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 "chat_token",
                 "gAAAAABhUpQJRce0WvkDNeS0HMmPA5mNQrIcXHliSpCfS-SZajSb_gsL6mnGjSXyCVwCLU8-9RrwULyjER9csrMMtS3IZf4t6iKWkB1ufurDVfIreP19Zuv-CaFgLnYG5G0ktwgh8cuklLStMtS38HtQ8SToCBd7L9Nv0jItjF63E0Lf3vWBVdMHPnVQzeeV5HBfDroLJvbh94gp7xjvT0jXqHszR83_DBABGKROILp7l_POzgEMsu_DzKHw8lxvbnMmhqFLt1wrrgZpLm-R_TRCbs0ZlvLm6Xgen_YvG_QGxgjLrIPy3HI="    )
             intent.putExtra("auth_token", "d83c7b7472b2a2a57d5408bb4cd7e5d4b76c8039")
-            intent.putExtra("color", "#FF878E")
+            intent.putExtra("color", "#443567")
 
             startActivity(intent)
         }

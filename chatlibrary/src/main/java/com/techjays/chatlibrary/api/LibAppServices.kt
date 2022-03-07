@@ -261,6 +261,7 @@ class LibAppServices {
                 val mParam = HashMap<String, RequestBody>()
 
                 val file = File(chatMessages.mFile)
+                Utility.log(file.toString())
                 val requestBody =
                     RequestBody.create(
                         MediaType.parse(

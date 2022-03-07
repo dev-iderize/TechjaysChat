@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_activity_background"
+    android:background="@drawable/img_bg"
     tools:context=".chat.LibChatActivity">
 
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/app_blue"
+        android:background="@color/color_vidrivals_blue"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -20,7 +20,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/lib_ic_baseline_keyboard_arrow_left_24"
-            app:tint="@color/app_white" />
+            app:tint="@color/app_only_white" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/libImgProfile"
@@ -29,7 +29,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:padding="5dp"
-            android:src="@drawable/lib_ic_baseline_account_circle_24" />
+            android:src="@color/app_only_white" />
 
         <TextView
             android:id="@+id/libTvUserName"
@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:textColor="@color/pure_white"
+            android:textColor="@color/app_only_white"
             android:textSize="16sp" />
 
         <ImageView
@@ -98,7 +98,7 @@
             <ImageView
                 android:id="@+id/btnSendFile"
                 android:layout_width="16dp"
-                android:layout_height="24dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_file"
                 android:padding="10dp"
@@ -106,9 +106,28 @@
                 android:src="@drawable/lib_send" />
 
             <ImageView
+                android:id="@+id/btnSendImage"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_camera_"
+                android:padding="10dp"
+                android:rotation="360"
+                android:src="@drawable/lib_send" />
+            <ImageView
+                android:id="@+id/btnSendVideo"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_video_"
+                android:padding="10dp"
+                android:rotation="360"
+                android:src="@drawable/lib_send" />
+
+            <ImageView
                 android:id="@+id/btnSendMessage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@drawable/lib_button_background"
                 android:padding="10dp"
                 android:rotation="360"

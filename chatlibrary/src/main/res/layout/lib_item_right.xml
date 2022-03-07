@@ -38,7 +38,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="2dp"
                     android:text="@string/name"
-                    android:textColor="@color/white"
+                    android:textColor="@color/app_only_white"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
 
@@ -49,8 +49,7 @@
                     android:layout_gravity="end"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
+                    android:textColor="@color/app_only_white"
                     android:textSize="14sp"
                     tools:text="message" />
 

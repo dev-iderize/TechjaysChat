@@ -18,6 +18,7 @@ import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
+import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
 /**
@@ -53,6 +54,8 @@ class LibChatAdapter(
         @SuppressLint("RecyclerView") position: Int
     ) {
         val chatList = mData[position]
+        holder.mProfile
+
         holder.mCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
         holder.mChatItem.setOnLongClickListener {
             deleteInvisible()
@@ -78,7 +81,7 @@ class LibChatAdapter(
             "hh:mmaa, dd MMM"
         )
         try {
-            if (mData[position].mIsSentByMyself) {
+            /*if (mData[position].mIsSentByMyself) {
                 holder.mBackgroundRight.colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                         Utility.getColor(
@@ -86,7 +89,7 @@ class LibChatAdapter(
                             if (ChatLibrary.instance.mColor == "#FF878E") R.color.app_pink else R.color.app_blue                      //color:int = Color.parasecolor()
                         ), BlendModeCompat.SRC_ATOP
                     )
-            }
+            }*/
         } catch (e: Exception) {
             throw e
         }
@@ -107,6 +110,7 @@ class LibChatAdapter(
         var mChatItem: LinearLayout = view.findViewById(R.id.message_layout)
         var mBackgroundRight: Drawable = mChatItem.background
         var mCheckBox: CheckBox = view.findViewById(R.id.check_box_delete)
+        var mProfile:CircleImageView = view.findViewById(R.id.userImage)
 
     }
 
