@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.techjays.chatlibrary">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <application
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
+
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".chat.LibChatActivity"
-            android:theme="@style/Theme.Vidhire_android"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.Vidhire_android" />
         <activity
             android:name=".chatlist.LibChatListActivity"
-            android:theme="@style/Theme.Vidhire_android"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.Vidhire_android" />
     </application>
 
 </manifest>

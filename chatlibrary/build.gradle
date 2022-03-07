@@ -2,6 +2,8 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'maven-publish'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 project.afterEvaluate {
     publishing {
@@ -15,6 +17,21 @@ project.afterEvaluate {
 
 android {
     compileSdk 31
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+        // for view binding:
+        // viewBinding true
+    }
 
     defaultConfig {
         minSdk 21
@@ -55,6 +72,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //image selector with camera
+    implementation  'com.fxn769:pix:1.5.6'
+
+    implementation 'com.github.dev-iderize:TechJaysVideoRecoder:2.0'
 
     // ViewModel and Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"

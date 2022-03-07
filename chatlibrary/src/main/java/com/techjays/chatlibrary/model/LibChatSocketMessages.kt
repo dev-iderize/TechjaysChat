@@ -41,4 +41,17 @@ open class LibChatSocketMessages : Response() {
 
     @SerializedName("file_url")
     var mFile = ""
+
+    @SerializedName("file_type")
+    var mFileType = ""
+
+    @SerializedName("file_name")
+    var mFileName = ""
+
+    @SerializedName("thumbnail_image")
+    var mFileThumbNail = ""
+
+    @SerializedName("medium_image")
+    var mFileMediumThumbNail = ""
+
 }

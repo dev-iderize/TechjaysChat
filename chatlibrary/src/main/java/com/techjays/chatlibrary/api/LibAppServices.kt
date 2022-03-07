@@ -31,6 +31,10 @@ class LibAppServices {
             return String.format("%s%s", ChatLibrary.instance.baseUrl, urlKey)
         }
 
+        fun constructVidRivalUrl(urlKey: String): String {
+            return String.format("%s%s", "https://dev-myvidrivals.myvidhire.com/api/v1/", urlKey)
+        }
+
         // API Case's
 
         // Notification
@@ -43,6 +47,7 @@ class LibAppServices {
         const val delete_chats = "chat/delete-chat-list/"
         const val delete_messages = "chat/delete-chat-messages/"
         const val upload_file = "chat/file-upload/"
+        const val upload_image = "chat/file-upload/"
     }
 
     private interface ApiInterface {
@@ -280,6 +285,33 @@ class LibAppServices {
             }
         }
 
+        fun mImageVideoUpload(c: Context, path: String, type: String, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.upload_image
+                val mURL = API.constructVidRivalUrl(mHashCode)
+                val mParam = HashMap<String, RequestBody>()
+
+                val file = File(path)
+                Utility.log(file.toString())
+                val requestBody =
+                    RequestBody.create(
+                        MediaType.parse(
+                            getMimeType(path)
+                        ), file
+                    )
+                mParam["file\"; filename=\"" + file.name] = requestBody
+                mParam["file_type"] = requestBody(type)
+                /*mParam["to_user_id"] = requestBody(chatMessages.mToUserId)*/
+
+                val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPartVidrival(c))
+                initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
+                Log.d("Param --> ", mParam.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
 // ################################################################################################
 
@@ -454,6 +486,14 @@ class LibAppServices {
             val mHeader = HashMap<String, String>()
             mHeader["Authorization"] = getAuthToken(c)
             Log.d("Auth Header --> ", mHeader.toString())
+
+            return mHeader
+        }
+
+        private fun getAuthHeaderPartVidrival(c: Context): HashMap<String, String> {
+            val mHeader = HashMap<String, String>()
+            mHeader["Authorization"] = "token 1c40b92d06bc7ec7744b60bd04e86ad52332264d"
+                Log.d("Auth Header --> ", mHeader.toString())
 
             return mHeader
         }

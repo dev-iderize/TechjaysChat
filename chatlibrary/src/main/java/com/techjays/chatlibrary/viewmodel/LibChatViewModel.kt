@@ -7,6 +7,7 @@ import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
 import com.techjays.chatlibrary.model.LibChatMessages
+import com.techjays.chatlibrary.util.AppDialogs
 
 /**
  * Created by Mathan on 31/08/21.
@@ -15,6 +16,7 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
 
     private var chat = MutableLiveData<Response?>()
     private var file = MutableLiveData<Response?>()
+    private var image = MutableLiveData<Response?>()
 
     fun getChatList(offset: Int, limit: Int) {
         LibAppServices.getChatList(mContext, offset, limit, this)
@@ -32,12 +34,20 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
         return file
     }
 
+    fun getChatImageObserver(): MutableLiveData<Response?> {
+        return image
+    }
+
     fun deleteChats(ids: String) {
         LibAppServices.deleteChats(mContext, ids, this)
     }
 
     fun uploadFile(chatMessages: LibChatMessages) {
         LibAppServices.fileUpload(mContext, chatMessages, this)
+    }
+
+    fun uploadImageVideo(path:String,type:String) {
+        LibAppServices.mImageVideoUpload(mContext, path,type, this)
     }
 
     fun deleteMessages(Userid: Int, isforme: Boolean, ids: String) {
@@ -54,6 +64,10 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
                     LibAppServices.API.delete_chats.hashCode() -> chat.value = r
                     LibAppServices.API.delete_messages.hashCode() -> chat.value = r
                     LibAppServices.API.upload_file.hashCode() -> file.value = r
+                    LibAppServices.API.upload_image.hashCode() ->{
+                        image.value = r
+                        AppDialogs.hideProgressDialog()
+                    }
                 }
 
             }

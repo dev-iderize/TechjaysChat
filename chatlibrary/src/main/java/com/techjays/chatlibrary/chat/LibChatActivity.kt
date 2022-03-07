@@ -5,16 +5,24 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fxn.pix.Options
+import com.fxn.pix.Pix
 import com.google.gson.Gson
 import com.hbisoft.pickit.PickiT
 import com.hbisoft.pickit.PickiTCallbacks
@@ -31,17 +39,12 @@ import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.common.Option
 import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
+import com.techjays.inappcamera.InAppCameraActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.*
-import android.os.Build
-import android.os.Build.VERSION
-
-import android.os.Build.VERSION.SDK_INT
-import android.provider.Settings
-import com.techjays.chatlibrary.util.PermissionChecker
 
 
 /**
@@ -67,6 +70,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private lateinit var libChatEdit: EditText
     private lateinit var libTxtName: TextView
     private lateinit var libDeleteButton: ImageView
+    private lateinit var libBtnImage: ImageView
+    private lateinit var libBtnVideo: ImageView
     private lateinit var mLibChatViewModel: LibChatViewModel
     var mData = ArrayList<LibChatMessages>()
     private lateinit var mAdapterLib: LibChatAdapter
@@ -105,6 +110,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 Utility.statusBarColor(window, this, R.color.status_pink)
             }
         }
+
         init()
         start()
     }
@@ -135,6 +141,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libProfileImage = findViewById(R.id.libImgProfile)
         libDeleteButton = findViewById(R.id.delete_button)
         mBtnFile = findViewById(R.id.btnSendFile)
+        libBtnImage = findViewById(R.id.btnSendImage)
+        libBtnVideo = findViewById(R.id.btn_send_video)
+
+        libBtnVideo.setOnClickListener {
+            val intent = Intent(this, InAppCameraActivity::class.java)
+            intent.putExtra("video_limit", false)
+            startActivityForResult(intent, 5)
+        }
+
         clickListener()
         initRecycler()
         initObserver()
@@ -259,10 +274,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                              Handler(Looper.myLooper()!!).postDelayed({
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
                              }, 100)*/
-                    } else {
-                        //AppDialogs.customOkAction(this, it!!.responseMessage)
+                    }else if (!mLibChatViewModel.getChatImageObserver().hasActiveObservers()) else {
+                        AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
-                        deleteInvisible()
                         //mSwipe.isRefreshing = false
                     }
                 })
@@ -290,12 +304,32 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libImgBack.setOnClickListener(this)
         libSendButton.setOnClickListener(this)
         mBtnFile.setOnClickListener(this)
+        libBtnImage.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
             libImgBack -> {
                 onBackPressed()
+            }
+            libBtnImage -> {
+                val options: Options = Options.init()
+                    .setRequestCode(100) //Request code for activity results
+                    .setCount(1) //Number of images to restict selection count
+                    .setFrontfacing(false) //Front Facing camera on start
+                    .setSpanCount(4) //Span count for gallery min 1 & max 5
+                    .setMode(Options.Mode.Picture) //Option to select only pictures or videos or both
+                    .setVideoDurationLimitinSeconds(30) //Duration for video recording
+                    .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT) //Orientaion
+                    .setPath("/vidrivals/images") //Custom Path For media Storage
+
+
+                Pix.start(this@LibChatActivity, options)
+            }
+            libBtnVideo ->{
+                val intent = Intent(this, InAppCameraActivity::class.java)
+                intent.putExtra("video_limit", false)
+                startActivityForResult(intent, 5)
             }
             libSendButton -> {
                 if (Utility.isOpenRecently())
@@ -475,8 +509,35 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null)
-            pickiT?.getPath(data?.data, 31)
+        if (data != null) {
+            if (requestCode == 100) {
+                val returnValue: ArrayList<String> =
+                    data.getStringArrayListExtra(Pix.IMAGE_RESULTS)!!
+                Log.d("image uri",returnValue[0])
+                if (checkInternet()) {
+                    AppDialogs.showProgressDialog(this)
+                    mLibChatViewModel.uploadImageVideo(returnValue[0],"image")
+                }
+
+            }
+            if (requestCode == 234)
+                pickiT?.getPath(data?.data, 31)
+
+            if (requestCode == 5)
+            {
+                if (resultCode === RESULT_OK) { // Activity.RESULT_OK
+                    Log.d("check",data!!.getStringExtra("path")!!)
+                    if (checkInternet()) {
+                        AppDialogs.showProgressDialog(this)
+                        mLibChatViewModel.uploadImageVideo(data!!.getStringExtra("path")!!,"video")
+                    }
+
+                }
+            }
+
+
+        }
+
 
     }
 

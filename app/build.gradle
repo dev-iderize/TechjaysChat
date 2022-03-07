@@ -2,10 +2,24 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'maven-publish'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdk 31
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+        // for view binding:
+        // viewBinding true
+    }
+
 
     defaultConfig {
         applicationId "com.techjays.chatapplication"
