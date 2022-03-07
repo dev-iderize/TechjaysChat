@@ -56,6 +56,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             val chat_token = data.getStringExtra("chat_token").toString()
             val socketUrl = data.getStringExtra("socket_url").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
+            val isPicMessage = data.getBooleanExtra("is_profile_pic",true)
             val color = data.getStringExtra("color").toString()
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
