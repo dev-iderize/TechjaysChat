@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImage"
@@ -19,18 +20,33 @@
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/lib_ic_baseline_account_circle_24"
-            android:visibility="gone" />
-        <include layout="@layout/checkbox"/>
+            android:src="@color/app_yellow"
+            android:visibility="visible" />
+
+        <include layout="@layout/checkbox" />
+
         <LinearLayout
             android:id="@+id/message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/bg_gradient"
             android:clickable="true"
-            android:background="@drawable/lib_item_left_side_background"
+            android:focusable="true"
             android:orientation="vertical"
             android:padding="5dp">
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="2dp"
+                android:text="@string/name"
+                android:textColor="@color/app_only_white"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
 
             <TextView
                 android:id="@+id/tvMessage"
@@ -39,21 +55,10 @@
                 android:layout_gravity="start"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:textColor="@color/black"
+                android:textColor="@color/app_only_white"
                 android:textColorLink="@color/black"
                 android:textSize="14sp"
                 tools:text="message" />
-
-            <TextView
-                android:id="@+id/time"
-                style="@style/SubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="2dp"
-                android:text="11.Am"
-                android:textColor="@color/app_black"
-                android:textSize="10sp" />
 
         </LinearLayout>
 
