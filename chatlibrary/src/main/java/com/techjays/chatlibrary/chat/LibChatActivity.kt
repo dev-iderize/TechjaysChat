@@ -547,12 +547,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
             } else {
                 val uri: Uri = data?.data!!
-                AppDialogs.showToastshort(this, uri.toString())
                 isResume = false
                 pickiT?.getPath(data?.data, 31)
                 Utility.log(uri.toString())
-
-
             }
 
         }

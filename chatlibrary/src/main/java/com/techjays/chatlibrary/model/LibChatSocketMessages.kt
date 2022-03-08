@@ -12,17 +12,11 @@ open class LibChatSocketMessages : Response() {
     @SerializedName("type")
     var mType = ""
 
-    @SerializedName("message_type")
-    var mMessageType = ""
-
-    @SerializedName("message_id")
-    var mMessageId = ""
+    @SerializedName("chat_type")
+    var mChatType = ""
 
     @SerializedName("data")
     var mData: LibChatSocketMessages? = null
-
-    @SerializedName("message")
-    var mMessage = ""
 
     @SerializedName("sender")
     var mSender: LibChatSocketMessages? = null
@@ -33,25 +27,37 @@ open class LibChatSocketMessages : Response() {
     @SerializedName("username")
     var mUserName = ""
 
-    @SerializedName("timestamp")
-    var mTimeStamp = ""
-
     @SerializedName("profile_pic")
     var mProfilePic = ""
 
-    @SerializedName("file_url")
-    var mFile = ""
+    @SerializedName("message_id")
+    var mMessageId = ""
+
+    @SerializedName("message_type")
+    var mMessageType = ""
 
     @SerializedName("file_type")
     var mFileType = ""
 
-    @SerializedName("file_name")
-    var mFileName = ""
-
-    @SerializedName("thumbnail_image")
-    var mFileThumbNail = ""
+    @SerializedName("message")
+    var mMessage = ""
 
     @SerializedName("medium_image")
     var mFileMediumThumbNail = ""
 
+    @SerializedName("thumbnail_image")
+    var mFileThumbNail = ""
+
+    @SerializedName("duel_id")
+    var mDuelId = 0
+
+    @SerializedName("timestamp")
+    var mTimeStamp = ""
+
+    //old model
+    @SerializedName("file_url")
+    var mFile = ""
+
+    @SerializedName("file_name")
+    var mFileName = ""
 }

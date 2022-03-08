@@ -48,6 +48,42 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
         return obj.toString()
     }
 
+    fun sendChatMsgParams(msg: String, to: String, type: String): String {
+        val obj = JSONObject()
+        obj.put("token", ChatLibrary.instance.chatToken)
+        obj.put("type", "chat")
+        obj.put("chat_type", "private")
+        obj.put("to", to)
+        obj.put("duel_id","")
+        obj.put("message_type", type)
+        obj.put("file_type","")
+        obj.put("message", msg)
+        obj.put("medium_image","")
+        obj.put("thumbnail_image","")
+
+        Log.e("sent chat message", obj.toString())
+
+        return obj.toString()
+    }
+
+    fun sendChatImageParams(msg: String, to: String, type: String): String {
+        val obj = JSONObject()
+        obj.put("token", ChatLibrary.instance.chatToken)
+        obj.put("type", "chat")
+        obj.put("chat_type", "private")
+        obj.put("to", to)
+        obj.put("duel_id","")
+        obj.put("message_type", type)
+        obj.put("file_type","")
+        obj.put("message", msg)
+        obj.put("medium_image","")
+        obj.put("thumbnail_image","")
+
+        Log.e("sent chat message", obj.toString())
+
+        return obj.toString()
+    }
+
     override fun onMessage(webSocket: WebSocket?, text: String) {
         Log.e("Receiving:", " $text")
         try {

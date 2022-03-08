@@ -21,14 +21,26 @@ class LibChatMessages : Response() {
     @SerializedName("is_sent_by_myself")
     var mIsSentByMyself = false
 
+    @SerializedName("message_type")
+    var mMessageType = ""
+
+    @SerializedName("file_type")
+    var mFileType = ""
+
     @SerializedName("message")
     var mMessage = ""
 
     @SerializedName("timestamp")
     var mTimeStamp = ""
 
-    @SerializedName("message_type")
-    var mMessageType = ""
+    @SerializedName("medium_image")
+    var mFileMediumThumbNail = ""
+
+    @SerializedName("thumbnail_image")
+    var mFileThumbNail = ""
+
+
+    //old model
 
     @SerializedName("to_user_id")
     var mToUserId = ""
