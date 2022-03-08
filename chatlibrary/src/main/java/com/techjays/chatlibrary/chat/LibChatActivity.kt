@@ -244,11 +244,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         if (it.responseStatus!!) {
                             mLibChatSocketMessages = (it as LibChatSocketMessages).mData!!
                             mLibChatSocketMessages.mMessageType = CHAT_TYPE_FILE
-                            listener.sendChat(
+
+
+                            listener.sendChatFile(
                                 mLibChatSocketMessages.mFile,
-                                mSelectedLibChatUser.mToUserId,
-                                CHAT_TYPE_FILE
+                                "245",
+                                CHAT_TYPE_FILE,mLibChatSocketMessages,"2895"
                             )
+
+
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
@@ -353,8 +357,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 } else {
                     listener.sendChat(
                         libChatEdit.text.toString(),
-                        mSelectedLibChatUser.mToUserId,
-                        CHAT_TYPE_MESSAGE
+                        "245",
+                        CHAT_TYPE_MESSAGE,"2895"
                     )
                 }
 

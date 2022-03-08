@@ -34,34 +34,38 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
         return obj.toString()
     }
 
-    fun sendChatParams(msg: String, to: String, type: String): String {
+    fun sendChatParams(msg: String, to: String, type: String,duelId: String): String {
         val obj = JSONObject()
         obj.put("token", ChatLibrary.instance.chatToken)
         obj.put("type", "chat")
         obj.put("chat_type", "private")
         obj.put("to", to)
-        obj.put("message_type", type)
-        obj.put("message", msg)
-
-        Log.e("sent", obj.toString())
-
-        return obj.toString()
-    }
-
-    fun sendChatMsgParams(msg: String, to: String, type: String): String {
-        val obj = JSONObject()
-        obj.put("token", ChatLibrary.instance.chatToken)
-        obj.put("type", "chat")
-        obj.put("chat_type", "private")
-        obj.put("to", to)
-        obj.put("duel_id","")
+        obj.put("duel_id",duelId)
         obj.put("message_type", type)
         obj.put("file_type","")
         obj.put("message", msg)
         obj.put("medium_image","")
         obj.put("thumbnail_image","")
 
-        Log.e("sent chat message", obj.toString())
+        Log.e("sent chat text message", obj.toString())
+
+        return obj.toString()
+    }
+
+    fun sendChatFileParams(msg: String, to: String, type: String,data:LibChatSocketMessages,duelId: String): String {
+        val obj = JSONObject()
+        obj.put("token", ChatLibrary.instance.chatToken)
+        obj.put("type", "chat")
+        obj.put("chat_type", "private")
+        obj.put("to", to)
+        obj.put("duel_id",duelId)
+        obj.put("message_type", data.mMessageType)
+        obj.put("file_type",data.mFileType)
+        obj.put("message", msg)
+        obj.put("medium_image",data.mFileMediumThumbNail)
+        obj.put("thumbnail_image",data.mFileThumbNail)
+
+        Log.e("sent chat File message", obj.toString())
 
         return obj.toString()
     }
@@ -120,8 +124,12 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
         t.message?.let { Log.e("Error : ", it) }
     }
 
-    fun sendChat(s: String, mToUserId: String, type: String) {
-        ws.send(sendChatParams(s, mToUserId, type))
+    fun sendChat(s: String, mToUserId: String, type: String,duelId:String) {
+        ws.send(sendChatParams(s, mToUserId, type,duelId))
+    }
+
+    fun sendChatFile(s: String, mToUserId: String, type: String,chatData:LibChatSocketMessages,duelId:String) {
+        ws.send(sendChatFileParams(s, mToUserId, type,chatData,duelId))
     }
 
     companion object {

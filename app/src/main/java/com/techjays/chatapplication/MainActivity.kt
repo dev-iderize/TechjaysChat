@@ -37,10 +37,10 @@ class MainActivity : AppCompatActivity() {
         mButton.setOnClickListener {
             val intent = Intent(this@MainActivity, LibChatListActivity::class.java)
             intent.putExtra("base_url", "https://dev.myfayvit.com/api/v1/")
-            intent.putExtra("socket_url", "ws://3.16.6.93:8765")
+            intent.putExtra("socket_url", "ws://18.217.53.197:8765/")
             intent.putExtra(
                 "chat_token",
-                "gAAAAABhUpQJRce0WvkDNeS0HMmPA5mNQrIcXHliSpCfS-SZajSb_gsL6mnGjSXyCVwCLU8-9RrwULyjER9csrMMtS3IZf4t6iKWkB1ufurDVfIreP19Zuv-CaFgLnYG5G0ktwgh8cuklLStMtS38HtQ8SToCBd7L9Nv0jItjF63E0Lf3vWBVdMHPnVQzeeV5HBfDroLJvbh94gp7xjvT0jXqHszR83_DBABGKROILp7l_POzgEMsu_DzKHw8lxvbnMmhqFLt1wrrgZpLm-R_TRCbs0ZlvLm6Xgen_YvG_QGxgjLrIPy3HI="    )
+                "gAAAAABiJu4OMmSnv9C7sfC8K65jNBYunrWpRdXaO-JPrL-Pw-58jNqnriV0Ov9HpvQOTyRS6G17l9-fN9c-5kOvWr2tl38_deLuv2bzMQ67nK0J91gHCE2lsioqJr1fRv_qctbq5YE0sQEWMkZnMKdbXnk9SHZA2kFnReY1kfIdwjORQEKZBG4=")
             intent.putExtra("auth_token", "d83c7b7472b2a2a57d5408bb4cd7e5d4b76c8039")
             intent.putExtra("color", "#443567")
 
