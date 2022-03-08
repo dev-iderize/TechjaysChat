@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginStart="15dp"
+    android:paddingVertical="15dp"
+    android:layout_marginStart="45dp"
     android:layout_height="wrap_content">
 
     <include layout="@layout/checkbox" />
@@ -23,7 +24,8 @@
 
             <LinearLayout
                 android:id="@+id/message_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginStart="45dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/bg_gradient"
@@ -48,14 +50,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:padding="5dp"
-
                     android:autoLink="web"
+                    android:textColorLink="@color/app_only_white"
                     android:linksClickable="true"
+                    android:padding="5dp"
                     android:textColor="@color/app_only_white"
                     android:textSize="14sp"
                     tools:text="message" />
-
 
 
             </LinearLayout>

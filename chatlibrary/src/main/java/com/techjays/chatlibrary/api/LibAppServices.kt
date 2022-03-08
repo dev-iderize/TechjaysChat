@@ -191,6 +191,7 @@ class LibAppServices {
             offset: Int,
             limit: Int,
             userId: String,
+            duelId:String,
             listener: ResponseListener
         ) {
             try {
@@ -202,6 +203,7 @@ class LibAppServices {
                 mParam["offset"] = offset.toString()
                 mParam["limit"] = limit.toString()
                 mParam["to_user_id"] = userId
+                mParam["duel_id"] = duelId
 
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
                 initService(c, call, LibChatMessages::class.java, mHashCode, listener)

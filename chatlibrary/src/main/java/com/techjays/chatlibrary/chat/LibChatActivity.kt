@@ -34,9 +34,7 @@ import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
-import com.techjays.chatlibrary.model.LibChatList
-import com.techjays.chatlibrary.model.LibChatMessages
-import com.techjays.chatlibrary.model.LibChatSocketMessages
+import com.techjays.chatlibrary.model.*
 import com.techjays.chatlibrary.model.common.Option
 import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
@@ -57,7 +55,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     LibChatAdapter.Callback, PickiTCallbacks {
 
     private lateinit var mRecyclerView: RecyclerView
-    lateinit var mSelectedLibChatUser: LibChatList
+    /*lateinit var mSelectedLibChatUser: LibChatList*/
+    private var mChatData = LibChatUserModel()
     lateinit var path: Uri
     var mOffset = 0
     var mLimit = 6
@@ -103,9 +102,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat)
         if (intent != null) {
-            if (intent.extras?.containsKey("chat_user")!!) {
-                mSelectedLibChatUser = intent.extras?.get("chat_user") as LibChatList
-            }
+           /* if (intent.extras?.containsKey("chat_user")!!) {
+                mChatData = intent.extras?.get("chat_user") as LibChatUserModel
+            }*/
+            val data = intent
+
+            mChatData =  Gson().fromJson(data.getStringExtra("chat_user").toString(), LibChatUserModel::class.java)
         }
         when (ChatLibrary.instance.mColor) {
             "#FF878E" -> {
@@ -163,9 +165,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
 
     private fun initView() {
-        libTxtName.text = "${mSelectedLibChatUser.mCompanyName}${mSelectedLibChatUser.mFirstName}"
+        libTxtName.text = mChatData.mReceiverFullName
         Utility.loadUserImage(
-            mSelectedLibChatUser.mProfilePic,
+            mChatData.mReceiverProfilePicUrl,
             libProfileImage,
             this
         )
@@ -190,7 +192,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapterLib = LibChatAdapter(this, mData, this)
+        mAdapterLib = LibChatAdapter(this, mData,mChatData, this)
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         mRecyclerView.adapter = mAdapterLib
@@ -265,7 +267,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
-            mLibChatViewModel.getChatMessage(mOffset, mLimit, mSelectedLibChatUser.mToUserId)
+            mLibChatViewModel.getChatMessage(mOffset, mLimit, mChatData.mReceiverUserId,mChatData.mItemId)
             if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
                 mLibChatViewModel.getChatObserver().observe(this, {
                     AppDialogs.hideProgressDialog()
@@ -471,7 +473,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
         if (id.isNotEmpty()) {
             mLibChatViewModel.deleteMessages(
-                mSelectedLibChatUser.mToUserId.toInt(),
+                mChatData.mReceiverUserId.toInt(),
                 deleteforme,
                 TextUtils.join(",", id)
             )
@@ -497,7 +499,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
                 }
-                mSelectedLibChatUser.mToUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
+                mChatData.mReceiverUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
                     /*libChatEdit.text = "".toEditable()*/
@@ -566,7 +568,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         if (checkInternet()) {
             AppDialogs.showProgressDialog(this)
             val chatmessages = LibChatMessages()
-            chatmessages.mToUserId = mSelectedLibChatUser.mToUserId
+            chatmessages.mToUserId = mChatData.mReceiverUserId
             chatmessages.mFile = mResumePath
             mLibChatViewModel.uploadFile(chatmessages)
         }

@@ -22,8 +22,8 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
         LibAppServices.getChatList(mContext, offset, limit, this)
     }
 
-    fun getChatMessage(offset: Int, limit: Int, userId: String) {
-        LibAppServices.getChatMessage(mContext, offset, limit, userId, this)
+    fun getChatMessage(offset: Int, limit: Int, userId: String,duelId:String) {
+        LibAppServices.getChatMessage(mContext, offset, limit, userId,duelId, this)
     }
 
     fun getChatObserver(): MutableLiveData<Response?> {

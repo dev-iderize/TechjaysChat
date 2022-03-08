@@ -16,6 +16,7 @@ import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
+import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
@@ -28,6 +29,7 @@ import java.util.*
 class LibChatAdapter(
     val mContext: FragmentActivity,
     val mData: ArrayList<LibChatMessages>,
+    val mChatData:LibChatUserModel,
     private var mCallback: Callback?
 ) : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
@@ -54,7 +56,6 @@ class LibChatAdapter(
         @SuppressLint("RecyclerView") position: Int
     ) {
         val chatList = mData[position]
-        holder.mProfile
 
         holder.mCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
         holder.mChatItem.setOnLongClickListener {
@@ -74,12 +75,29 @@ class LibChatAdapter(
 
             mCallback?.showDeleteButton()
         }
+
+        if (chatList.mIsSentByMyself){
+            Utility.loadUserImage(
+                mChatData.mSenderProfilePicUrl,
+                holder.mProfile,
+                mContext
+            )
+            holder.mChatTime.text = mChatData.mSenderFullName
+
+        }else{
+            Utility.loadUserImage(
+                mChatData.mReceiverProfilePicUrl,
+                holder.mProfile,
+                mContext
+            )
+            holder.mChatTime.text = mChatData.mReceiverFullName
+        }
         holder.txtUserName.text = chatList.mMessage
-        holder.mChatTime.text = DateUtil.formatDisplayDate(
+        /*holder.mChatTime.text = DateUtil.formatDisplayDate(
             DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
             "yyyy-MM-dd'T'HH:mm:ss",
             "hh:mmaa, dd MMM"
-        )
+        )*/
         try {
             /*if (mData[position].mIsSentByMyself) {
                 holder.mBackgroundRight.colorFilter =

@@ -19,6 +19,7 @@ import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
+import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.ChatSocketListener
@@ -44,6 +45,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     private var ws: WebSocket? = null
     private lateinit var listener: ChatSocketListener
     private lateinit var mDelete: ImageView
+    private var mChatData = LibChatUserModel()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +54,15 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
         try {
             val data = intent
-            val base_url = data.getStringExtra("base_url").toString()
+            /*val base_url = data.getStringExtra("base_url").toString()
             val chat_token = data.getStringExtra("chat_token").toString()
             val socketUrl = data.getStringExtra("socket_url").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
             val isPicMessage = data.getBooleanExtra("is_profile_pic",true)
-            val color = data.getStringExtra("color").toString()
+            val color = data.getStringExtra("color").toString()*/
+
+            mChatData = Gson().fromJson(data.getStringExtra("chat_data").toString(), LibChatUserModel::class.java)
+
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
 
@@ -82,12 +87,12 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                 initChatMessage(chatData)
             }
 
-            ChatLibrary.instance.authToken = auth_token
-            ChatLibrary.instance.chatToken = chat_token
-            ChatLibrary.instance.socketUrl = socketUrl
-            ChatLibrary.instance.baseUrl = base_url
+            ChatLibrary.instance.authToken = mChatData.mAuthToken
+            ChatLibrary.instance.chatToken = mChatData.mChatToken
+            ChatLibrary.instance.socketUrl = mChatData.mSocketUrl
+            ChatLibrary.instance.baseUrl = mChatData.mBaseUrl
             ChatLibrary.instance.mUserData = userData
-            ChatLibrary.instance.mColor = color
+            ChatLibrary.instance.mColor = "#443567"
         } catch (e: Exception) {
             Log.d("ex", e.toString())
             throw  e
@@ -101,10 +106,19 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         mRecyclerView = findViewById(R.id.recycler_chat_list)
         mSwipe = findViewById(R.id.chat_swipe)
         mDelete = findViewById(R.id.delete_button)
-        initRecycler()
-        getChatList(true)
-        initObserver()
-        clickListener()
+        if (mChatData.mIsChatList){
+            initRecycler()
+            getChatList(true)
+            initObserver()
+            clickListener()
+        }else
+            initChatActivity()
+    }
+
+    private fun initChatActivity() {
+        val i = Intent(this, LibChatActivity::class.java)
+        i.putExtra("chat_user", Gson().toJson(mChatData))
+        startActivity(i)
     }
 
     private fun start() {
