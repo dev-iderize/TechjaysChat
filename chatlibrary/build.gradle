@@ -78,6 +78,8 @@ dependencies {
 
     implementation 'com.github.dev-iderize:TechJaysVideoRecoder:2.0'
 
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+
     // ViewModel and Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"

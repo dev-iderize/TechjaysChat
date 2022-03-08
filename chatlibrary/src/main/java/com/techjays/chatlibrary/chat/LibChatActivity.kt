@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fxn.pix.Options
 import com.fxn.pix.Pix
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import com.hbisoft.pickit.PickiT
 import com.hbisoft.pickit.PickiTCallbacks
@@ -87,6 +88,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     var DELETEFORME: Int = 0
     var DELETEFORALL: Int = 1
     var deleteforAll = false
+    var isResume = false
 
     val id = ArrayList<String>()
     var mResumePath = ""
@@ -274,7 +276,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                              Handler(Looper.myLooper()!!).postDelayed({
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
                              }, 100)*/
-                    }else if (!mLibChatViewModel.getChatImageObserver().hasActiveObservers()) else {
+                    } else if (!mLibChatViewModel.getChatImageObserver()
+                            .hasActiveObservers()
+                    ) else {
                         AppDialogs.customOkAction(this, it!!.responseMessage)
                         AppDialogs.hideProgressDialog()
                         //mSwipe.isRefreshing = false
@@ -313,20 +317,29 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 onBackPressed()
             }
             libBtnImage -> {
-                val options: Options = Options.init()
-                    .setRequestCode(100) //Request code for activity results
-                    .setCount(1) //Number of images to restict selection count
-                    .setFrontfacing(false) //Front Facing camera on start
-                    .setSpanCount(4) //Span count for gallery min 1 & max 5
-                    .setMode(Options.Mode.Picture) //Option to select only pictures or videos or both
-                    .setVideoDurationLimitinSeconds(30) //Duration for video recording
-                    .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT) //Orientaion
-                    .setPath("/vidrivals/images") //Custom Path For media Storage
+                /*  val options: Options = Options.init()
+                      .setRequestCode(100) //Request code for activity results
+                      .setCount(1) //Number of images to restict selection count
+                      .setFrontfacing(false) //Front Facing camera on start
+                      .setSpanCount(4) //Span count for gallery min 1 & max 5
+                      .setMode(Options.Mode.Picture) //Option to select only pictures or videos or both
+                      .setVideoDurationLimitinSeconds(30) //Duration for video recording
+                      .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT) //Orientaion
+                      .setPath("/vidrivals/images") //Custom Path For media Storage
 
 
-                Pix.start(this@LibChatActivity, options)
+                  Pix.start(this@LibChatActivity, options)*/
+
+                ImagePicker.with(this)
+                    .crop()                    //Crop image(Optional), Check Customization for more option
+                    .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(
+                        1080,
+                        1080
+                    )    //Final image resolution will be less than 1080 x 1080(Optional)
+                    .start()
             }
-            libBtnVideo ->{
+            libBtnVideo -> {
                 val intent = Intent(this, InAppCameraActivity::class.java)
                 intent.putExtra("video_limit", false)
                 startActivityForResult(intent, 5)
@@ -513,28 +526,34 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             if (requestCode == 100) {
                 val returnValue: ArrayList<String> =
                     data.getStringArrayListExtra(Pix.IMAGE_RESULTS)!!
-                Log.d("image uri",returnValue[0])
+                Log.d("image uri", returnValue[0])
                 if (checkInternet()) {
                     AppDialogs.showProgressDialog(this)
-                    mLibChatViewModel.uploadImageVideo(returnValue[0],"image")
+                    mLibChatViewModel.uploadImageVideo(returnValue[0], "image")
                 }
 
-            }
-            if (requestCode == 234)
+            } else if (requestCode == 234) {
+                isResume = true
                 pickiT?.getPath(data?.data, 31)
 
-            if (requestCode == 5)
-            {
+            } else if (requestCode == 5) {
                 if (resultCode === RESULT_OK) { // Activity.RESULT_OK
-                    Log.d("check",data!!.getStringExtra("path")!!)
+                    Log.d("check", data!!.getStringExtra("path")!!)
                     if (checkInternet()) {
                         AppDialogs.showProgressDialog(this)
-                        mLibChatViewModel.uploadImageVideo(data!!.getStringExtra("path")!!,"video")
+                        mLibChatViewModel.uploadImageVideo(data!!.getStringExtra("path")!!, "video")
                     }
 
                 }
-            }
+            } else {
+                val uri: Uri = data?.data!!
+                AppDialogs.showToastshort(this, uri.toString())
+                isResume = false
+                pickiT?.getPath(data?.data, 31)
+                Utility.log(uri.toString())
 
+
+            }
 
         }
 
@@ -569,8 +588,17 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         Reason: String?
     ) {
         if (path != null) {
-            mResumePath = path
-            initFileUpload()
+            if (isResume){
+                mResumePath = path
+                initFileUpload()
+            }else{
+                if (checkInternet()) {
+                    AppDialogs.showProgressDialog(this)
+                    mLibChatViewModel.uploadImageVideo(path, "image")
+                }
+            }
+
+            /*Utility.log(path)*/
         }
     }
 }
