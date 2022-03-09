@@ -1,11 +1,9 @@
 package com.techjays.chatapplication
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.toColorInt
 import androidx.fragment.app.FragmentTransaction
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
@@ -25,7 +23,11 @@ class MainActivity : AppCompatActivity() {
         when (ChatLibrary.instance.mColor) {
             "#FF878E" -> {
                 if (!Utility.isUsingNightModeResources(this))
-                    Utility.statusBarColor(window, this, com.techjays.chatlibrary.R.color.status_pink)
+                    Utility.statusBarColor(
+                        window,
+                        this,
+                        com.techjays.chatlibrary.R.color.status_pink
+                    )
                 else
                     Utility.statusBarColor(window, this, com.techjays.chatlibrary.R.color.dark_grey)
             }
@@ -39,18 +41,18 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, LibChatListActivity::class.java)
 
             val chatUserData = ChatUserModel()
-            chatUserData.mChatToken = "gAAAAABiJ6vYnPU3cuVO8zU01Fi1e8Z8_1gHT-DtAF6Z5JNZT3DVAWZzQmG9NNh9ojg_YmZz3TL1gvxJVS5Rm392QY-Bx3ciy_jmPjpWQ1s3Wq92eq24lrnfTzVtTBdstXeVbPAaRHnfvyB3EAk-V1R3F2fJCdifVj-I7m078zkhrf9Zs9q_AMB5FY6A3BdhCd2MUIIDAYnzL9zPE4IC8hh87OwYWXg22C0o5DoOT3SsVeAz9yrc8EFwLbCNxP287KYfqBr0DteHIJt7uMGIc7--p0N2_xgViiZNOHt2Aa4dGjRQh6YNcwc="
+            chatUserData.mChatToken =
+                "gAAAAABiJ6vYnPU3cuVO8zU01Fi1e8Z8_1gHT-DtAF6Z5JNZT3DVAWZzQmG9NNh9ojg_YmZz3TL1gvxJVS5Rm392QY-Bx3ciy_jmPjpWQ1s3Wq92eq24lrnfTzVtTBdstXeVbPAaRHnfvyB3EAk-V1R3F2fJCdifVj-I7m078zkhrf9Zs9q_AMB5FY6A3BdhCd2MUIIDAYnzL9zPE4IC8hh87OwYWXg22C0o5DoOT3SsVeAz9yrc8EFwLbCNxP287KYfqBr0DteHIJt7uMGIc7--p0N2_xgViiZNOHt2Aa4dGjRQh6YNcwc="
             chatUserData.mAuthToken = "1c40b92d06bc7ec7744b60bd04e86ad52332264d"
             chatUserData.mBaseUrl = "https://dev-myvidrivals.myvidhire.com/api/v1/"
             chatUserData.mSocketUrl = "ws://18.217.53.197:8765/"
-            chatUserData.mIsChatList = false
-            chatUserData.mIsPdf = false
             chatUserData.mIsImage = true
             chatUserData.mIsVideo = true
             chatUserData.mItemId = "2895"
             chatUserData.mSenderUserId = "212"
             chatUserData.mSenderFullName = "Anugraha tv"
-            chatUserData.mSenderProfilePicUrl = "https://d1r0dpdlaij12c.cloudfront.net/media/public/profile/images/profile212.png"
+            chatUserData.mSenderProfilePicUrl =
+                "https://d1r0dpdlaij12c.cloudfront.net/media/public/profile/images/profile212.png"
             /*if (mUser.mUser!!.mUserId == data.mChallengeUser!!.mUserId){
                 chatUserData.mReceiverUserId = data.mAcceptedUser!!.mUserId.toString()
                 chatUserData.mReceiverFullName = data.mAcceptedUser!!.mFullName
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mReceiverUserId = "245"
             chatUserData.mReceiverFullName = "Srinath"
             chatUserData.mReceiverProfilePicUrl = "https://www.srinathdev.me/img/night.png"
+            chatUserData.mHeaderColor = "#443567"
 
             /*intent.putExtra("base_url", "https://dev.myfayvit.com/api/v1/")
             intent.putExtra("socket_url", "ws://18.217.53.197:8765/")

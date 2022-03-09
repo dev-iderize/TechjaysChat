@@ -1,14 +1,18 @@
 package com.techjays.chatapplication
 
+import android.graphics.drawable.Drawable
+
 class ChatUserModel {
-    var mChatToken =""
-    var mAuthToken =""
+    var mAppName = ""
+    var mChatToken = ""
+    var mAuthToken = ""
     var mBaseUrl = ""
     var mSocketUrl = ""
     var mIsChatList = false
-    var mIsPdf = false
+    var mIsFile = false
     var mIsImage = false
     var mIsVideo = false
+    var mIsGif = false
     var mItemId = ""
     var mSenderUserId = ""
     var mSenderFullName = ""
@@ -16,4 +20,5 @@ class ChatUserModel {
     var mReceiverUserId = ""
     var mReceiverFullName = ""
     var mReceiverProfilePicUrl = ""
+    var mHeaderColor = ""
 }
