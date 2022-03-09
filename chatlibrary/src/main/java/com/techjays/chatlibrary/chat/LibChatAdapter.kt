@@ -15,6 +15,7 @@ import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
+import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -168,6 +169,7 @@ class LibChatAdapter(
             if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
                 type = MESSAGE_TYPE_SENT
             } else {
+                Utility.log(mData[position].mMessageType)
                 if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE) {
                     type = MESSAGE_TYPE_SENT_IMAGE
                 } else {

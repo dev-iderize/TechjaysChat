@@ -486,10 +486,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {
         val isMySelf = receivedNewMessage.mData?.mSender == null
+        var libMsg =
         runOnUiThread {
             val newMessage = LibChatMessages()
             newMessage.mIsSentByMyself = isMySelf
             newMessage.mMessageId = receivedNewMessage.mData!!.mMessageId
+            newMessage.mMessage = receivedNewMessage.mData!!.mMessage
+            newMessage.mMessageType = receivedNewMessage.mData!!.mMessageType
+            newMessage.mFileType = receivedNewMessage.mData!!.mFileType
+            Utility.log(receivedNewMessage.mMessageId + " ithu")
             when {
                 isMySelf -> {
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage

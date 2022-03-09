@@ -7,13 +7,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="5dp"
         tools:ignore="UselessParent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImage"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:src="@color/colorPrimary"

@@ -96,9 +96,11 @@ class ChatSocketListener(private var mCallback: CallBack) : WebSocketListener() 
                 if (obj.get("type").equals("chat")) {
                     val receivedNewMessage =
                         Gson().fromJson(text, LibChatSocketMessages::class.java)
+                    Log.d("paru",receivedNewMessage.mChatType).toString()
                     if (receivedNewMessage.responseStatus!! && receivedNewMessage.mType == "chat") {
                         if (receivedNewMessage.mData!!.mTimeStamp.isEmpty()) {
                             receivedNewMessage.mData!!.mTimeStamp =
+                                Log.d("paru",receivedNewMessage.mMessageType).toString()
                                 DateUtil.getCurrentDataTime(true, "yyyy-MM-dd'T'HH:mm:ss")
                         }
 
