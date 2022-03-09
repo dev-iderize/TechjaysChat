@@ -6,18 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.graphics.BlendModeColorFilterCompat
-import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
-import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -29,12 +26,16 @@ import java.util.*
 class LibChatAdapter(
     val mContext: FragmentActivity,
     val mData: ArrayList<LibChatMessages>,
-    val mChatData:LibChatUserModel,
+    val mChatData: LibChatUserModel,
     private var mCallback: Callback?
 ) : RecyclerView.Adapter<LibChatAdapter.ItemViewHolder>() {
 
     private val MESSAGE_TYPE_RECIEVED = 0
     private val MESSAGE_TYPE_SENT = 1
+    private val MESSAGE_TYPE_RECEVIED_IMAGE = 5
+    private val MESSAGE_TYPE_SENT_IMAGE = 6
+    private val MESSAGE_TYPE_RECIVED_VIDEO = 7
+    private val MESSAGE_TYPE_SENT_VIDEO = 8
     private val DOCUMENT_TYPE_SENT = 3
     private val DOCUMENT_TYPE_RECIEVED = 4
     private var isVisibleCheckbox = false
@@ -42,11 +43,33 @@ class LibChatAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return if (viewType == MESSAGE_TYPE_SENT) {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.lib_item_right, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_text_right, parent, false)
+            ItemViewHolder(view)
+        } else if (viewType == MESSAGE_TYPE_RECIEVED) {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_text_left, parent, false)
+            ItemViewHolder(view)
+        } else if (viewType == MESSAGE_TYPE_RECEVIED_IMAGE) {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_image_left, parent, false)
+            ItemViewHolder(view)
+        } else if (viewType == MESSAGE_TYPE_SENT_IMAGE) {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_image_right, parent, false)
+            ItemViewHolder(view)
+        } else if (viewType == MESSAGE_TYPE_RECIVED_VIDEO) {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_video_left, parent, false)
             ItemViewHolder(view)
         } else {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.lib_item_left, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_video_right, parent, false)
             ItemViewHolder(view)
         }
     }
@@ -76,23 +99,29 @@ class LibChatAdapter(
             mCallback?.showDeleteButton()
         }
 
-        if (chatList.mIsSentByMyself){
+        if (chatList.mIsSentByMyself) {
             Utility.loadUserImage(
                 mChatData.mSenderProfilePicUrl,
                 holder.mProfile,
                 mContext
             )
-            holder.mChatTime.text = mChatData.mSenderFullName
+            holder.mName.text = mChatData.mSenderFullName
 
-        }else{
+        } else {
             Utility.loadUserImage(
                 mChatData.mReceiverProfilePicUrl,
                 holder.mProfile,
                 mContext
             )
-            holder.mChatTime.text = mChatData.mReceiverFullName
+            holder.mName.text = mChatData.mReceiverFullName
         }
-        holder.txtUserName.text = chatList.mMessage
+        holder.txMessage.text = chatList.mMessage
+        Utility.loadUserImage(
+            chatList.mFileThumbNail,
+            holder.mThumbNail,
+            mContext
+        )
+
         /*holder.mChatTime.text = DateUtil.formatDisplayDate(
             DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
             "yyyy-MM-dd'T'HH:mm:ss",
@@ -123,20 +152,41 @@ class LibChatAdapter(
     }
 
     open class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val txtUserName: TextView = view.findViewById(R.id.tvMessage)
-        var mChatTime: TextView = view.findViewById(R.id.time)
+        val txMessage: TextView = view.findViewById(R.id.tv_message)
+        var mName: TextView = view.findViewById(R.id.tv_name)
         var mChatItem: LinearLayout = view.findViewById(R.id.message_layout)
         var mBackgroundRight: Drawable = mChatItem.background
         var mCheckBox: CheckBox = view.findViewById(R.id.check_box_delete)
-        var mProfile:CircleImageView = view.findViewById(R.id.userImage)
+        var mProfile: CircleImageView = view.findViewById(R.id.userImage)
+        var mThumbNail: ImageView = view.findViewById(R.id.lib_thumbnail)
 
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (mData[position].mIsSentByMyself) {
-            MESSAGE_TYPE_SENT
+            var type = 1
+            if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
+                type = MESSAGE_TYPE_SENT
+            } else {
+                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE) {
+                    type = MESSAGE_TYPE_SENT_IMAGE
+                } else {
+                    type = MESSAGE_TYPE_SENT_VIDEO
+                }
+            }
+            type
         } else {
-            MESSAGE_TYPE_RECIEVED
+            var type = 0
+            if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
+                type = MESSAGE_TYPE_RECIEVED
+            } else {
+                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE) {
+                    type = MESSAGE_TYPE_RECEVIED_IMAGE
+                } else {
+                    type = MESSAGE_TYPE_RECIVED_VIDEO
+                }
+            }
+            type
         }
     }
 

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingVertical="15dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="45dp"
-    android:layout_height="wrap_content">
+    android:paddingVertical="15dp">
 
     <include layout="@layout/checkbox" />
 
@@ -24,17 +24,17 @@
 
             <LinearLayout
                 android:id="@+id/message_layout"
-                android:layout_width="match_parent"
-                android:layout_marginStart="45dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="45dp"
                 android:background="@drawable/bg_gradient"
                 android:orientation="vertical"
                 android:padding="5dp"
                 tools:ignore="UselessParent">
 
                 <TextView
-                    android:id="@+id/time"
+                    android:id="@+id/tv_name"
                     style="@style/SubTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,15 +46,15 @@
                     tools:ignore="SmallSp" />
 
                 <TextView
-                    android:id="@+id/tvMessage"
+                    android:id="@+id/tv_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:autoLink="web"
-                    android:textColorLink="@color/app_only_white"
                     android:linksClickable="true"
                     android:padding="5dp"
                     android:textColor="@color/app_only_white"
+                    android:textColorLink="@color/app_only_white"
                     android:textSize="14sp"
                     tools:text="message" />
 
@@ -72,6 +72,15 @@
             android:src="@color/app_yellow"
             android:visibility="visible" />
 
+        <ImageView
+            android:id="@+id/lib_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/right_one_side_rounded"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone" />
+
     </LinearLayout>
+
 
 </LinearLayout>
