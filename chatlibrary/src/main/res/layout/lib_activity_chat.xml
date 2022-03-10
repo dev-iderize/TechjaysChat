@@ -50,7 +50,8 @@
             android:gravity="center_vertical"
             android:padding="3dp"
             android:src="@drawable/lib_ic_baseline_delete_24"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/app_only_white" />
 
     </LinearLayout>
 

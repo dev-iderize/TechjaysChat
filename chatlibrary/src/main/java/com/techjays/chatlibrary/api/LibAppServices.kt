@@ -239,6 +239,7 @@ class LibAppServices {
             user_id: Int,
             isforme: Boolean,
             ids: String,
+            duelId: String,
             listener: ResponseListener
         ) {
             try {
@@ -248,6 +249,7 @@ class LibAppServices {
                 val mObject = JsonObject()
                 mObject.addProperty("to_user_id", user_id)
                 mObject.addProperty("message_ids", ids)
+                mObject.addProperty("duel_id", duelId)
                 if (isforme)
                     mObject.addProperty("delete_message_type", "for_me")
                 else

@@ -50,8 +50,8 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
         LibAppServices.mImageVideoUpload(mContext, path,type, this)
     }
 
-    fun deleteMessages(Userid: Int, isforme: Boolean, ids: String) {
-        LibAppServices.deleteMessages(mContext, Userid, isforme, ids, this)
+    fun deleteMessages(Userid: Int, isforme: Boolean, ids: String, duelId:String) {
+        LibAppServices.deleteMessages(mContext, Userid, isforme, ids,duelId, this)
     }
 
 

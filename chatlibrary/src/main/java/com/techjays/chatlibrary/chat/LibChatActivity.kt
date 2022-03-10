@@ -475,7 +475,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             mLibChatViewModel.deleteMessages(
                 mChatData.mReceiverUserId.toInt(),
                 deleteforme,
-                TextUtils.join(",", id)
+                TextUtils.join(",", id),mChatData.mItemId
             )
             id.clear()
         } else AppDialogs.showSnackbar(
