@@ -486,7 +486,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     override fun onMessageReceive(receivedNewMessage: LibChatSocketMessages) {
         val isMySelf = receivedNewMessage.mData?.mSender == null
-        var libMsg =
         runOnUiThread {
             val newMessage = LibChatMessages()
             newMessage.mIsSentByMyself = isMySelf

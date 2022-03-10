@@ -1,6 +1,7 @@
 package com.techjays.chatlibrary.chat
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
+import com.techjays.chatlibrary.preview.LibImagePreviewActivity
+import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
@@ -83,11 +87,26 @@ class LibChatAdapter(
         val chatList = mData[position]
 
         holder.mCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
+
         holder.mChatItem.setOnLongClickListener {
             deleteInvisible()
             isVisibleCheckbox = !isVisibleCheckbox
             notifyDataSetChanged()
             true
+        }
+
+        holder.mChatItem.setOnClickListener {
+
+            if (chatList.mFileType == Constant.CHAT_TYPE_IMAGE){
+                val i = Intent(mContext, LibImagePreviewActivity::class.java)
+                i.putExtra("url_data", chatList.mMessage)
+                mContext.startActivity(i)
+            }else if (chatList.mFileType == Constant.CHAT_TYPE_VIDEO){
+                val i = Intent(mContext, LibVideoPreviewActivity::class.java)
+                i.putExtra("url_data", chatList.mMessage)
+                mContext.startActivity(i)
+            }
+
         }
         holder.mCheckBox.isChecked = chatList.isChecked
 
