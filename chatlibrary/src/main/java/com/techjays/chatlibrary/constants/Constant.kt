@@ -28,6 +28,7 @@ object Constant {
     const val CHAT_TYPE_MESSAGE = "message"
     const val CHAT_TYPE_FILE = "file"
     const val CHAT_TYPE_IMAGE = "image"
+    const val CHAT_TYPE_IMAGE_ = "IMAGE"
     const val CHAT_TYPE_VIDEO = "video"
 
     var COUNTER_DELETE_CHECKBOX=0

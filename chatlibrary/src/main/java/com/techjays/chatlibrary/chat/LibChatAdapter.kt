@@ -178,7 +178,7 @@ class LibChatAdapter(
                 type = MESSAGE_TYPE_SENT
             } else {
                 Utility.log(mData[position].mMessageType)
-                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE) {
+                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE|| mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
                     type = MESSAGE_TYPE_SENT_IMAGE
                 } else {
                     type = MESSAGE_TYPE_SENT_VIDEO
@@ -190,7 +190,7 @@ class LibChatAdapter(
             if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
                 type = MESSAGE_TYPE_RECIEVED
             } else {
-                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE) {
+                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
                     type = MESSAGE_TYPE_RECEVIED_IMAGE
                 } else {
                     type = MESSAGE_TYPE_RECIVED_VIDEO
