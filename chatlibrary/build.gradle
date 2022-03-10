@@ -83,6 +83,9 @@ dependencies {
     //image preview
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    //exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
+
     // ViewModel and Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
