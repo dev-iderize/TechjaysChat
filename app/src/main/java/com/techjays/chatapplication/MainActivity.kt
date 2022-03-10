@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, LibChatListActivity::class.java)
 
             val chatUserData = ChatUserModel()
-            chatUserData.mChatToken =
-                "gAAAAABiJ6vYnPU3cuVO8zU01Fi1e8Z8_1gHT-DtAF6Z5JNZT3DVAWZzQmG9NNh9ojg_YmZz3TL1gvxJVS5Rm392QY-Bx3ciy_jmPjpWQ1s3Wq92eq24lrnfTzVtTBdstXeVbPAaRHnfvyB3EAk-V1R3F2fJCdifVj-I7m078zkhrf9Zs9q_AMB5FY6A3BdhCd2MUIIDAYnzL9zPE4IC8hh87OwYWXg22C0o5DoOT3SsVeAz9yrc8EFwLbCNxP287KYfqBr0DteHIJt7uMGIc7--p0N2_xgViiZNOHt2Aa4dGjRQh6YNcwc="
+            chatUserData.mChatToken = "gAAAAABiKYs_aZttpFiw9LbuuP8wShJcQPvFOxVD6y3qHdgoaWHqgyPwFuWdywKt58cmz2qTYPuItvIicHM--VvHn-M2TFFVpBlHL1lWAKJi4XFwstBi5Mqb1DO2oqLNHObbd4GTmIbr7Ew7r3CsSUvEUMr6jOY6JcZOXQRjR7q7hMeqGIdLLJNo4CQuUI1wwOik051XNxOWOx-V56oH9bvBz9zh0NLBGOLaiamLzDM44POOiOh5i45PYhe4eJ2RpsOmSC5EY5iJNZdw1pYzMm2sHCNhnSW-pA=="
+
             chatUserData.mAuthToken = "1c40b92d06bc7ec7744b60bd04e86ad52332264d"
             chatUserData.mBaseUrl = "https://dev-myvidrivals.myvidhire.com/api/v1/"
             chatUserData.mSocketUrl = "ws://18.217.53.197:8765/"

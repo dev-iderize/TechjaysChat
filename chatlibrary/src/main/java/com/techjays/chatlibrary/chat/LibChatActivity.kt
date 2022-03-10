@@ -176,7 +176,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 ChatLibrary.instance.mColor
             )
         )
-        val mBackground: Drawable = libSendButton.background
+        /*val mBackground: Drawable = libSendButton.background
         try {
             mBackground.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                 Utility.getColor(
@@ -186,7 +186,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             )
         } catch (e: Exception) {
             throw e
-        }
+        }*/
     }
 
     private fun initRecycler() {
@@ -494,6 +494,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             newMessage.mMessage = receivedNewMessage.mData!!.mMessage
             newMessage.mMessageType = receivedNewMessage.mData!!.mMessageType
             newMessage.mFileType = receivedNewMessage.mData!!.mFileType
+            newMessage.mFileThumbNail = receivedNewMessage.mData!!.mFileThumbNail
             Utility.log(receivedNewMessage.mMessageId + " ithu")
             when {
                 isMySelf -> {

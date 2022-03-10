@@ -16,4 +16,7 @@ class LibChatUserModel {
     var mReceiverUserId = ""
     var mReceiverFullName = ""
     var mReceiverProfilePicUrl = ""
+    var mChatBackground = ""
+    var mHeaderColor = ""
+    var mAppName = ""
 }
