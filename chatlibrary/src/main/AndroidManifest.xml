@@ -10,12 +10,17 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".preview.LibImagePreviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".preview.LibVideoPreviewActivity"
+            android:exported="false" />
         <activity
             android:name=".chat.LibChatActivity"
             android:exported="true"

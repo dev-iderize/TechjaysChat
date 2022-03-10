@@ -231,6 +231,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         val i = Intent(this, LibChatActivity::class.java)
         i.putExtra("chat_user", selectedLibChat)
         startActivity(i)
+        finish()
     }
 
     override fun initDelete() {
