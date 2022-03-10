@@ -16,6 +16,7 @@ import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -123,7 +124,13 @@ class LibChatAdapter(
             mContext
         )
 
-        /*holder.mChatTime.text = DateUtil.formatDisplayDate(
+        holder.mTime.text = DateUtil.formatDisplayDate(
+            DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "hh:mm aa"
+        )
+
+        /*holder.mTime.text = DateUtil.formatDisplayDate(
             DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
             "yyyy-MM-dd'T'HH:mm:ss",
             "hh:mmaa, dd MMM"
@@ -160,6 +167,7 @@ class LibChatAdapter(
         var mCheckBox: CheckBox = view.findViewById(R.id.check_box_delete)
         var mProfile: CircleImageView = view.findViewById(R.id.userImage)
         var mThumbNail: ImageView = view.findViewById(R.id.lib_thumbnail)
+        var mTime:TextView = view.findViewById(R.id.tv_time)
 
     }
 

@@ -8,8 +8,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="15dp"
         android:paddingHorizontal="5dp"
+        android:paddingVertical="15dp"
         tools:ignore="UselessParent">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -46,17 +46,37 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_horizontal"
-                android:text="@string/name"
-                android:textColor="@color/app_only_white"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/name"
+                    android:textColor="@color/app_only_white"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/SubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:text="@string/time"
+                    android:textColor="@color/app_only_white"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_message"

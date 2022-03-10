@@ -171,11 +171,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             libProfileImage,
             this
         )
-        libAppBar.setBackgroundColor(
+        /*libAppBar.setBackgroundColor(
             Color.parseColor(
                 ChatLibrary.instance.mColor
             )
-        )
+        )*/
         /*val mBackground: Drawable = libSendButton.background
         try {
             mBackground.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
@@ -495,6 +495,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             newMessage.mMessageType = receivedNewMessage.mData!!.mMessageType
             newMessage.mFileType = receivedNewMessage.mData!!.mFileType
             newMessage.mFileThumbNail = receivedNewMessage.mData!!.mFileThumbNail
+            newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
             Utility.log(receivedNewMessage.mMessageId + " ithu")
             when {
                 isMySelf -> {
