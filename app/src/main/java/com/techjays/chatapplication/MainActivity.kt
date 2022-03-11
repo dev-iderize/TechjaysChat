@@ -53,19 +53,23 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mSenderFullName = "Anugraha tv"
             chatUserData.mSenderProfilePicUrl =
                 "https://d1r0dpdlaij12c.cloudfront.net/media/public/profile/images/profile212.png"
-            /*if (mUser.mUser!!.mUserId == data.mChallengeUser!!.mUserId){
-                chatUserData.mReceiverUserId = data.mAcceptedUser!!.mUserId.toString()
-                chatUserData.mReceiverFullName = data.mAcceptedUser!!.mFullName
-                chatUserData.mReceiverProfilePicUrl = data.mAcceptedUser!!.mProfilePic
-            }else{
-                chatUserData.mReceiverUserId = data.mChallengeUser!!.mUserId.toString()
-                chatUserData.mReceiverFullName = data.mChallengeUser!!.mFullName
-                chatUserData.mReceiverProfilePicUrl = data.mChallengeUser!!.mProfilePic
-            }*/
+
             chatUserData.mReceiverUserId = "245"
             chatUserData.mReceiverFullName = "Srinath"
             chatUserData.mReceiverProfilePicUrl = "https://www.srinathdev.me/img/night.png"
             chatUserData.mHeaderColor = "#443567"
+            chatUserData.mBidAmount = "50"
+            chatUserData.mEventName = "Brazil vs Argentina"
+
+            /*if (mUser.mUser!!.mUserId == data.mChallengeUser!!.mUserId){
+              chatUserData.mReceiverUserId = data.mAcceptedUser!!.mUserId.toString()
+              chatUserData.mReceiverFullName = data.mAcceptedUser!!.mFullName
+              chatUserData.mReceiverProfilePicUrl = data.mAcceptedUser!!.mProfilePic
+          }else{
+              chatUserData.mReceiverUserId = data.mChallengeUser!!.mUserId.toString()
+              chatUserData.mReceiverFullName = data.mChallengeUser!!.mFullName
+              chatUserData.mReceiverProfilePicUrl = data.mChallengeUser!!.mProfilePic
+          }*/
 
             /*intent.putExtra("base_url", "https://dev.myfayvit.com/api/v1/")
             intent.putExtra("socket_url", "ws://18.217.53.197:8765/")

@@ -19,4 +19,9 @@ class LibChatUserModel {
     var mChatBackground = ""
     var mHeaderColor = ""
     var mAppName = ""
+
+    //vidrivals model
+    var mBidAmount = ""
+    var mEventName = ""
+
 }

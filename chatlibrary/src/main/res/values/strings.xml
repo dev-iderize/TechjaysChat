@@ -7,4 +7,6 @@
     <string name="delete_string">Successfully deleted.</string>
     <string name="name">Name</string>
     <string name="time">Time</string>
+    <string name="vs">Vs</string>
+    <string name="total_bid">Total bid</string>
 </resources>

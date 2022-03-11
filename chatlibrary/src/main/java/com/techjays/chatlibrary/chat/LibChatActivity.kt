@@ -1,6 +1,7 @@
 package com.techjays.chatlibrary.chat
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -40,6 +41,7 @@ import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import com.techjays.inappcamera.InAppCameraActivity
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.lib_activity_chat.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -164,8 +166,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         libTxtName.text = mChatData.mReceiverFullName
+        lib_username_vs.text = "${mChatData.mSenderFullName} ${mChatData.mReceiverFullName}"
+        lib_event_name.text = mChatData.mEventName
+        lib_total_bid.text = "Total bid: ${mChatData.mBidAmount}"
         Utility.loadUserImage(
             mChatData.mReceiverProfilePicUrl,
             libProfileImage,

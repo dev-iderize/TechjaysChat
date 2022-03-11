@@ -21,4 +21,10 @@ class ChatUserModel {
     var mReceiverFullName = ""
     var mReceiverProfilePicUrl = ""
     var mHeaderColor = ""
+    var mChatBackground = ""
+
+
+    //vidrivals model
+    var mBidAmount = ""
+    var mEventName = ""
 }

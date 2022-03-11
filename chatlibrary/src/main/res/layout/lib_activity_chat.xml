@@ -11,7 +11,7 @@
         android:id="@+id/l1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-
+        android:layout_marginTop="15dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -19,6 +19,8 @@
             android:id="@+id/libImgBack"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/lib_ic_baseline_keyboard_arrow_left_24"
             app:tint="@color/app_only_white" />
 
@@ -29,17 +31,66 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:padding="5dp"
-            android:src="@color/app_only_white" />
+            android:src="@color/app_only_white"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/libTvUserName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textColor="@color/app_only_white"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/libTvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/app_only_white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/lib_event_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vs"
+                android:textColor="@color/app_only_white"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lib_username_vs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/vs"
+                    android:textColor="@color/app_only_white"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/lib_total_bid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="end"
+                    android:text="@string/total_bid"
+                    android:textColor="@color/app_only_white"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    tools:ignore="RelativeOverlap" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/delete_button"
@@ -47,6 +98,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:contentDescription="@string/app_name"
             android:gravity="center_vertical"
             android:padding="3dp"
             android:src="@drawable/lib_ic_baseline_delete_24"
@@ -72,9 +124,9 @@
         android:id="@+id/r1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true">
+        android:paddingHorizontal="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +135,8 @@
             android:background="@drawable/background_rounded__type_message"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="5dp"
+            tools:ignore="UselessParent">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etMessage"
@@ -92,11 +145,11 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@color/app_only_white"
-                android:hint="@string/type_message"
-                android:padding="6dp"
-                android:inputType="textMultiLine"
-                android:scrollbars="vertical"
                 android:gravity="top|start"
+                android:hint="@string/type_message"
+                android:inputType="textMultiLine"
+                android:padding="6dp"
+                android:scrollbars="vertical"
                 android:textColor="@color/chat_black"
                 android:textSize="14sp" />
 
@@ -106,19 +159,20 @@
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_file"
+                android:contentDescription="@string/app_name"
                 android:padding="10dp"
                 android:rotation="360"
-                android:src="@drawable/lib_send" />
+                android:src="@drawable/ic_file" />
 
             <ImageView
                 android:id="@+id/btnSendImage"
-                android:layout_width="25dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_camera_"
-                android:padding="10dp"
+                android:contentDescription="@string/app_name"
+                android:padding="3dp"
                 android:rotation="360"
-                android:src="@drawable/lib_send" />
+                android:src="@drawable/ic_camera_" />
 
             <ImageView
                 android:id="@+id/btn_send_video"
@@ -126,6 +180,7 @@
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_video_"
+                android:contentDescription="@string/app_name"
                 android:padding="10dp"
                 android:rotation="360" />
 
@@ -133,6 +188,7 @@
                 android:id="@+id/btnSendMessage"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:contentDescription="@string/app_name"
                 android:padding="6dp"
                 android:rotation="360"
                 android:src="@drawable/lib_sendwhite"
