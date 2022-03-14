@@ -9,7 +9,7 @@ class ChatUserModel {
     var mBaseUrl = ""
     var mSocketUrl = ""
     var mIsChatList = false
-    var mIsFile = false
+    var mIsPdf = false
     var mIsImage = false
     var mIsVideo = false
     var mIsGif = false

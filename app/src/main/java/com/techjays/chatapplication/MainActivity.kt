@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mHeaderColor = "#443567"
             chatUserData.mBidAmount = "50"
             chatUserData.mEventName = "Brazil vs Argentina"
+            chatUserData.mIsPdf = false
 
             /*if (mUser.mUser!!.mUserId == data.mChallengeUser!!.mUserId){
               chatUserData.mReceiverUserId = data.mAcceptedUser!!.mUserId.toString()

@@ -177,6 +177,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             libProfileImage,
             this
         )
+        if (!mChatData.mIsPdf){
+            btnSendFile.visibility = View.GONE
+        }
         /*libAppBar.setBackgroundColor(
             Color.parseColor(
                 ChatLibrary.instance.mColor
