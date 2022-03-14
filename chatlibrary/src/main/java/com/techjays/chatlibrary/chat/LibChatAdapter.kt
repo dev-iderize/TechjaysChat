@@ -45,6 +45,7 @@ class LibChatAdapter(
     private val DOCUMENT_TYPE_SENT = 3
     private val DOCUMENT_TYPE_RECIEVED = 4
     private var isVisibleCheckbox = false
+    private val MESSAGE_TYPE_NOTIFICATION = 9
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return if (viewType == MESSAGE_TYPE_SENT) {
@@ -72,14 +73,20 @@ class LibChatAdapter(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.lib_item_video_left, parent, false)
             ItemViewHolder(view)
-        } else {
+        } else if (viewType == MESSAGE_TYPE_SENT_VIDEO) {
             val view =
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.lib_item_video_right, parent, false)
             ItemViewHolder(view)
+        }else {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.lib_item_auto_notification, parent, false)
+            ItemViewHolder(view)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(
         holder: ItemViewHolder,
         @SuppressLint("RecyclerView") position: Int
@@ -97,11 +104,11 @@ class LibChatAdapter(
 
         holder.mChatItem.setOnClickListener {
 
-            if (chatList.mFileType == Constant.CHAT_TYPE_IMAGE){
+            if (chatList.mFileType == Constant.CHAT_TYPE_IMAGE) {
                 val i = Intent(mContext, LibImagePreviewActivity::class.java)
                 i.putExtra("url_data", chatList.mMessage)
                 mContext.startActivity(i)
-            }else if (chatList.mFileType == Constant.CHAT_TYPE_VIDEO){
+            } else if (chatList.mFileType == Constant.CHAT_TYPE_VIDEO) {
                 val i = Intent(mContext, LibVideoPreviewActivity::class.java)
                 i.putExtra("url_data", chatList.mMessage)
                 mContext.startActivity(i)
@@ -136,7 +143,13 @@ class LibChatAdapter(
             )
             holder.mName.text = mChatData.mReceiverFullName
         }
-        holder.txMessage.text = chatList.mMessage
+        if (chatList.mMessageType == Constant.CHAT_TYPE_NOTIFICATION) {
+            if (chatList.mIsSentByMyself)
+                holder.txMessage.text = "You have ${chatList.mMessage}"
+            else
+                holder.txMessage.text = "${mChatData.mReceiverFullName} has ${chatList.mMessage}"
+        } else
+            holder.txMessage.text = chatList.mMessage
         Utility.loadUserImage(
             chatList.mFileThumbNail,
             holder.mThumbNail,
@@ -186,18 +199,21 @@ class LibChatAdapter(
         var mCheckBox: CheckBox = view.findViewById(R.id.check_box_delete)
         var mProfile: CircleImageView = view.findViewById(R.id.userImage)
         var mThumbNail: ImageView = view.findViewById(R.id.lib_thumbnail)
-        var mTime:TextView = view.findViewById(R.id.tv_time)
+        var mTime: TextView = view.findViewById(R.id.tv_time)
 
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (mData[position].mIsSentByMyself) {
             var type = 1
-            if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
+            if (mData[position].mMessageType == Constant.CHAT_TYPE_NOTIFICATION){
+                type = MESSAGE_TYPE_NOTIFICATION
+            }
+            else if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
                 type = MESSAGE_TYPE_SENT
             } else {
                 Utility.log(mData[position].mMessageType)
-                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE|| mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
+                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
                     type = MESSAGE_TYPE_SENT_IMAGE
                 } else {
                     type = MESSAGE_TYPE_SENT_VIDEO
@@ -206,7 +222,10 @@ class LibChatAdapter(
             type
         } else {
             var type = 0
-            if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
+            if (mData[position].mMessageType == Constant.CHAT_TYPE_NOTIFICATION){
+                type = MESSAGE_TYPE_NOTIFICATION
+            }
+            else if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
                 type = MESSAGE_TYPE_RECIEVED
             } else {
                 if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
