@@ -53,6 +53,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             if (result.resultCode == 1002) {
                 setResult(1001)
                 finish()
+            }else if (result.resultCode == 10050){
+                finish()
             }
         }
 

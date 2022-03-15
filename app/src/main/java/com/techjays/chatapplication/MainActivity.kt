@@ -44,9 +44,9 @@ class MainActivity : AppCompatActivity() {
 
         val launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == 1001) {
+                /*if (result.resultCode == 1001) {
                     AppDialogs.showSnackbar(mButton, "Got Result!")
-                }
+                }*/
             }
 
         mButton.setOnClickListener {
@@ -61,13 +61,13 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mSocketUrl = "ws://18.217.53.197:8765/"
             chatUserData.mIsImage = true
             chatUserData.mIsVideo = true
-            chatUserData.mItemId = "2895"
+            chatUserData.mItemId = "2992"
             chatUserData.mSenderUserId = "212"
             chatUserData.mSenderFullName = "Anugraha tv"
             chatUserData.mSenderProfilePicUrl =
                 "https://d1r0dpdlaij12c.cloudfront.net/media/public/profile/images/profile212.png"
 
-            chatUserData.mReceiverUserId = "245"
+            chatUserData.mReceiverUserId = "220"
             chatUserData.mReceiverFullName = "Srinath"
             chatUserData.mReceiverProfilePicUrl = "https://www.srinathdev.me/img/night.png"
             chatUserData.mHeaderColor = "#443567"

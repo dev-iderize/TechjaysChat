@@ -69,6 +69,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     //private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var libAppBar: LinearLayout
     private lateinit var libImgBack: ImageView
+    private lateinit var libHeader:LinearLayout
     private lateinit var libSendButton: ImageView
     private lateinit var libChatEdit: EditText
     private lateinit var libTxtName: TextView
@@ -153,11 +154,17 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         mBtnFile = findViewById(R.id.btnSendFile)
         libBtnImage = findViewById(R.id.btnSendImage)
         libBtnVideo = findViewById(R.id.btn_send_video)
+        libHeader = findViewById(R.id.header_part)
 
         libBtnVideo.setOnClickListener {
             val intent = Intent(this, InAppCameraActivity::class.java)
             intent.putExtra("video_limit", false)
             startActivityForResult(intent, 5)
+        }
+
+        libHeader.setOnClickListener {
+            setResult(1002)
+            finish()
         }
 
         clickListener()
@@ -339,6 +346,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         when (v) {
             libImgBack -> {
                 onBackPressed()
+            }
+            libHeader ->{
+                setResult(1002)
+                finish()
             }
             libBtnImage -> {
                 /*  val options: Options = Options.init()
@@ -632,7 +643,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
     override fun onBackPressed() {
-        setResult(1002)
+        setResult(10050)
         finish()
         super.onBackPressed()
     }
