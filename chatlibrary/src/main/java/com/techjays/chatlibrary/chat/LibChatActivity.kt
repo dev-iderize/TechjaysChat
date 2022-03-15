@@ -270,8 +270,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
                             listener.sendChatFile(
                                 mLibChatSocketMessages.mFile,
-                                "245",
-                                CHAT_TYPE_FILE, mLibChatSocketMessages, "2895"
+                                mChatData.mReceiverUserId,
+                                CHAT_TYPE_FILE, mLibChatSocketMessages, mChatData.mItemId
                             )
 
 
