@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -47,6 +48,14 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     private lateinit var mDelete: ImageView
     private var mChatData = LibChatUserModel()
 
+    val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == 1002) {
+                setResult(1001)
+                finish()
+            }
+        }
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +70,10 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             val isPicMessage = data.getBooleanExtra("is_profile_pic",true)
             val color = data.getStringExtra("color").toString()*/
 
-            mChatData = Gson().fromJson(data.getStringExtra("chat_data").toString(), LibChatUserModel::class.java)
+            mChatData = Gson().fromJson(
+                data.getStringExtra("chat_data").toString(),
+                LibChatUserModel::class.java
+            )
 
             val userData =
                 Gson().fromJson(data.getStringExtra("user_data").toString(), LibUser::class.java)
@@ -106,19 +118,19 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         mRecyclerView = findViewById(R.id.recycler_chat_list)
         mSwipe = findViewById(R.id.chat_swipe)
         mDelete = findViewById(R.id.delete_button)
-        if (mChatData.mIsChatList){
+        if (mChatData.mIsChatList) {
             initRecycler()
             getChatList(true)
             initObserver()
             clickListener()
-        }else
+        } else
             initChatActivity()
     }
 
     private fun initChatActivity() {
         val i = Intent(this, LibChatActivity::class.java)
         i.putExtra("chat_user", Gson().toJson(mChatData))
-        startActivity(i)
+        resultLauncher.launch(i)
     }
 
     private fun start() {
@@ -143,7 +155,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
     private fun initObserver() {
         if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
-            mLibChatViewModel.getChatObserver().observe(this, {
+            mLibChatViewModel.getChatObserver().observe(this) {
                 AppDialogs.hideProgressDialog()
                 mSwipe.isRefreshing = false
                 when (it?.requestType) {
@@ -171,7 +183,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
-            })
+            }
         }
     }
 
@@ -220,6 +232,8 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
     }
 
     override fun initChatMessage(selectedLibChat: LibChatList) {
+
+
         if (mData.size > 0) {
             try {
                 mData[mData.indexOf(selectedLibChat)].newMessage = false
@@ -230,8 +244,7 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
         }
         val i = Intent(this, LibChatActivity::class.java)
         i.putExtra("chat_user", selectedLibChat)
-        startActivity(i)
-        finish()
+        resultLauncher.launch(i)
     }
 
     override fun initDelete() {

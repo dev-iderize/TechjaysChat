@@ -57,6 +57,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     LibChatAdapter.Callback, PickiTCallbacks {
 
     private lateinit var mRecyclerView: RecyclerView
+
     /*lateinit var mSelectedLibChatUser: LibChatList*/
     private var mChatData = LibChatUserModel()
     lateinit var path: Uri
@@ -104,12 +105,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat)
         if (intent != null) {
-           /* if (intent.extras?.containsKey("chat_user")!!) {
-                mChatData = intent.extras?.get("chat_user") as LibChatUserModel
-            }*/
+            /* if (intent.extras?.containsKey("chat_user")!!) {
+                 mChatData = intent.extras?.get("chat_user") as LibChatUserModel
+             }*/
             val data = intent
 
-            mChatData =  Gson().fromJson(data.getStringExtra("chat_user").toString(), LibChatUserModel::class.java)
+            mChatData = Gson().fromJson(
+                data.getStringExtra("chat_user").toString(),
+                LibChatUserModel::class.java
+            )
         }
         when (ChatLibrary.instance.mColor) {
             "#FF878E" -> {
@@ -177,7 +181,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             libProfileImage,
             this
         )
-        if (!mChatData.mIsPdf){
+        if (!mChatData.mIsPdf) {
             btnSendFile.visibility = View.GONE
         }
         /*libAppBar.setBackgroundColor(
@@ -201,7 +205,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager
-        mAdapterLib = LibChatAdapter(this, mData,mChatData, this)
+        mAdapterLib = LibChatAdapter(this, mData, mChatData, this)
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
         mRecyclerView.adapter = mAdapterLib
@@ -225,7 +229,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
     private fun initObserver() {
         if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
-            mLibChatViewModel.getChatObserver().observe(this, {
+            mLibChatViewModel.getChatObserver().observe(this) {
                 AppDialogs.hideProgressDialog()
                 when (it?.requestType) {
                     LibAppServices.API.delete_messages.hashCode() -> {
@@ -242,13 +246,13 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
-            })
+            }
         }
     }
 
     private fun initFileObserver() {
         if (!mLibChatViewModel.getChatFileObserver().hasActiveObservers()) {
-            mLibChatViewModel.getChatFileObserver().observe(this, {
+            mLibChatViewModel.getChatFileObserver().observe(this) {
                 AppDialogs.hideProgressDialog()
                 when (it?.requestType) {
                     LibAppServices.API.upload_file.hashCode() -> {
@@ -260,14 +264,14 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                             listener.sendChatFile(
                                 mLibChatSocketMessages.mFile,
                                 "245",
-                                CHAT_TYPE_FILE,mLibChatSocketMessages,"2895"
+                                CHAT_TYPE_FILE, mLibChatSocketMessages, "2895"
                             )
 
 
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }
                 }
-            })
+            }
         }
     }
 
@@ -276,9 +280,14 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         if (checkInternet()) {
             if (show)
                 AppDialogs.showProgressDialog(this)
-            mLibChatViewModel.getChatMessage(mOffset, mLimit, mChatData.mReceiverUserId,mChatData.mItemId)
+            mLibChatViewModel.getChatMessage(
+                mOffset,
+                mLimit,
+                mChatData.mReceiverUserId,
+                mChatData.mItemId
+            )
             if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
-                mLibChatViewModel.getChatObserver().observe(this, {
+                mLibChatViewModel.getChatObserver().observe(this) {
                     AppDialogs.hideProgressDialog()
                     //mSwipe.isRefreshing = false
                     if (it?.requestType == LibAppServices.API.get_chat_message.hashCode() && it.responseStatus!!) {
@@ -298,7 +307,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         AppDialogs.hideProgressDialog()
                         //mSwipe.isRefreshing = false
                     }
-                })
+                }
             }
         }
 
@@ -369,7 +378,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     listener.sendChat(
                         libChatEdit.text.toString(),
                         "245",
-                        CHAT_TYPE_MESSAGE,"2895"
+                        CHAT_TYPE_MESSAGE, "2895"
                     )
                 }
 
@@ -484,7 +493,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             mLibChatViewModel.deleteMessages(
                 mChatData.mReceiverUserId.toInt(),
                 deleteforme,
-                TextUtils.join(",", id),mChatData.mItemId
+                TextUtils.join(",", id), mChatData.mItemId
             )
             id.clear()
         } else AppDialogs.showSnackbar(
@@ -567,7 +576,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
                 }
             } else {
-                if (data?.data != null){
+                if (data?.data != null) {
                     val uri: Uri = data?.data!!
                     isResume = false
                     pickiT?.getPath(data?.data, 31)
@@ -608,10 +617,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         Reason: String?
     ) {
         if (path != null) {
-            if (isResume){
+            if (isResume) {
                 mResumePath = path
                 initFileUpload()
-            }else{
+            } else {
                 if (checkInternet()) {
                     AppDialogs.showProgressDialog(this)
                     mLibChatViewModel.uploadImageVideo(path, "image")
@@ -620,5 +629,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
             /*Utility.log(path)*/
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(1002)
+        finish()
+        super.onBackPressed()
     }
 }

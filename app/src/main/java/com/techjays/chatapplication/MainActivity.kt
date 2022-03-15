@@ -1,20 +1,24 @@
 package com.techjays.chatapplication
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.chatlist.LibChatListActivity
 import com.techjays.chatlibrary.chatlist.LibChatListFragment
+import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.Utility
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mButton: Button
     private lateinit var mButton2: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +41,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         mButton = findViewById(R.id.nav_activity)
+
+        val launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == 1001) {
+                    AppDialogs.showSnackbar(mButton, "Got Result!")
+                }
+            }
+
         mButton.setOnClickListener {
             val intent = Intent(this@MainActivity, LibChatListActivity::class.java)
 
             val chatUserData = ChatUserModel()
-            chatUserData.mChatToken = "gAAAAABiKYs_aZttpFiw9LbuuP8wShJcQPvFOxVD6y3qHdgoaWHqgyPwFuWdywKt58cmz2qTYPuItvIicHM--VvHn-M2TFFVpBlHL1lWAKJi4XFwstBi5Mqb1DO2oqLNHObbd4GTmIbr7Ew7r3CsSUvEUMr6jOY6JcZOXQRjR7q7hMeqGIdLLJNo4CQuUI1wwOik051XNxOWOx-V56oH9bvBz9zh0NLBGOLaiamLzDM44POOiOh5i45PYhe4eJ2RpsOmSC5EY5iJNZdw1pYzMm2sHCNhnSW-pA=="
+            chatUserData.mChatToken =
+                "gAAAAABiKYs_aZttpFiw9LbuuP8wShJcQPvFOxVD6y3qHdgoaWHqgyPwFuWdywKt58cmz2qTYPuItvIicHM--VvHn-M2TFFVpBlHL1lWAKJi4XFwstBi5Mqb1DO2oqLNHObbd4GTmIbr7Ew7r3CsSUvEUMr6jOY6JcZOXQRjR7q7hMeqGIdLLJNo4CQuUI1wwOik051XNxOWOx-V56oH9bvBz9zh0NLBGOLaiamLzDM44POOiOh5i45PYhe4eJ2RpsOmSC5EY5iJNZdw1pYzMm2sHCNhnSW-pA=="
 
             chatUserData.mAuthToken = "1c40b92d06bc7ec7744b60bd04e86ad52332264d"
             chatUserData.mBaseUrl = "https://dev-myvidrivals.myvidhire.com/api/v1/"
@@ -82,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
             intent.putExtra("chat_data", Gson().toJson(chatUserData))
 
-            startActivity(intent)
+            launcher.launch(intent)
         }
         mButton2 = findViewById(R.id.nav_fragment)
         mButton2.setOnClickListener {
