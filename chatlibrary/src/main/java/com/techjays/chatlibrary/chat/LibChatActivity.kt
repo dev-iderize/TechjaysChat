@@ -388,8 +388,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 } else {
                     listener.sendChat(
                         libChatEdit.text.toString(),
-                        "245",
-                        CHAT_TYPE_MESSAGE, "2895"
+                        mChatData.mReceiverUserId,
+                        CHAT_TYPE_MESSAGE, mChatData.mItemId
                     )
                 }
 
