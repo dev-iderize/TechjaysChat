@@ -161,7 +161,7 @@ object AppDialogs {
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     fun showProgressDialog(context: Context) {
-        showProgressDialog(context, true)
+        showProgressDialog(context, false)
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

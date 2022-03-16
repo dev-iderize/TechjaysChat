@@ -272,14 +272,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         if (it.responseStatus!!) {
                             mLibChatSocketMessages = (it as LibChatSocketMessages).mData!!
                             mLibChatSocketMessages.mMessageType = CHAT_TYPE_FILE
-
-
                             listener.sendChatFile(
                                 mLibChatSocketMessages.mFile,
                                 mChatData.mReceiverUserId,
                                 CHAT_TYPE_FILE, mLibChatSocketMessages, mChatData.mItemId
                             )
-
 
                         } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
                     }

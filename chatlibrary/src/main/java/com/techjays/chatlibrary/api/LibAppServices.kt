@@ -146,9 +146,9 @@ class LibAppServices {
             if (okHttpClient == null) {
                 okHttpClient = OkHttpClient.Builder()
                     .cookieJar(CookieJar.NO_COOKIES)
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .connectTimeout(90, TimeUnit.SECONDS)
+                    .readTimeout(90, TimeUnit.SECONDS)
+                    .writeTimeout(90, TimeUnit.SECONDS)
                     .build()
             }
 
