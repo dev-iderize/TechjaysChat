@@ -27,4 +27,5 @@ class ChatUserModel {
     //vidrivals model
     var mBidAmount = ""
     var mEventName = ""
+    var mIsTypeMessage = true
 }

@@ -167,6 +167,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             finish()
         }
 
+        if (!mChatData.mIsTypeMessage)
+            r1.visibility = View.GONE
+        else
+            r1.visibility = View.VISIBLE
+
+
         clickListener()
         initRecycler()
         initObserver()
