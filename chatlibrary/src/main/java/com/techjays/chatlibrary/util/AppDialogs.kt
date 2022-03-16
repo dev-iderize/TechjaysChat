@@ -172,6 +172,7 @@ object AppDialogs {
         val view =
             inflater.inflate(com.techjays.chatlibrary.R.layout.lib_dialog_progress_custom, null)
         progressDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
         progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         progressDialog!!.setContentView(view)
         progressDialog!!.setCancelable(isCancelable)

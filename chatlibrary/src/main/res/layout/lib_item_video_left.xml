@@ -80,6 +80,7 @@
                     android:id="@+id/lib_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:background="@drawable/right_one_side_rounded"
                     android:contentDescription="@string/app_name" />
 

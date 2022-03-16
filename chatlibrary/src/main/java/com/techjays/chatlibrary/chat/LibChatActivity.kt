@@ -141,6 +141,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     override fun init() {
         mLibChatViewModel = LibChatViewModel(this)
         pickiT = PickiT(this, this, this)
+        Utility.statusBarColor(this.window, this, R.color.app_dark_blue_vidrivals)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         // mSwipe = findViewById(R.id.chat_swipe_refresh)
@@ -186,7 +187,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     @SuppressLint("SetTextI18n")
     private fun initView() {
         libTxtName.text = mChatData.mReceiverFullName
-        lib_username_vs.text = "${mChatData.mSenderFullName} ${mChatData.mReceiverFullName}"
+        lib_username_vs.text = "${mChatData.mSenderFullName} vs ${mChatData.mReceiverFullName}"
         lib_event_name.text = mChatData.mEventName
         lib_total_bid.text = "Total bid: ${mChatData.mBidAmount}"
         Utility.loadUserImage(
