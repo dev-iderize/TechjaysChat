@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.provider.Settings
+import android.renderscript.ScriptGroup
+import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -386,7 +388,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             libSendButton -> {
                 if (Utility.isOpenRecently())
                     return
-                if (libChatEdit.text.isEmpty()) {
+
+                var str = libChatEdit.text.toString()
+
+                if (libChatEdit.text.trim().isEmpty() || str=="") {
                     libChatEdit.error = "Enter your message"
                     libChatEdit.requestFocus()
                 } else {
