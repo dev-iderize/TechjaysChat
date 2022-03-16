@@ -128,7 +128,7 @@ class LibChatAdapter(
         }
 
         if (chatList.mIsSentByMyself) {
-            Utility.loadUserImage(
+            Utility.loadUserImageWithCache(
                 mChatData.mSenderProfilePicUrl,
                 holder.mProfile,
                 mContext
@@ -136,7 +136,7 @@ class LibChatAdapter(
             holder.mName.text = mChatData.mSenderFullName
 
         } else {
-            Utility.loadUserImage(
+            Utility.loadUserImageWithCache(
                 mChatData.mReceiverProfilePicUrl,
                 holder.mProfile,
                 mContext
@@ -150,7 +150,7 @@ class LibChatAdapter(
                 holder.txMessage.text = "${mChatData.mReceiverFullName} has ${chatList.mMessage}"
         } else
             holder.txMessage.text = chatList.mMessage
-        Utility.loadUserImage(
+        Utility.loadUserImageWithCache(
             chatList.mFileThumbNail,
             holder.mThumbNail,
             mContext

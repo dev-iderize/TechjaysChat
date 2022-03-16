@@ -21,6 +21,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -258,6 +260,12 @@ object Utility {
 
     }
 
+    fun loadUserImageWithCache(aURL: String?, image: ImageView, context: Context) {
+        val placeHolder: Int = R.drawable.lib_ic_user_placeholder
+        loadUserImageWithCache(aURL, image, placeHolder,context)
+    }
+
+
     /**
      * Load images
      */
@@ -281,6 +289,33 @@ object Utility {
                         .fit().centerCrop()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .into(image)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun loadUserImageWithCache(aURL: String?, image: ImageView, placeHolder: Int,context: Context) {
+        try {
+            if (aURL.isNullOrEmpty()) {
+                image.setImageResource(placeHolder)
+            } else {
+                if (aURL.contains("http")) {
+                    Glide
+                        .with(context)
+                        .load(aURL )
+                        .diskCacheStrategy( DiskCacheStrategy.ALL )
+                        .fitCenter()
+                        .into(image);
+                } else {
+                    Picasso.get().load(File(aURL))
+                        .placeholder(placeHolder)
+                        .error(placeHolder)
+                        .fit().centerCrop()
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .into(image)
                 }
             }
