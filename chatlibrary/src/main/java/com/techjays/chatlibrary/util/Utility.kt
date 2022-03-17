@@ -1,6 +1,7 @@
 package com.techjays.chatlibrary.util
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.*
@@ -15,10 +16,12 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
@@ -38,6 +41,18 @@ object Utility {
 
     fun formatDecimal(value: Double): String {
         return df.format(value)
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setBackgroundDrawableResource(window: Window, @DrawableRes drawableRes: Int) {
+        val context = window.context
+        val backgroundDrawable = ContextCompat.getDrawable(context, drawableRes) ?: return
+        val transparentColor = ContextCompat.getColor(context, android.R.color.transparent)
+        window.apply {
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = transparentColor
+            setBackgroundDrawable(backgroundDrawable)
+        }
     }
 
     @SuppressLint("MissingPermission")

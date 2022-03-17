@@ -145,7 +145,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     override fun init() {
         mLibChatViewModel = LibChatViewModel(this)
         pickiT = PickiT(this, this, this)
-        Utility.statusBarColor(this.window, this, R.color.app_dark_blue_vidrivals)
+        Utility.setBackgroundDrawableResource(this.window, R.drawable.img_bg)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         // mSwipe = findViewById(R.id.chat_swipe_refresh)
