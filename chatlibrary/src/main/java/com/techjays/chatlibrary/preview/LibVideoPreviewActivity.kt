@@ -1,22 +1,30 @@
 package com.techjays.chatlibrary.preview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.techjays.chatlibrary.R
+import kotlinx.android.synthetic.main.activity_lib_video_preview.*
 
 class LibVideoPreviewActivity : AppCompatActivity() {
+
+    companion object{
+        var mCallback: Callback? = null
+
+        fun newInstance(callback: Callback?): LibVideoPreviewActivity {
+            mCallback = callback
+            return LibVideoPreviewActivity()
+        }
+    }
 
     lateinit var mBack: ImageView
     var mPlayer: ExoPlayer? = null
@@ -28,9 +36,11 @@ class LibVideoPreviewActivity : AppCompatActivity() {
         init()
     }
 
-    private fun init(){
+    private fun init() {
         val data = intent
         val mUrl = data.getStringExtra("url_data")
+        val isUpload = data.getBooleanExtra("preview", false)
+
         mBack = findViewById(R.id.libImgBack)
         playerView = findViewById(R.id.videoView)
 
@@ -39,6 +49,21 @@ class LibVideoPreviewActivity : AppCompatActivity() {
             mPlayer!!.stop()
             mPlayer = null
             onBackPressed()
+        }
+
+        if (isUpload) {
+            libuploadButton.visibility = View.VISIBLE
+        } else {
+            libuploadButton.visibility = View.GONE
+        }
+
+        libuploadButton.setOnClickListener {
+            mPlayer!!.release()
+            mPlayer!!.stop()
+            mPlayer = null
+            mCallback?.videoPreviewCallback(mUrl!!)
+            onBackPressed()
+
         }
 
         mPlayer = ExoPlayer.Builder(this).build()
@@ -57,5 +82,9 @@ class LibVideoPreviewActivity : AppCompatActivity() {
 
         return ProgressiveMediaSource.Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(mVideo))
+    }
+
+    interface Callback {
+        fun videoPreviewCallback(mUrl: String)
     }
 }

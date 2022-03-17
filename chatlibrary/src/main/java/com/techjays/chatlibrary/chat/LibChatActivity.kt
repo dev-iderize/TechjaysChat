@@ -39,6 +39,7 @@ import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
 import com.techjays.chatlibrary.model.*
 import com.techjays.chatlibrary.model.common.Option
+import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
 import com.techjays.chatlibrary.util.*
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import com.techjays.inappcamera.InAppCameraActivity
@@ -56,9 +57,10 @@ import java.util.*
 
 
 class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack,
-    LibChatAdapter.Callback, PickiTCallbacks {
+    LibChatAdapter.Callback, PickiTCallbacks, LibVideoPreviewActivity.Callback {
 
     private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mPath:String
 
     /*lateinit var mSelectedLibChatUser: LibChatList*/
     private var mChatData = LibChatUserModel()
@@ -589,13 +591,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             } else if (requestCode == 5) {
                 if (resultCode === RESULT_OK) { // Activity.RESULT_OK
                     Log.d("check", data!!.getStringExtra("path")!!)
-                    if (checkInternet()) {
-                        AppDialogs.showProgressDialog(this)
-                        mLibChatViewModel.uploadImageVideo(data!!.getStringExtra("path")!!, "video")
-                    }
-
+                    showPreview(data!!.getStringExtra("path")!!)
+                    mPath = data!!.getStringExtra("path")!!
                 }
-            } else {
+            }
+             else {
                 if (data?.data != null) {
                     val uri: Uri = data?.data!!
                     isResume = false
@@ -607,6 +607,14 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         }
 
 
+    }
+
+    private fun showPreview(path: String) {
+        LibVideoPreviewActivity.newInstance(this)
+        val i = Intent(this, LibVideoPreviewActivity::class.java)
+        i.putExtra("url_data", path)
+        i.putExtra("preview",true)
+        startActivityForResult(i,6000)
     }
 
 
@@ -655,5 +663,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         setResult(10050)
         finish()
         super.onBackPressed()
+    }
+
+    override fun videoPreviewCallback(mUrl: String) {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(this)
+            mLibChatViewModel.uploadImageVideo(mUrl, "video")
+        }
     }
 }

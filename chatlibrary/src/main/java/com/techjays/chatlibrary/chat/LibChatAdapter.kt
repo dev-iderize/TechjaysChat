@@ -111,6 +111,7 @@ class LibChatAdapter(
             } else if (chatList.mFileType == Constant.CHAT_TYPE_VIDEO) {
                 val i = Intent(mContext, LibVideoPreviewActivity::class.java)
                 i.putExtra("url_data", chatList.mMessage)
+                i.putExtra("preview",false)
                 mContext.startActivity(i)
             }
 

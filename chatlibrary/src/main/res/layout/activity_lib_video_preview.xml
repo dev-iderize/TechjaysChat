@@ -32,6 +32,20 @@
             android:contentDescription="@string/app_name" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/libuploadButton"
+        style="@style/AppSmallButtonStyle"
+        android:layout_width="120dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:onClick="@{()->handler.onUploadClick()}"
+        android:paddingVertical="10dp"
+        android:text="@string/upload"
+        android:visibility="gone"
+        android:textColor="@color/app_only_white"
+        android:textSize="14sp" />
+
 
 
 </RelativeLayout>
