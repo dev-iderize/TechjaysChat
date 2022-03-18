@@ -263,12 +263,12 @@ object Utility {
     }
 
     fun loadUserImage(aURL: String?, image: ImageView, context: Context) {
-        val placeHolder: Int = R.drawable.lib_ic_user_placeholder
+        val placeHolder: Int = R.drawable.ic_profile_icon
         loadUserImage(aURL, image, placeHolder)
     }
 
     fun loadPlaceholder(placeholder: Int, image: ImageView) {
-        val placeholde: Int = R.drawable.lib_ic_user_placeholder
+        val placeholde: Int = R.drawable.ic_profile_icon
         Picasso.get().load(placeholder).placeholder(placeholde).fit().centerCrop()
             .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
             .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(image)
@@ -276,7 +276,7 @@ object Utility {
     }
 
     fun loadUserImageWithCache(aURL: String?, image: ImageView, context: Context) {
-        val placeHolder: Int = R.drawable.lib_ic_user_placeholder
+        val placeHolder: Int = R.drawable.ic_profile_icon
         loadUserImageWithCache(aURL, image, placeHolder,context)
     }
 

@@ -129,7 +129,7 @@ class LibChatAdapter(
         }
 
         if (chatList.mIsSentByMyself) {
-            Utility.loadUserImageWithCache(
+            Utility.loadUserImage(
                 mChatData.mSenderProfilePicUrl,
                 holder.mProfile,
                 mContext
@@ -137,7 +137,7 @@ class LibChatAdapter(
             holder.mName.text = mChatData.mSenderFullName
 
         } else {
-            Utility.loadUserImageWithCache(
+            Utility.loadUserImage(
                 mChatData.mReceiverProfilePicUrl,
                 holder.mProfile,
                 mContext
