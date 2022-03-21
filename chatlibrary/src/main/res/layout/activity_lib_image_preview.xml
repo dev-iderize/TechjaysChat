@@ -7,6 +7,13 @@
     android:background="#000000"
     tools:context=".preview.LibImagePreviewActivity">
 
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photo_view"
+        android:scaleType="fitXY"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
@@ -21,13 +28,7 @@
             android:src="@drawable/lib_ic_baseline_keyboard_arrow_left_24"
             app:tint="@color/app_only_white"
             android:contentDescription="@string/app_name" />
-    </LinearLayout>
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photo_view"
-        android:scaleType="fitXY"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </RelativeLayout>
