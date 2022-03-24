@@ -62,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/vs"
                     android:singleLine="true"
+                    android:layout_marginRight="55dp"
                     android:textColor="@color/app_only_white"
                     android:textSize="20sp" />
 
