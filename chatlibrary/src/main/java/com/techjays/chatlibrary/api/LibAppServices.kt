@@ -293,7 +293,7 @@ class LibAppServices {
             try {
                 val apiService = getClient().create(ApiInterface::class.java)
                 val mHashCode = API.upload_image
-                val mURL = API.constructVidRivalUrl(mHashCode)
+                val mURL = API.constructUrl(mHashCode)
                 val mParam = HashMap<String, RequestBody>()
 
                 val file = File(path)
