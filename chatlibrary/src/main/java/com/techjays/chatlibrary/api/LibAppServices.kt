@@ -308,7 +308,7 @@ class LibAppServices {
                 mParam["file_type"] = requestBody(type)
                 /*mParam["to_user_id"] = requestBody(chatMessages.mToUserId)*/
 
-                val call = apiService.MULTIPART(mURL, mParam, getAuthHeader(c))
+                val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
                 initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
                 Log.d("Param --> ", mParam.toString())
             } catch (e: Exception) {
