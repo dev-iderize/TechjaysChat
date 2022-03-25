@@ -60,3 +60,5 @@
 # the package com.yourcompany.models.
 # Modify this rule to fit the structure of your app.
 -keepclassmembers class com.techjays.chatlibrary.model.** { *; }
+
+-keep class com.techjays.chatlibrary.** { *; }
