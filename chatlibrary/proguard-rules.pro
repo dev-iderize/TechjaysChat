@@ -52,6 +52,10 @@
 -keep,allowobfuscation interface <1>
 
 # ------->>> Retrofit <<<------------
+
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
 # This rule will properly ProGuard all the model classes in
 # the package com.yourcompany.models.
 # Modify this rule to fit the structure of your app.
