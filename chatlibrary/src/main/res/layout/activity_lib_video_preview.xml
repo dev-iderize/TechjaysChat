@@ -39,7 +39,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
-        android:onClick="@{()->handler.onUploadClick()}"
         android:paddingVertical="10dp"
         android:text="@string/upload"
         android:visibility="gone"
