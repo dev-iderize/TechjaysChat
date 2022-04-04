@@ -547,7 +547,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mAdapterLib.notifyDataSetChanged()
                 }
                 mChatData.mReceiverUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
-                    AppDialogs.showToastshort(this,"here")
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
                     /*libChatEdit.text = "".toEditable()*/
