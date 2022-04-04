@@ -546,6 +546,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
                 }
+                mChatData.mItemId != receivedNewMessage.mData!!.mDuelId.toString() ->{
+                    val intent = Intent("ChatLibraryBuildNotification")
+                    intent.putExtra("data", Gson().toJson(receivedNewMessage))
+                    sendBroadcast(intent)
+                }
                 mChatData.mReceiverUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
@@ -553,11 +558,6 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mData.add(0, newMessage)
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
-                }
-                mChatData.mItemId != receivedNewMessage.mData!!.mDuelId!!.toString() ->{
-                    val intent = Intent("ChatLibraryBuildNotification")
-                    intent.putExtra("data", Gson().toJson(receivedNewMessage))
-                    sendBroadcast(intent)
                 }
                 else -> {
                     /*
