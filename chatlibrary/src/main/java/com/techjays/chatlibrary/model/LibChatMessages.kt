@@ -39,6 +39,9 @@ class LibChatMessages : Response() {
     @SerializedName("thumbnail_image")
     var mFileThumbNail = ""
 
+    @SerializedName("duel_id")
+    var mDuelId = 0
+
 
     //old model
 

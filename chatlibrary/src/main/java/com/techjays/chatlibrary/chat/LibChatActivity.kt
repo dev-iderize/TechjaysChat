@@ -535,6 +535,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             newMessage.mFileType = receivedNewMessage.mData!!.mFileType
             newMessage.mFileThumbNail = receivedNewMessage.mData!!.mFileThumbNail
             newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
+            newMessage.mDuelId = receivedNewMessage.mData!!.mDuelId
             Utility.log(receivedNewMessage.mMessageId + " ithu")
             when {
                 isMySelf -> {
@@ -546,12 +547,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mAdapterLib.notifyDataSetChanged()
                 }
                 mChatData.mReceiverUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
+                    AppDialogs.showToastshort(this,"here")
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
                     /*libChatEdit.text = "".toEditable()*/
                     mData.add(0, newMessage)
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
+                }
+                mChatData.mItemId != receivedNewMessage.mData!!.mDuelId!!.toString() ->{
+                    val intent = Intent("ChatLibraryBuildNotification")
+                    intent.putExtra("data", Gson().toJson(receivedNewMessage))
+                    sendBroadcast(intent)
                 }
                 else -> {
                     /*
