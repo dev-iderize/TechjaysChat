@@ -145,21 +145,13 @@ class LibChatAdapter(
         }
         if (chatList.mMessageType == Constant.CHAT_TYPE_NOTIFICATION) {
             val first = chatList.mMessage.split(" ")[0]
-            if (chatList.mIsSentByMyself)
-                holder.txMessage.text = SpannableStringBuilder().bold {
-                    append("You")
-                }.append(" have ").bold {
-                    append(first)
-                }.append(chatList.mMessage.replace(first, ""))
-            else {
-                holder.txMessage.text =
-                    SpannableStringBuilder().bold {
-                        append(mChatData.mReceiverFullName)
-                    }.append(" has ")
-                        .bold {
-                            append(first)
-                        }.append(chatList.mMessage.replace(first, ""))
-            }
+            holder.txMessage.text =
+                SpannableStringBuilder().bold {
+                    append(if (chatList.mIsSentByMyself) "You" else mChatData.mReceiverFullName)
+                }.append(if (chatList.mIsSentByMyself) " have " else " has ")
+                    .bold {
+                        append(first)
+                    }.append(chatList.mMessage.replace(first, ""))
         } else
             holder.txMessage.text = chatList.mMessage
         Utility.loadUserImageWithCache(
