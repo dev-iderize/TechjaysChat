@@ -68,11 +68,14 @@
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/left_one_side_rounded.xml" value="0.1215" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/lib_item_right_side_background.xml" value="0.1" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/drawable/right_one_side_rounded.xml" value="0.1" />
+        <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/activity_lib_image_preview.xml" value="0.1033434650455927" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_activity_chat.xml" value="0.15579710144927536" />
-        <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_image_left.xml" value="0.15579710144927536" />
+        <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_image_left.xml" value="0.25" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_image_right.xml" value="0.15579710144927536" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_left.xml" value="0.25" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_right.xml" value="0.25" />
+        <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_text_left.xml" value="0.1033434650455927" />
+        <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_text_right.xml" value="0.1033434650455927" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_video_left.xml" value="0.25" />
         <entry key="..\:/Users/srina/AndroidStudioProjects/TechjaysChat/chatlibrary/src/main/res/layout/lib_item_video_right.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22291666666666668" />
