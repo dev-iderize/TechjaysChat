@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="50dp"
         android:text="@string/time"
         android:textColor="@color/app_only_white"
         android:textSize="10sp"
