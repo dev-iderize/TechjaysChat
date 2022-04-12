@@ -64,19 +64,7 @@
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
 
-                <TextView
-                    android:id="@+id/tv_time"
-                    style="@style/SubTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
-                    android:text="@string/time"
-                    android:textColor="@color/app_only_white"
-                    android:textSize="10sp"
-                    tools:ignore="SmallSp" />
+
             </RelativeLayout>
 
             <TextView
@@ -86,6 +74,19 @@
                 android:visibility="gone" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/SubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/userImage"
+            android:layout_below="@id/message_layout"
+            android:layout_marginTop="10dp"
+            android:text="@string/time"
+            android:textColor="@color/app_only_white"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
 
     </RelativeLayout>
 

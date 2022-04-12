@@ -61,21 +61,24 @@
                 android:textSize="14sp"
                 tools:text="message" />
 
-            <TextView
-                android:id="@+id/tv_time"
-                style="@style/SubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="10dp"
-                android:text="@string/time"
-                android:textColor="@color/app_only_white"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
+
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/SubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/time"
+        android:textColor="@color/app_only_white"
+        android:textSize="10sp"
+        tools:ignore="SmallSp" />
 
     <ImageView
         android:visibility="gone"
