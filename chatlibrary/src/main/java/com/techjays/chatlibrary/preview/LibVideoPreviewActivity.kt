@@ -87,4 +87,11 @@ class LibVideoPreviewActivity : AppCompatActivity() {
     interface Callback {
         fun videoPreviewCallback(mUrl: String)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        mPlayer!!.release()
+        mPlayer!!.stop()
+        mPlayer = null
+    }
 }
