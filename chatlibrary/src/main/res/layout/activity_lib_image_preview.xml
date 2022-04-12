@@ -5,15 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:orientation="vertical"
     tools:context=".preview.LibImagePreviewActivity">
-
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photo_view"
-        android:layout_width="380dp"
-        android:layout_height="550dp"
-        android:scaleType="fitXY"
-        android:layout_centerInParent="true"
-         />
 
     <LinearLayout
         android:id="@+id/l1"
@@ -26,10 +19,31 @@
             android:id="@+id/libImgBack"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/lib_ic_baseline_keyboard_arrow_left_24"
-            app:tint="@color/app_only_white"
-            android:contentDescription="@string/app_name" />
+            app:tint="@color/app_only_white" />
 
     </LinearLayout>
+
+    <com.jsibbold.zoomage.ZoomageView
+        android:id="@+id/photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/l1"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        app:zoomage_doubleTapToZoom="true"
+        app:zoomage_maxScale="8"
+        app:zoomage_minScale="0.1"
+        app:zoomage_restrictBounds="true"
+        app:zoomage_translatable="true"
+        app:zoomage_zoomable="true" />
+
+    <!-- <com.github.chrisbanes.photoview.PhotoView
+         android:id="@+id/photo_view"
+         android:layout_gravity="center"
+         android:scaleType=""
+         android:layout_width="match_parent"
+         android:layout_height="match_parent" />-->
 
 </RelativeLayout>
