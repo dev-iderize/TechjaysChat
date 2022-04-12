@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="5dp"
-    android:paddingVertical="15dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingVertical="15dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -34,6 +34,7 @@
             android:background="@drawable/bg_gradient"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginStart="5dp"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -61,8 +62,6 @@
                 android:textSize="14sp"
                 tools:text="message" />
 
-
-
         </LinearLayout>
 
     </LinearLayout>
@@ -73,19 +72,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
         android:text="@string/time"
         android:textColor="@color/app_only_white"
         android:textSize="10sp"
         tools:ignore="SmallSp" />
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/lib_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/right_one_side_rounded"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        android:visibility="gone" />
 
 </LinearLayout>
