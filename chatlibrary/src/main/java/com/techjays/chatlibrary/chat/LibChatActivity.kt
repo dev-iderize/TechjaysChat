@@ -60,7 +60,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     LibChatAdapter.Callback, PickiTCallbacks, LibVideoPreviewActivity.Callback {
 
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mPath:String
+    private lateinit var mPath: String
 
     /*lateinit var mSelectedLibChatUser: LibChatList*/
     private var mChatData = LibChatUserModel()
@@ -69,11 +69,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     var mLimit = 6
     var isNextLink = false
     private lateinit var mListener: EndlessRecyclerViewScrollListener
+    var isLast = true
 
     //private lateinit var mSwipe: SwipeRefreshLayout
     private lateinit var libAppBar: LinearLayout
     private lateinit var libImgBack: ImageView
-    private lateinit var libHeader:LinearLayout
+    private lateinit var libHeader: LinearLayout
     private lateinit var libSendButton: ImageView
     private lateinit var libChatEdit: EditText
     private lateinit var libTxtName: TextView
@@ -310,6 +311,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         if (mOffset == 0)
                             mData.clear()
                         mData.addAll(it.mData)
+                        if (isLast) {
+                            isLast = false
+                            mRecyclerView.smoothScrollToPosition(0)
+                        }
                         mAdapterLib.notifyDataSetChanged()
                         /* if (mData.isNotEmpty())
                              Handler(Looper.myLooper()!!).postDelayed({
@@ -355,7 +360,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             libImgBack -> {
                 onBackPressed()
             }
-            libHeader ->{
+            libHeader -> {
                 setResult(1002)
                 finish()
             }
@@ -393,7 +398,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
                 var str = libChatEdit.text.toString()
 
-                if (libChatEdit.text.trim().isEmpty() || str=="") {
+                if (libChatEdit.text.trim().isEmpty() || str == "") {
                     libChatEdit.error = "Enter your message"
                     libChatEdit.requestFocus()
                 } else {
@@ -546,7 +551,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
                 }
-                mChatData.mItemId != receivedNewMessage.mData!!.mDuelId.toString() ->{
+                mChatData.mItemId != receivedNewMessage.mData!!.mDuelId.toString() -> {
                     val intent = Intent("ChatLibraryBuildNotification")
                     intent.putExtra("data", Gson().toJson(receivedNewMessage))
                     sendBroadcast(intent)
@@ -600,8 +605,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     showPreview(data!!.getStringExtra("path")!!)
                     mPath = data!!.getStringExtra("path")!!
                 }
-            }
-             else {
+            } else {
                 if (data?.data != null) {
                     val uri: Uri = data?.data!!
                     isResume = false
@@ -619,8 +623,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         LibVideoPreviewActivity.newInstance(this)
         val i = Intent(this, LibVideoPreviewActivity::class.java)
         i.putExtra("url_data", path)
-        i.putExtra("preview",true)
-        startActivityForResult(i,6000)
+        i.putExtra("preview", true)
+        startActivityForResult(i, 6000)
     }
 
 
