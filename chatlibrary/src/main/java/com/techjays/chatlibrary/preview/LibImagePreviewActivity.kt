@@ -15,7 +15,7 @@ class LibImagePreviewActivity : AppCompatActivity() {
         val data = intent
         val mUrl = data.getStringExtra("url_data")
 
-        Utility.loadUserImage(
+        Utility.loadUserImageWithCache(
             mUrl, photo_view,
             this
         )
