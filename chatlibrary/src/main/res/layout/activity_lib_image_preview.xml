@@ -9,10 +9,11 @@
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photo_view"
+        android:layout_width="380dp"
+        android:layout_height="550dp"
         android:scaleType="fitXY"
         android:layout_centerInParent="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+         />
 
     <LinearLayout
         android:id="@+id/l1"

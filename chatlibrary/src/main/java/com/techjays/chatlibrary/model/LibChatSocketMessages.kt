@@ -60,4 +60,7 @@ open class LibChatSocketMessages : Response() {
 
     @SerializedName("file_name")
     var mFileName = ""
+
+    @SerializedName("event_name")
+    var mEventName = ""
 }
