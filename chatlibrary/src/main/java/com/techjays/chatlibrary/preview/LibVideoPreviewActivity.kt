@@ -58,9 +58,6 @@ class LibVideoPreviewActivity : AppCompatActivity() {
         }
 
         libuploadButton.setOnClickListener {
-            mPlayer!!.release()
-            mPlayer!!.stop()
-            mPlayer = null
             mCallback?.videoPreviewCallback(mUrl!!)
             onBackPressed()
 
