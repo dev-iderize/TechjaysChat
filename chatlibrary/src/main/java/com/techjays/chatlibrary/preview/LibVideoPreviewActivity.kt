@@ -45,9 +45,9 @@ class LibVideoPreviewActivity : AppCompatActivity() {
         playerView = findViewById(R.id.videoView)
 
         mBack.setOnClickListener {
-            mPlayer!!.release()
+            /*mPlayer!!.release()
             mPlayer!!.stop()
-            mPlayer = null
+            mPlayer = null*/
             onBackPressed()
         }
 
