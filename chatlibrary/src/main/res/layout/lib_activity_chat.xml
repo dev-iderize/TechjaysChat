@@ -184,14 +184,14 @@
                 android:contentDescription="@string/app_name"
                 android:padding="3dp"
                 android:rotation="360"
-                android:src="@drawable/ic_camera_" />
+                android:src="@drawable/ic_camera_icon" />
 
             <ImageView
                 android:id="@+id/btn_send_video"
                 android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_height="16dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_video_"
+                android:background="@drawable/ic_video_icon"
                 android:contentDescription="@string/app_name"
                 android:padding="10dp"
                 android:rotation="360" />
@@ -203,8 +203,8 @@
                 android:contentDescription="@string/app_name"
                 android:padding="6dp"
                 android:rotation="360"
-                android:src="@drawable/lib_sendwhite"
-                app:tint="@color/app_grey" />
+                android:src="@drawable/ic_send_icon"
+                />
 
         </LinearLayout>
 
