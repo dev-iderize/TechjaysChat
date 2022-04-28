@@ -4,12 +4,12 @@
     <corners android:radius="1dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/app_black" />
+        android:color="@color/app_only_white" />
     <gradient
         android:angle="270"
-        android:centerColor="@color/app_only_white"
-        android:endColor="@color/app_only_white"
-        android:startColor="@color/app_only_white" />
+        android:centerColor="@color/app_transparent"
+        android:endColor="@color/app_transparent"
+        android:startColor="@color/app_transparent" />
     <size
         android:width="20dp"
         android:height="20dp" />
