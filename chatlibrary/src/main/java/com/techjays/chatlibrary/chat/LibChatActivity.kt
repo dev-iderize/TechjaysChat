@@ -194,7 +194,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libTxtName.text = mChatData.mReceiverFullName
         lib_username_vs.text = "${mChatData.mSenderFullName} vs ${mChatData.mReceiverFullName}"
         lib_event_name.text = mChatData.mEventName
-        lib_total_bid.text = "Total bid: ${(mChatData.mBidAmount).toInt()}"
+        lib_total_bid.text = "Total bid: ${mChatData.mBidAmount}"
         Utility.loadUserImage(
             mChatData.mReceiverProfilePicUrl,
             libProfileImage,
