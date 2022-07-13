@@ -19,6 +19,8 @@ class LibChatUserModel {
     var mChatBackground = ""
     var mHeaderColor = ""
     var mAppName = ""
+    var isVideoPlay = false
+    var isVideoPLayUrl = ""
 
     //vidrivals model
     var mBidAmount = ""

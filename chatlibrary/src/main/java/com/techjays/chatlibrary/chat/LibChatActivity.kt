@@ -186,6 +186,14 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         initView()
         PermissionChecker().askAllPermissions(this, mPermission)
         getChatMessage(true)
+        if (mChatData.isVideoPlay)
+        {
+            val i = Intent(this, LibVideoPreviewActivity::class.java)
+            i.putExtra("url_data", mChatData.isVideoPLayUrl)
+            i.putExtra("preview", false)
+            startActivity(i)
+
+        }
     }
 
 

@@ -22,6 +22,8 @@ class ChatUserModel {
     var mReceiverProfilePicUrl = ""
     var mHeaderColor = ""
     var mChatBackground = ""
+    var isVideoPlay = false
+    var isVideoPLayUrl = ""
 
 
     //vidrivals model

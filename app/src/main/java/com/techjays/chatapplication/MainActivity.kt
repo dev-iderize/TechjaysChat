@@ -74,6 +74,8 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mBidAmount = "50"
             chatUserData.mEventName = "Brazil vs Argentina"
             chatUserData.mIsPdf = false
+            chatUserData.isVideoPlay = false
+            chatUserData.isVideoPLayUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
 
             /*if (mUser.mUser!!.mUserId == data.mChallengeUser!!.mUserId){
               chatUserData.mReceiverUserId = data.mAcceptedUser!!.mUserId.toString()
