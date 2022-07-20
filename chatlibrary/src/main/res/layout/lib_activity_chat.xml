@@ -114,10 +114,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:src="@drawable/bg_total_bid"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/bg_total_bid" />
 
             <ImageView
                 android:id="@+id/ic_total_bid"
@@ -190,6 +190,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:maxHeight="70dp"
+                android:textCursorDrawable="@color/app_only_white"
                 android:background="@color/chat_blue"
                 android:gravity="top|start"
                 android:hint="@string/type_message"
