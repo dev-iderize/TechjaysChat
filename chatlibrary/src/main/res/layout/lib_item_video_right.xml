@@ -14,11 +14,12 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             android:src="@color/colorPrimary"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <include layout="@layout/checkbox" />
 
@@ -26,8 +27,6 @@
             android:id="@+id/message_layout"
             android:layout_width="220dp"
             android:layout_height="120dp"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentEnd="true"
             android:layout_toStartOf="@id/userImage"
             android:background="@drawable/bg_chat_item_right"
             android:orientation="horizontal">
@@ -42,9 +41,9 @@
                     android:id="@+id/lib_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:background="@drawable/left_one_side_rounded"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY" />
+                    android:contentDescription="@string/app_name" />
 
                 <ImageView
                     android:layout_width="25dp"

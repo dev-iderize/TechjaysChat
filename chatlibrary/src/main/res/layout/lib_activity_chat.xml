@@ -14,7 +14,7 @@
         android:paddingBottom="10dp"
         android:paddingHorizontal="15dp"
         android:layout_height="75dp"
-        android:background="#303562"
+        android:background="@color/chat_header_color"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/vs"
                     android:singleLine="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginEnd="55dp"
                     android:textColor="@color/app_only_white"
                     android:textSize="20sp" />
 
@@ -197,7 +197,7 @@
                 android:padding="6dp"
                 android:textColorHint="#989AB1"
                 android:scrollbars="vertical"
-                android:textColor="@color/chat_black"
+                android:textColor="@color/app_only_white"
                 android:textSize="14sp" />
 
             <ImageView
