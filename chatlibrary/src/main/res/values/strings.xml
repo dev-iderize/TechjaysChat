@@ -8,6 +8,6 @@
     <string name="name">Name</string>
     <string name="time">Time</string>
     <string name="vs">Vs</string>
-    <string name="total_bid">Total bid</string>
+    <string name="total_bid">bid</string>
     <string name="upload">Upload</string>
 </resources>

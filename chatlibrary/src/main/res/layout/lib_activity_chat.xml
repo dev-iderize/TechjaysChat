@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_bg"
+    android:background="@drawable/bg_chat"
     tools:context=".chat.LibChatActivity">
 
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp"
+        android:paddingHorizontal="15dp"
+        android:layout_height="75dp"
+        android:background="#303562"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -31,12 +34,14 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:padding="5dp"
+            app:civ_border_color="@color/app_only_white"
+            app:civ_border_width="2dp"
             android:src="@color/app_only_white"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/header_part"
-            android:layout_width="match_parent"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="vertical">
@@ -97,14 +102,44 @@
                     android:textSize="12sp"
                     android:textStyle="normal" />
 
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_total_bid"
+            android:layout_width="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:src="@drawable/bg_total_bid"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/app_name" />
+
+            <ImageView
+                android:id="@+id/ic_total_bid"
+                android:layout_width="30dp"
+                android:src="@drawable/ic_total_bid"
+                android:layout_height="30dp"
+                android:contentDescription="@string/app_name" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/ic_total_bid"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="2dp"
+                android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/lib_total_bid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
-                    android:gravity="end"
                     android:text="@string/total_bid"
+                    android:layout_centerInParent="true"
                     android:textColor="@color/app_only_white"
                     android:textSize="12sp"
                     android:textStyle="normal"
@@ -112,8 +147,7 @@
 
             </RelativeLayout>
 
-        </LinearLayout>
-
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -156,11 +190,12 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:maxHeight="70dp"
-                android:background="@color/app_only_white"
+                android:background="@color/chat_blue"
                 android:gravity="top|start"
                 android:hint="@string/type_message"
                 android:inputType="textMultiLine"
                 android:padding="6dp"
+                android:textColorHint="#989AB1"
                 android:scrollbars="vertical"
                 android:textColor="@color/chat_black"
                 android:textSize="14sp" />
@@ -170,11 +205,11 @@
                 android:layout_width="12dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_file"
                 android:contentDescription="@string/app_name"
                 android:padding="10dp"
                 android:rotation="360"
-                android:src="@drawable/ic_file" />
+                android:src="@drawable/ic_file"
+                app:tint="#989AB1" />
 
             <ImageView
                 android:id="@+id/btnSendImage"
@@ -184,7 +219,8 @@
                 android:contentDescription="@string/app_name"
                 android:padding="3dp"
                 android:rotation="360"
-                android:src="@drawable/ic_camera_icon" />
+                android:src="@drawable/ic_camera_icon"
+                app:tint="#989AB1" />
 
             <ImageView
                 android:id="@+id/btn_send_video"
@@ -194,7 +230,8 @@
                 android:background="@drawable/ic_video_icon"
                 android:contentDescription="@string/app_name"
                 android:padding="10dp"
-                android:rotation="360" />
+                android:rotation="360"
+                app:tint="#989AB1" />
 
             <ImageView
                 android:id="@+id/btnSendMessage"
@@ -204,7 +241,7 @@
                 android:padding="6dp"
                 android:rotation="360"
                 android:src="@drawable/ic_send_icon"
-                />
+                app:tint="#989AB1" />
 
         </LinearLayout>
 
