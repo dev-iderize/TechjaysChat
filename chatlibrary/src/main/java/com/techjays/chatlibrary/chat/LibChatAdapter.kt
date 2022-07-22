@@ -20,6 +20,7 @@ import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.preview.LibImagePreviewActivity
 import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
+import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
@@ -95,6 +96,7 @@ class LibChatAdapter(
         holder.mCheckBox.visibility = if (isVisibleCheckbox) View.VISIBLE else View.GONE
 
         holder.mChatItem.setOnLongClickListener {
+            mCallback?.clear()
             deleteInvisible()
             isVisibleCheckbox = !isVisibleCheckbox
             notifyDataSetChanged()
@@ -242,5 +244,6 @@ class LibChatAdapter(
 
     interface Callback {
         fun showDeleteButton()
+        fun clear()
     }
 }

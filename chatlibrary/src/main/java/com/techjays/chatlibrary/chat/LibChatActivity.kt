@@ -590,7 +590,13 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libDeleteButton.visibility =
             if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
         totalBidLayout.visibility =  if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.GONE else View.VISIBLE
+    }
 
+    override fun clear() {
+       mData!!.forEach { i ->
+            i.isChecked = false
+            i.showCheckBox = false
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

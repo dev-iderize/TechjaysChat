@@ -54,20 +54,20 @@ class MainActivity : AppCompatActivity() {
 
             val chatUserData = ChatUserModel()
             chatUserData.mChatToken =
-                "gAAAAABiKYs_aZttpFiw9LbuuP8wShJcQPvFOxVD6y3qHdgoaWHqgyPwFuWdywKt58cmz2qTYPuItvIicHM--VvHn-M2TFFVpBlHL1lWAKJi4XFwstBi5Mqb1DO2oqLNHObbd4GTmIbr7Ew7r3CsSUvEUMr6jOY6JcZOXQRjR7q7hMeqGIdLLJNo4CQuUI1wwOik051XNxOWOx-V56oH9bvBz9zh0NLBGOLaiamLzDM44POOiOh5i45PYhe4eJ2RpsOmSC5EY5iJNZdw1pYzMm2sHCNhnSW-pA=="
+                "gAAAAABi2lNc0yJfYJtEWBFG4zAkyyBe_6g4aGrAwbfVsjAxcSNMWgbceCoCo1jeExeu0UIF3ZtlfA7RFBXBi7RQQK-4r9XvJ0uEu-0Dj39M_mDjAXyzbUzRat1DQq8654zyg1OgJgE_LYJ6N1LVd0Cf7w5nV2f0qH_6iJLar9pR0xszLbRLjQLJTc1oPqwg3vqP8duZ2Gy1iG174JuIjTFOJ7bkRB5HPvnJwt0Gu_aryTJkpka4Bvp2nVsfGoQsbre63wJw01bi0wCLzw2hoL_WHQWs9ozBHg=="
 
-            chatUserData.mAuthToken = "1c40b92d06bc7ec7744b60bd04e86ad52332264d"
+            chatUserData.mAuthToken = "badf2ae1908dc24c14a28b5301db11a2d006696f"
             chatUserData.mBaseUrl = "https://dev-myvidrivals.myvidhire.com/api/v1/"
             chatUserData.mSocketUrl = "ws://18.217.53.197:8765/"
             chatUserData.mIsImage = true
             chatUserData.mIsVideo = true
-            chatUserData.mItemId = "2992"
+            chatUserData.mItemId = "4954"
             chatUserData.mSenderUserId = "212"
             chatUserData.mSenderFullName = "Anugraha tv"
             chatUserData.mSenderProfilePicUrl =
                 "https://d1r0dpdlaij12c.cloudfront.net/media/public/profile/images/profile212.png"
 
-            chatUserData.mReceiverUserId = "220"
+            chatUserData.mReceiverUserId = "493"
             chatUserData.mReceiverFullName = "Srinath"
             chatUserData.mReceiverProfilePicUrl = "https://www.srinathdev.me/img/night.png"
             chatUserData.mHeaderColor = "#443567"
