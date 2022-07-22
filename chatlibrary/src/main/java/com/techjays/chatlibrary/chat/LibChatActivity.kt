@@ -15,10 +15,7 @@ import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
@@ -97,6 +94,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     var DELETEFORALL: Int = 1
     var deleteforAll = false
     var isResume = false
+    lateinit var totalBidLayout:RelativeLayout
 
     val id = ArrayList<String>()
     var mResumePath = ""
@@ -162,6 +160,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libBtnImage = findViewById(R.id.btnSendImage)
         libBtnVideo = findViewById(R.id.btn_send_video)
         libHeader = findViewById(R.id.header_part)
+        totalBidLayout = findViewById(R.id.lib_layout_total_bid)
 
         libBtnVideo.setOnClickListener {
             val intent = Intent(this, InAppCameraActivity::class.java)
@@ -590,6 +589,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         Log.e("counter", Constant.COUNTER_DELETE_CHECKBOX.toString())
         libDeleteButton.visibility =
             if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
+        totalBidLayout.visibility =  if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.GONE else View.VISIBLE
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

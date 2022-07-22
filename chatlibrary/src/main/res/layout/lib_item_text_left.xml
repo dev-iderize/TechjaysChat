@@ -34,7 +34,7 @@
             android:background="@drawable/bg_chat_item_left"
             android:clickable="true"
             android:focusable="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:orientation="vertical"
             android:padding="15dp">
 
