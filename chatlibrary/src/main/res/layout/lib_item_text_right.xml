@@ -31,7 +31,7 @@
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/bg_chat_item_right"
                 android:orientation="vertical"
-                android:padding="5dp"
+                android:padding="15dp"
                 tools:ignore="UselessParent">
 
                 <TextView
@@ -42,6 +42,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="2dp"
                     android:text="@string/name"
+                    android:visibility="gone"
                     android:textColor="@color/app_only_white"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
@@ -53,27 +54,26 @@
                     android:layout_gravity="end"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:padding="5dp"
                     android:textColor="@color/app_only_white"
                     android:textColorLink="@color/app_only_white"
                     android:textSize="14sp"
                     tools:text="message" />
 
-            </LinearLayout>
+                <TextView
+                    android:layout_below="@id/tv_message"
+                    android:id="@+id/tv_time"
+                    style="@style/SubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/time"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/app_only_white"
+                    android:textSize="10sp"
+                    tools:ignore="ObsoleteLayoutParam,SmallSp" />
 
-            <TextView
-                android:layout_below="@id/message_layout"
-                android:id="@+id/tv_time"
-                style="@style/SubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:text="@string/time"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/app_only_white"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
+            </LinearLayout>
 
         </RelativeLayout>
 

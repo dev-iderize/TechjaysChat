@@ -25,22 +25,24 @@
 
         <LinearLayout
             android:id="@+id/message_layout"
-            android:layout_width="220dp"
-            android:layout_height="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="15dp"
             android:layout_toStartOf="@id/userImage"
             android:background="@drawable/bg_chat_item_right"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="110dp"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp">
 
                 <ImageView
                     android:id="@+id/lib_thumbnail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="110dp"
                     android:scaleType="fitXY"
                     android:background="@drawable/left_one_side_rounded"
                     android:contentDescription="@string/app_name" />
@@ -52,11 +54,25 @@
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_video_play" />
 
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/SubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/lib_thumbnail"
+                    android:text="@string/time"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/app_only_white"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView
@@ -80,19 +96,6 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_time"
-            style="@style/SubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_toStartOf="@id/userImage"
-            android:layout_below="@id/message_layout"
-            android:text="@string/time"
-            android:textColor="@color/app_only_white"
-            android:textSize="10sp"
-            tools:ignore="SmallSp" />
 
     </RelativeLayout>
 

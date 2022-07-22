@@ -36,7 +36,7 @@
             android:focusable="true"
             android:layout_marginStart="5dp"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/tv_name"
@@ -46,6 +46,7 @@
                 android:layout_gravity="start"
                 android:layout_marginTop="2dp"
                 android:text="@string/name"
+                android:visibility="gone"
                 android:textColor="@color/app_only_white"
                 android:textSize="10sp"
                 tools:ignore="SmallSp" />
@@ -62,22 +63,23 @@
                 android:textSize="14sp"
                 tools:text="message" />
 
+            <TextView
+                android:id="@+id/tv_time"
+                style="@style/SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="10dp"
+                android:text="@string/time"
+                android:textColor="@color/app_only_white"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+
         </LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_time"
-        style="@style/SubTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/time"
-        android:textColor="@color/app_only_white"
-        android:textSize="10sp"
-        tools:ignore="SmallSp" />
+
 
     <ImageView
         android:id="@+id/lib_thumbnail"

@@ -47,7 +47,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/libTvUserName"
+                android:id="@+id/lib_username_vs"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
@@ -62,14 +62,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/lib_event_name"
+                    android:id="@+id/libTvUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/vs"
-                    android:singleLine="true"
                     android:layout_marginEnd="55dp"
+                    android:singleLine="true"
+                    android:text="@string/name"
                     android:textColor="@color/app_only_white"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/delete_button"
@@ -93,7 +93,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/lib_username_vs"
+                    android:id="@+id/lib_event_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -128,18 +128,18 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/ic_total_bid"
-                android:layout_marginEnd="15dp"
                 android:layout_marginStart="2dp"
-                android:layout_height="wrap_content">
+                android:layout_marginEnd="15dp"
+                android:layout_toEndOf="@id/ic_total_bid">
 
                 <TextView
                     android:id="@+id/lib_total_bid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/total_bid"
                     android:layout_centerInParent="true"
+                    android:text="@string/total_bid"
                     android:textColor="@color/app_only_white"
                     android:textSize="12sp"
                     android:textStyle="normal"
