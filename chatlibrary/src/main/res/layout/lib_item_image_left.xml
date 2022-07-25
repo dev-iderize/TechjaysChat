@@ -4,19 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="5dp"
         android:paddingVertical="15dp"
+        android:orientation="horizontal"
         tools:ignore="UselessParent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="-10dp"
             android:src="@color/colorPrimary"
             android:visibility="invisible" />
@@ -27,7 +26,7 @@
             android:id="@+id/message_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="15dp"
             android:padding="15dp"
             android:background="@drawable/bg_chat_item_left"
             android:orientation="horizontal">
@@ -65,10 +64,11 @@
                 android:gravity="center"
                 android:layout_marginStart="5dp">
 
-                <ImageView
+                <com.santalu.aspectratioimageview.AspectRatioImageView
                     android:id="@+id/lib_thumbnail"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="100dp"
+                    android:adjustViewBounds="true"
                     android:background="@drawable/right_one_side_rounded"
                     android:contentDescription="@string/app_name"
                     android:scaleType="fitXY" />
@@ -90,6 +90,6 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

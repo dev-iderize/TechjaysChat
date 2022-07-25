@@ -6,5 +6,5 @@
     android:layout_gravity="center"
     android:layout_marginEnd="5dp"
     android:button="@drawable/custom_checkbox"
-    android:visibility="gone"/>
+    android:visibility="visible"/>
 

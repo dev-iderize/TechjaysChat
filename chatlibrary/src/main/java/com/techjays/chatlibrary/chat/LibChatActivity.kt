@@ -168,10 +168,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             startActivityForResult(intent, 5)
         }
 
-        libHeader.setOnClickListener {
+      /*  libHeader.setOnClickListener {
             setResult(1002)
             finish()
-        }
+        }*/
 
         if (!mChatData.mIsTypeMessage)
             r1.visibility = View.GONE

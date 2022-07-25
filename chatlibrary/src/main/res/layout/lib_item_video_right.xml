@@ -39,11 +39,12 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp">
 
-                <ImageView
+                <com.santalu.aspectratioimageview.AspectRatioImageView
                     android:id="@+id/lib_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
                     android:background="@drawable/left_one_side_rounded"
                     android:contentDescription="@string/app_name" />
 

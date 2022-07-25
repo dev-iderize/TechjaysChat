@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="45dp"
+    android:layout_marginStart="5dp"
     android:paddingVertical="15dp">
-
     <include layout="@layout/checkbox" />
 
     <LinearLayout

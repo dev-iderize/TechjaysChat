@@ -86,6 +86,8 @@ dependencies {
     //exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
 
+    implementation 'com.github.santalu:aspect-ratio-imageview:1.0.9'
+
     // ViewModel and Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
