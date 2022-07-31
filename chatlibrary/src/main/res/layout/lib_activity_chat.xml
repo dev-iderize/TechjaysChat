@@ -107,7 +107,7 @@
                 android:contentDescription="@string/app_name"
                 android:layout_marginStart="10dp"
                 android:padding="3dp"
-                android:src="@drawable/lib_ic_baseline_delete_24"
+                android:src="@drawable/ic_delete_chat"
                 android:visibility="gone"
                 app:tint="@color/app_only_white" />
 
