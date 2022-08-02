@@ -41,7 +41,7 @@
 
         <LinearLayout
             android:id="@+id/header_part"
-            android:layout_width="190dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="vertical">
@@ -96,7 +96,8 @@
 
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="end"
             android:layout_height="wrap_content">
 
             <ImageView
