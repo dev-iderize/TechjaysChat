@@ -234,9 +234,9 @@
             <ImageView
                 android:id="@+id/btn_send_video"
                 android:layout_width="30dp"
-                android:layout_height="16dp"
+                android:layout_height="25dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_video_icon"
+                android:background="@drawable/ic_video_new"
                 android:contentDescription="@string/app_name"
                 android:padding="10dp"
                 android:rotation="360"
@@ -244,12 +244,13 @@
 
             <ImageView
                 android:id="@+id/btnSendMessage"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:contentDescription="@string/app_name"
                 android:padding="6dp"
-                android:rotation="360"
-                android:src="@drawable/ic_send_icon"
+                android:layout_marginStart="-13dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_send_new"
                 app:tint="#989AB1" />
 
         </LinearLayout>
