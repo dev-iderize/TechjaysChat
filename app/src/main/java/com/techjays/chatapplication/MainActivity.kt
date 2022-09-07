@@ -54,9 +54,9 @@ class MainActivity : AppCompatActivity() {
 
             val chatUserData = ChatUserModel()
             chatUserData.mChatToken =
-                "gAAAAABi2lNc0yJfYJtEWBFG4zAkyyBe_6g4aGrAwbfVsjAxcSNMWgbceCoCo1jeExeu0UIF3ZtlfA7RFBXBi7RQQK-4r9XvJ0uEu-0Dj39M_mDjAXyzbUzRat1DQq8654zyg1OgJgE_LYJ6N1LVd0Cf7w5nV2f0qH_6iJLar9pR0xszLbRLjQLJTc1oPqwg3vqP8duZ2Gy1iG174JuIjTFOJ7bkRB5HPvnJwt0Gu_aryTJkpka4Bvp2nVsfGoQsbre63wJw01bi0wCLzw2hoL_WHQWs9ozBHg=="
+                "gAAAAABjEa_rpwzGz10z0L4rw7cUJtWHIcIRsbMjFIkPZ0u2GQi0UVwIhtAEuLbupvb2xHOAjkbbdiqmVMsDVUDUBqoHPkwrpZCZChoDXkxB7IHLGpdKNmYSRY0D1v4BC_uC9mMlS1OywFu0TPc7x47KCI-7UoVC59JTUiMhslI0ILmVg-iStgHh196c8Grae-WEmmkOl7InSjx81nYSMZl2mh1yhB8LtDWdkbBSRa430-IoaPvetHhxjPFEMvvLoaL4ULBXmBYt6YCLxHZcuBiI4S2GXqqLJAUDUdOphnGOtFyPKXT-93E="
 
-            chatUserData.mAuthToken = "badf2ae1908dc24c14a28b5301db11a2d006696f"
+            chatUserData.mAuthToken = "43dbd932e7763c4c4d54455c7e2fa552f2f427ae"
             chatUserData.mBaseUrl = "https://dev-myvidrivals.myvidhire.com/api/v1/"
             chatUserData.mSocketUrl = "ws://18.217.53.197:8765/"
             chatUserData.mIsImage = true
