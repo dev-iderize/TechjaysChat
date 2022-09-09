@@ -54,20 +54,20 @@ class MainActivity : AppCompatActivity() {
 
             val chatUserData = ChatUserModel()
             chatUserData.mChatToken =
-                "gAAAAABjEa_rpwzGz10z0L4rw7cUJtWHIcIRsbMjFIkPZ0u2GQi0UVwIhtAEuLbupvb2xHOAjkbbdiqmVMsDVUDUBqoHPkwrpZCZChoDXkxB7IHLGpdKNmYSRY0D1v4BC_uC9mMlS1OywFu0TPc7x47KCI-7UoVC59JTUiMhslI0ILmVg-iStgHh196c8Grae-WEmmkOl7InSjx81nYSMZl2mh1yhB8LtDWdkbBSRa430-IoaPvetHhxjPFEMvvLoaL4ULBXmBYt6YCLxHZcuBiI4S2GXqqLJAUDUdOphnGOtFyPKXT-93E="
+                "gAAAAABjGzLv7tVuK3ussq7hnP5yHdZNWsVSPmyL4mD2ZC_CVl5f5ZoALjzkFmGSCaNAx4c8OoSvAdk3IQI9_xwD9sMKcMWAWv6pTPHMNRAU94Njhhzcb6jNK6LvT8Ickt6oRzAqM3XzwYUYK4glQbo2lpHHTG7pvxnDLOW10HnJNoeqQXj2AS6WK04Ty1hUnXWDZ6ISLFVXNNH93QL6KtVxllyRouHF_ksCwVrCFNAdwG-3vtvCxO-abYG4CLIUkp-RW_wUz5YjER7KwMZu5n5KMqS0517UT633ncJOg2bYT4heryWX7MY="
 
             chatUserData.mAuthToken = "43dbd932e7763c4c4d54455c7e2fa552f2f427ae"
             chatUserData.mBaseUrl = "https://dev-myvidrivals.myvidhire.com/api/v1/"
             chatUserData.mSocketUrl = "ws://18.217.53.197:8765/"
             chatUserData.mIsImage = true
             chatUserData.mIsVideo = true
-            chatUserData.mItemId = "4954"
+            chatUserData.mItemId = "6938"
             chatUserData.mSenderUserId = "212"
             chatUserData.mSenderFullName = "Anugraha tv"
             chatUserData.mSenderProfilePicUrl =
                 "https://d1r0dpdlaij12c.cloudfront.net/media/public/profile/images/profile212.png"
 
-            chatUserData.mReceiverUserId = "493"
+            chatUserData.mReceiverUserId = "728"
             chatUserData.mReceiverFullName = "Srinath"
             chatUserData.mReceiverProfilePicUrl = "https://www.srinathdev.me/img/night.png"
             chatUserData.mHeaderColor = "#443567"
@@ -75,7 +75,8 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mEventName = "Brazil vs Argentina"
             chatUserData.mIsPdf = false
             chatUserData.isVideoPlay = false
-            chatUserData.isVideoPLayUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            chatUserData.isVideoPLayUrl =
+                "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
 
             /*if (mUser.mUser!!.mUserId == data.mChallengeUser!!.mUserId){
               chatUserData.mReceiverUserId = data.mAcceptedUser!!.mUserId.toString()

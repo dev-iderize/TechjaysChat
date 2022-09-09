@@ -46,7 +46,7 @@
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/left_one_side_rounded"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/tv_time"
