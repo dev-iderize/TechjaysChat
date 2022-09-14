@@ -3,25 +3,19 @@ package com.techjays.chatlibrary.chat
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.provider.Settings
-import android.renderscript.ScriptGroup
-import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.app.ActivityCompat
-import androidx.core.graphics.BlendModeColorFilterCompat
-import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fxn.pix.Options
 import com.fxn.pix.Pix
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
@@ -34,7 +28,9 @@ import com.techjays.chatlibrary.base.LibBaseActivity
 import com.techjays.chatlibrary.constants.Constant
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
 import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
-import com.techjays.chatlibrary.model.*
+import com.techjays.chatlibrary.model.LibChatMessages
+import com.techjays.chatlibrary.model.LibChatSocketMessages
+import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.model.common.Option
 import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
 import com.techjays.chatlibrary.util.*
@@ -45,7 +41,6 @@ import kotlinx.android.synthetic.main.lib_activity_chat.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
-import java.util.*
 
 
 /**
@@ -94,7 +89,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     var DELETEFORALL: Int = 1
     var deleteforAll = false
     var isResume = false
-    lateinit var totalBidLayout:RelativeLayout
+    lateinit var totalBidLayout: RelativeLayout
 
     val id = ArrayList<String>()
     var mResumePath = ""
@@ -145,7 +140,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         mLibChatViewModel = LibChatViewModel(this)
         pickiT = PickiT(this, this, this)
         Utility.setBackgroundDrawableResource(this.window, R.drawable.bg_chat)
-        Utility.statusBarColor(this.window,this, R.color.chat_header_color)
+        Utility.statusBarColor(this.window, this, R.color.chat_header_color)
         client = OkHttpClient()
         mRecyclerView = findViewById(R.id.chatRecyclerView)
         // mSwipe = findViewById(R.id.chat_swipe_refresh)
@@ -168,10 +163,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             startActivityForResult(intent, 5)
         }
 
-      /*  libHeader.setOnClickListener {
-            setResult(1002)
-            finish()
-        }*/
+        /*  libHeader.setOnClickListener {
+              setResult(1002)
+              finish()
+          }*/
 
         if (!mChatData.mIsTypeMessage)
             r1.visibility = View.GONE
@@ -186,8 +181,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         initView()
         PermissionChecker().askAllPermissions(this, mPermission)
         getChatMessage(true)
-        if (mChatData.isVideoPlay)
-        {
+        if (mChatData.isVideoPlay) {
             val i = Intent(this, LibVideoPreviewActivity::class.java)
             i.putExtra("url_data", mChatData.isVideoPLayUrl)
             i.putExtra("preview", false)
@@ -197,7 +191,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     private fun initView() {
         libTxtName.text = mChatData.mReceiverFullName
         lib_username_vs.text = "${mChatData.mSenderFullName} vs ${mChatData.mReceiverFullName}"
@@ -211,6 +205,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         if (!mChatData.mIsPdf) {
             btnSendFile.visibility = View.GONE
         }
+        mRecyclerView.setOnTouchListener(View.OnTouchListener { v, event ->
+            val imm: InputMethodManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+            false
+        })
         /*libAppBar.setBackgroundColor(
             Color.parseColor(
                 ChatLibrary.instance.mColor
@@ -589,11 +589,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         Log.e("counter", Constant.COUNTER_DELETE_CHECKBOX.toString())
         libDeleteButton.visibility =
             if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.VISIBLE else View.GONE
-        totalBidLayout.visibility =  if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.GONE else View.VISIBLE
+        totalBidLayout.visibility =
+            if (Constant.COUNTER_DELETE_CHECKBOX > 0) View.GONE else View.VISIBLE
     }
 
     override fun clear() {
-       mData!!.forEach { i ->
+        mData!!.forEach { i ->
             i.isChecked = false
             i.showCheckBox = false
         }
