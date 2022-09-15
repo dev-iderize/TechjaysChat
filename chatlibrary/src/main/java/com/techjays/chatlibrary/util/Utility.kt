@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.icu.text.NumberFormat
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Build
@@ -34,6 +35,8 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 object Utility {
 

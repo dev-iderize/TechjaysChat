@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             chatUserData.mReceiverFullName = "Srinath"
             chatUserData.mReceiverProfilePicUrl = "https://www.srinathdev.me/img/night.png"
             chatUserData.mHeaderColor = "#443567"
-            chatUserData.mBidAmount = "50"
+            chatUserData.mBidAmount = "1000000"
             chatUserData.mEventName = "Brazil vs Argentina"
             chatUserData.mIsPdf = false
             chatUserData.isVideoPlay = false

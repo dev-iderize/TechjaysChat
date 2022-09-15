@@ -3,6 +3,7 @@ package com.techjays.chatlibrary.chat
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.icu.text.NumberFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
@@ -41,6 +42,8 @@ import kotlinx.android.synthetic.main.lib_activity_chat.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -196,7 +199,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         libTxtName.text = mChatData.mReceiverFullName
         lib_username_vs.text = "${mChatData.mSenderFullName} vs ${mChatData.mReceiverFullName}"
         lib_event_name.text = mChatData.mEventName
-        lib_total_bid.text = mChatData.mBidAmount
+        lib_total_bid.text = doubleToInt(mChatData.mBidAmount.toDouble())
         Utility.loadUserImage(
             mChatData.mReceiverProfilePicUrl,
             libProfileImage,
@@ -227,6 +230,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         } catch (e: Exception) {
             throw e
         }*/
+    }
+
+    fun doubleToInt(value: Double): String {
+        val schinckes = value.toInt()
+        // adding commas according to currency
+        return try {
+            Utility.log("try "+schinckes.toString())
+            NumberFormat.getNumberInstance(Locale.getDefault()).format(schinckes.toLong())
+        } catch (e: Exception) {
+            Utility.log("catch "+ schinckes.toString())
+            schinckes.toString()
+        }
     }
 
     private fun initRecycler() {
