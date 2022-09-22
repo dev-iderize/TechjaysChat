@@ -41,7 +41,7 @@
 
         <LinearLayout
             android:id="@+id/header_part"
-            android:layout_width="140dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="vertical">
@@ -65,7 +65,6 @@
                     android:id="@+id/libTvUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="55dp"
                     android:singleLine="true"
                     android:text="@string/name"
                     android:textColor="@color/app_only_white"
@@ -114,42 +113,43 @@
 
             <RelativeLayout
                 android:id="@+id/lib_layout_total_bid"
-                android:layout_width="90dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="32dp">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/bg_total_bid" />
-
-                <ImageView
-                    android:id="@+id/ic_total_bid"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_total_bid" />
-
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_toEndOf="@id/ic_total_bid">
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:id="@+id/lib_total_bid"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
+                        android:layout_height="34dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_total_bid"
+                        android:gravity="center"
+                        android:paddingStart="30dp"
+                        android:layout_marginStart="12dp"
+                        android:paddingEnd="20dp"
                         android:text="@string/total_bid"
                         android:textColor="@color/app_only_white"
                         android:textSize="12sp"
                         android:textStyle="normal"
                         tools:ignore="RelativeOverlap" />
+
+                    <ImageView
+                        android:id="@+id/ic_total_bid"
+                        android:layout_width="25dp"
+                        android:scaleX="1.5"
+                        android:scaleY="1.5"
+                        android:layout_margin="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="-5dp"
+                        android:layout_height="25dp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/ic_total_bid" />
 
                 </RelativeLayout>
 
