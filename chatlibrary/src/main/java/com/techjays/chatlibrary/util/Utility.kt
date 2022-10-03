@@ -280,7 +280,12 @@ object Utility {
 
     fun loadUserImageWithCache(aURL: String?, image: ImageView, context: Context) {
         val placeHolder: Int = R.drawable.ic_profile_icon
-        loadUserImageWithCache(aURL, image, placeHolder,context)
+        loadUserImageWithCache(aURL, image, placeHolder, context)
+    }
+
+    fun loadUserImageWithCache2(aURL: String?, image: ImageView, context: Context) {
+        val placeHolder: Int = R.drawable.ic_profile_icon
+        loadUserImageWithCache2(aURL, image, placeHolder, context)
     }
 
 
@@ -323,10 +328,44 @@ object Utility {
                 if (aURL.contains("http")) {
                     Glide
                         .with(context)
-                        .load(aURL )
-                        .diskCacheStrategy( DiskCacheStrategy.ALL )
-                        .fitCenter()
-                        .into(image);
+                        .load(aURL)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                        .into(image)
+                } else {
+                    Picasso.get().load(File(aURL))
+                        .placeholder(placeHolder)
+                        .error(placeHolder)
+                        .fit().centerCrop()
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .into(image)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
+    fun loadUserImageWithCache2(
+        aURL: String?,
+        image: ImageView,
+        placeHolder: Int,
+        context: Context
+    ) {
+        try {
+            if (aURL.isNullOrEmpty()) {
+                image.setImageResource(placeHolder)
+            } else {
+                if (aURL.contains("http")) {
+                    Glide
+                        .with(context)
+                        .load(aURL)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                        .override(500,500)
+                        .into(image)
                 } else {
                     Picasso.get().load(File(aURL))
                         .placeholder(placeHolder)

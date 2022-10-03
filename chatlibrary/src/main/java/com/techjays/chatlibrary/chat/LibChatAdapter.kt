@@ -20,7 +20,6 @@ import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.preview.LibImagePreviewActivity
 import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
-import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.DateUtil
 import com.techjays.chatlibrary.util.Utility
 import de.hdodenhof.circleimageview.CircleImageView
@@ -38,52 +37,29 @@ class LibChatAdapter(
 
     private val MESSAGE_TYPE_RECIEVED = 0
     private val MESSAGE_TYPE_SENT = 1
+    private val DOCUMENT_TYPE_SENT = 3
+    private val DOCUMENT_TYPE_RECIEVED = 4
     private val MESSAGE_TYPE_RECEVIED_IMAGE = 5
     private val MESSAGE_TYPE_SENT_IMAGE = 6
     private val MESSAGE_TYPE_RECIVED_VIDEO = 7
     private val MESSAGE_TYPE_SENT_VIDEO = 8
-    private val DOCUMENT_TYPE_SENT = 3
-    private val DOCUMENT_TYPE_RECIEVED = 4
     private var isVisibleCheckbox = false
     private val MESSAGE_TYPE_NOTIFICATION = 9
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return if (viewType == MESSAGE_TYPE_SENT) {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_text_right, parent, false)
-            ItemViewHolder(view)
-        } else if (viewType == MESSAGE_TYPE_RECIEVED) {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_text_left, parent, false)
-            ItemViewHolder(view)
-        } else if (viewType == MESSAGE_TYPE_RECEVIED_IMAGE) {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_image_left, parent, false)
-            ItemViewHolder(view)
-        } else if (viewType == MESSAGE_TYPE_SENT_IMAGE) {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_image_right, parent, false)
-            ItemViewHolder(view)
-        } else if (viewType == MESSAGE_TYPE_RECIVED_VIDEO) {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_video_left, parent, false)
-            ItemViewHolder(view)
-        } else if (viewType == MESSAGE_TYPE_SENT_VIDEO) {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_video_right, parent, false)
-            ItemViewHolder(view)
-        } else {
-            val view =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.lib_item_auto_notification, parent, false)
-            ItemViewHolder(view)
-        }
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(
+                    when (viewType) {
+                        MESSAGE_TYPE_SENT -> R.layout.lib_item_text_right
+                        MESSAGE_TYPE_RECIEVED -> R.layout.lib_item_text_left
+                        MESSAGE_TYPE_RECEVIED_IMAGE -> R.layout.lib_item_image_left
+                        MESSAGE_TYPE_SENT_IMAGE -> R.layout.lib_item_image_right
+                        MESSAGE_TYPE_RECIVED_VIDEO -> R.layout.lib_item_video_left
+                        MESSAGE_TYPE_SENT_VIDEO -> R.layout.lib_item_video_right
+                        else -> R.layout.lib_item_auto_notification
+                    }, parent, false
+                )
+        return ItemViewHolder(view)
     }
 
     @SuppressLint("SetTextI18n")
@@ -156,11 +132,15 @@ class LibChatAdapter(
                     }.append(chatList.mMessage.replace(first, ""))
         } else
             holder.txMessage.text = chatList.mMessage
-        Utility.loadUserImageWithCache(
-            chatList.mFileThumbNail,
-            holder.mThumbNail,
-            mContext
-        )
+        when (chatList.mFileType) {
+            Constant.CHAT_TYPE_IMAGE_, Constant.CHAT_TYPE_IMAGE,Constant.CHAT_TYPE_VIDEO -> {
+                Utility.loadUserImageWithCache2(
+                    chatList.mMessage,
+                    holder.mThumbNail,
+                    mContext
+                )
+            }
+        }
 
         holder.mTime.text = DateUtil.formatDisplayDate(
             DateUtil.convertUTCToDeviceTime(chatList.mTimeStamp),
@@ -212,35 +192,48 @@ class LibChatAdapter(
     override fun getItemViewType(position: Int): Int {
         return if (mData[position].mIsSentByMyself) {
             var type = 1
-            if (mData[position].mMessageType == Constant.CHAT_TYPE_NOTIFICATION) {
-                type = MESSAGE_TYPE_NOTIFICATION
-            } else if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
-                type = MESSAGE_TYPE_SENT
-            } else {
-                Utility.log(mData[position].mMessageType)
-                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
-                    type = MESSAGE_TYPE_SENT_IMAGE
-                } else {
-                    type = MESSAGE_TYPE_SENT_VIDEO
+            type = when (mData[position].mMessageType) {
+                Constant.CHAT_TYPE_NOTIFICATION -> {
+                    MESSAGE_TYPE_NOTIFICATION
+                }
+
+                Constant.CHAT_TYPE_MESSAGE -> {
+                    MESSAGE_TYPE_SENT
+                }
+
+                else -> {
+                    Utility.log(mData[position].mMessageType)
+                    if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
+                        MESSAGE_TYPE_SENT_IMAGE
+                    } else {
+                        MESSAGE_TYPE_SENT_VIDEO
+                    }
                 }
             }
             type
         } else {
             var type = 0
-            if (mData[position].mMessageType == Constant.CHAT_TYPE_NOTIFICATION) {
-                type = MESSAGE_TYPE_NOTIFICATION
-            } else if (mData[position].mMessageType == Constant.CHAT_TYPE_MESSAGE) {
-                type = MESSAGE_TYPE_RECIEVED
-            } else {
-                if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
-                    type = MESSAGE_TYPE_RECEVIED_IMAGE
-                } else {
-                    type = MESSAGE_TYPE_RECIVED_VIDEO
+            type = when (mData[position].mMessageType) {
+                Constant.CHAT_TYPE_NOTIFICATION -> {
+                    MESSAGE_TYPE_NOTIFICATION
+                }
+
+                Constant.CHAT_TYPE_MESSAGE -> {
+                    MESSAGE_TYPE_RECIEVED
+                }
+
+                else -> {
+                    if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
+                        MESSAGE_TYPE_RECEVIED_IMAGE
+                    } else {
+                        MESSAGE_TYPE_RECIVED_VIDEO
+                    }
                 }
             }
             type
         }
     }
+
 
     interface Callback {
         fun showDeleteButton()

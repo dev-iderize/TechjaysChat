@@ -3,11 +3,16 @@ package com.techjays.chatlibrary.chat
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.icu.text.NumberFormat
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
@@ -42,6 +47,8 @@ import kotlinx.android.synthetic.main.lib_activity_chat.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -236,10 +243,10 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         val schinckes = value.toInt()
         // adding commas according to currency
         return try {
-            Utility.log("try "+schinckes.toString())
+            Utility.log("try " + schinckes.toString())
             NumberFormat.getNumberInstance(Locale.getDefault()).format(schinckes.toLong())
         } catch (e: Exception) {
-            Utility.log("catch "+ schinckes.toString())
+            Utility.log("catch " + schinckes.toString())
             schinckes.toString()
         }
     }
@@ -383,10 +390,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             libImgBack -> {
                 onBackPressed()
             }
+
             libHeader -> {
                 setResult(1002)
                 finish()
             }
+
             libBtnImage -> {
                 /*  val options: Options = Options.init()
                       .setRequestCode(100) //Request code for activity results
@@ -410,16 +419,18 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     )    //Final image resolution will be less than 1080 x 1080(Optional)
                     .start()
             }
+
             libBtnVideo -> {
                 val intent = Intent(this, InAppCameraActivity::class.java)
                 intent.putExtra("video_limit", false)
                 startActivityForResult(intent, 5)
             }
+
             libSendButton -> {
                 if (Utility.isOpenRecently())
                     return
 
-                var str = libChatEdit.text.toString()
+                val str = libChatEdit.text.toString()
 
                 if (libChatEdit.text.trim().isEmpty() || str == "") {
                     libChatEdit.error = "Enter your message"
@@ -441,6 +452,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 }
                 deleteInvisible()
             }
+
             libDeleteButton -> {
                 deleteforAll = true
 
@@ -479,6 +491,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                                             deleteChatMessages(false)
 
                                         }
+
                                         DELETEFORME -> {
                                             deleteChatMessages(true)
                                         }
@@ -488,6 +501,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                         })
                 }
             }
+
             mBtnFile -> {
 
                 if (PermissionChecker().checkAllPermission(this, mPermission)) {
@@ -574,11 +588,13 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
                 }
+
                 mChatData.mItemId != receivedNewMessage.mData!!.mDuelId.toString() -> {
                     val intent = Intent("ChatLibraryBuildNotification")
                     intent.putExtra("data", Gson().toJson(receivedNewMessage))
                     sendBroadcast(intent)
                 }
+
                 mChatData.mReceiverUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
@@ -587,6 +603,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
                 }
+
                 else -> {
                     /*
                         * Build notification on receiving broadcast from channel "ChatLibraryBuildNotification"
@@ -629,7 +646,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
 
             } else if (requestCode == 234) {
                 isResume = true
-                pickiT?.getPath(data?.data, 31)
+                pickiT.getPath(data?.data, 31)
 
             } else if (requestCode == 5) {
                 if (resultCode === RESULT_OK) { // Activity.RESULT_OK
@@ -641,7 +658,7 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 if (data?.data != null) {
                     val uri: Uri = data?.data!!
                     isResume = false
-                    pickiT?.getPath(data?.data, 31)
+                    pickiT.getPath(data?.data, 31)
                     Utility.log(uri.toString())
                 }
             }
@@ -690,16 +707,64 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             if (isResume) {
                 mResumePath = path
                 initFileUpload()
-            } else {
-                if (checkInternet()) {
-                    AppDialogs.showProgressDialog(this)
-                    mLibChatViewModel.uploadImageVideo(path, "image")
-                }
-            }
+            } else
+               getRotateImage(path)
+        }
 
-            /*Utility.log(path)*/
+        /*Utility.log(path)*/
+    }
+
+    private fun uploadImage(path: String) {
+        if (checkInternet()) {
+            AppDialogs.showProgressDialog(this@LibChatActivity)
+            mLibChatViewModel.uploadImageVideo(path, "image")
         }
     }
+
+    private fun getRotateImage(mProfilePath: String) {
+        Utility.log("from $mProfilePath")
+        AppDialogs.showProgressDialog(this)
+        var rotate = 0
+        try {
+            val imageFile = File(mProfilePath)
+            val exif = ExifInterface(
+                imageFile.absolutePath
+            )
+            val orientation: Int = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotate = 270
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotate = 180
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotate = 90
+            }
+            val matrix = Matrix()
+            matrix.postRotate(rotate.toFloat())
+            val bmOptions = BitmapFactory.Options()
+            val bitmap = BitmapFactory.decodeFile(mProfilePath, bmOptions)
+            val output =
+                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+            val movieDir = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    .toString()
+            )
+            if (!movieDir.exists()) movieDir.mkdir()
+            val date = Date()
+            val timestamp = date.time.toString()
+            val path = movieDir.absolutePath + "/" + timestamp + ".png"
+            val fOut = FileOutputStream(path)
+            output.compress(Bitmap.CompressFormat.PNG, 50, fOut)
+            fOut.close()
+            /* val out = MediaStore.Images.Media.insertImage(getContentResolver(),filepath.getAbsolutePath(),filepath.getName(),filepath.getName());*/
+            Utility.log(path)
+            uploadImage(path)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
 
     override fun onBackPressed() {
         setResult(10050)
