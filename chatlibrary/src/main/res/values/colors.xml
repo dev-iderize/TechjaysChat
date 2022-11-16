@@ -15,6 +15,7 @@
     <color name="color_vidrivals_blue">#443567</color>
     <color name="app_dark_blue_vidrivals">#1D1160</color>
     <color name="chat_header_color">#303562</color>
+    <color name="black_only">#FF000000</color>
 
     <color name="app_blue">#138CD4</color>
     <color name="app_dark_blue">#1F00FF</color>

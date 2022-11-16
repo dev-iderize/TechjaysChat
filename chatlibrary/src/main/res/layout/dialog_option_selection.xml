@@ -38,6 +38,7 @@
         android:background="@drawable/bg_shadow_white_round"
         style="@style/CloseButtonStyle"
         android:src="@drawable/ic_close"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        app:tint="@color/black_only" />
 
 </RelativeLayout>
