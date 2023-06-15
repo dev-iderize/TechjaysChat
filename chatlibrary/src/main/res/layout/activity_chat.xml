@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="isVoice"
+            type="Boolean" />
+
+        <variable
+            name="isMicPermissionAvailable"
+            type="Boolean" />
+
+        <variable
+            name="groupName"
+            type="String" />
+
+        <variable
+            name="groupProfilePic"
+            type="String" />
+
+        <variable
+            name="chatdata"
+            type="com.techjays.chatlibrary.model.Chat" />
+
+        <variable
+            name="activity"
+            type="com.techjays.chatlibrary.chat.LibChatActivity" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/map_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/l1"
+                style="@style/CustomCardViewBottomStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_color_light"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:onClick="@{()->activity.onBackPressed()}"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_back"
+                    app:tint="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="58dp"
+                        android:layout_height="58dp"
+                        android:background="@drawable/border_primary_light_circle_blue_transparent"
+                        android:backgroundTint="@color/white"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/libImgProfile"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_user_icon_white"
+                            app:avatarViewShape="circle"
+                            app:set_circle_image="@{groupProfilePic}" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/my_name"
+                            style="@style/Text14Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{groupName}" />
+
+                        <TextView
+                            style="@style/Text12Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="online"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="60dp"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/r1"
+            style="@style/CustomCardViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.MaterialComponents.DayNight"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:elevation="30dp">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/btn_plus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="10dp"
+                    android:onClick="@{()->activity.showBottomSheet()}"
+                    android:rotation="360"
+                    android:src="@drawable/ic_plus_white" />
+
+                <EditText
+                    android:id="@+id/etMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edittext_message_input"
+                    android:hint="Type a message"
+                    android:imeOptions="actionSend"
+                    android:imeActionLabel="Send"
+                    android:inputType="text"
+                    android:scrollbars="vertical"
+                    android:maxLines="5"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="15dp"
+                    android:textColor="@color/dark_chocolate"
+                    android:textSize="14sp" />
+
+                <com.devlomi.record_view.RecordView
+                    android:id="@+id/record_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:cancel_text_color="@color/primary_color_light"
+                    app:counter_time_color="@color/primary_color_light"
+                    app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+                    app:slide_to_cancel_arrow_color="@color/primary_color_light"
+                    app:slide_to_cancel_bounds="8dp"
+                    app:slide_to_cancel_margin_right="10dp"
+                    app:slide_to_cancel_text="Slide to cancel" />
+
+                <com.devlomi.record_view.RecordButton
+                    android:id="@+id/record_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:visibility="@{!isMicPermissionAvailable?View.GONE:View.VISIBLE}"
+                    app:mic_icon="@drawable/ic_mic"
+                    app:scale_up_to="2.0" />
+
+                <ImageView
+                    android:id="@+id/mic_deactivated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->activity.openMicDialog()}"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_microphone_deactivated"
+                    android:visibility="@{isMicPermissionAvailable?View.GONE:View.VISIBLE}"
+                    app:tint="@color/primary_color_light" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+</layout>

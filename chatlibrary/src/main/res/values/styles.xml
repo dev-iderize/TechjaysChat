@@ -818,7 +818,7 @@
     </style>
 
 
-    <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
+    <style name="ShapeAppearanceOverlay_card_custom_corners" parent="Widget.MaterialComponents.CardView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">25dp</item>
         <item name="cornerSizeTopLeft">25dp</item>

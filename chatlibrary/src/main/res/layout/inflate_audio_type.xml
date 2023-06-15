@@ -1,0 +1,163 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+
+        <variable
+            name="isSentByMyself"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+
+        <import type="android.view.Gravity" />
+
+        <variable
+            name="message"
+            type="com.techjays.chatlibrary.model.Chat.ChatData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="@{!isSentByMyself?Gravity.END:Gravity.START}">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@{isSentByMyself?@drawable/bg_userguide_bottomleft_rounded:@drawable/bg_userguide_topright_rounded}"
+            android:backgroundTint="@{!isSentByMyself?@color/primary_color_light:@color/white}"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp">
+
+            <TextView
+                style="@style/Text12Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@{message.mName}"
+                android:textColor="@{isSentByMyself?@color/dark_chocolate:@color/white}"
+                android:visibility="@{isSentByMyself?View.VISIBLE :View.GONE }" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp">
+
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/inflate_user_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:load_image="@{message.mProfilePic}"
+                        app:shapeAppearanceOverlay="@style/roundedCornersImage" />
+
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/bg_circle_blue"
+                        android:backgroundTint="@{!isSentByMyself?@color/dark_chocolate:@color/dark_chocolate}">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_centerHorizontal="true"
+                            android:backgroundTint="@{isSentByMyself?@color/dark_chocolate:@color/dark_chocolate}"
+                            android:src="@drawable/recv_ic_mic_white" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progress_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        android:progressTint="@{isSentByMyself?@color/primary_color_light:@color/white}"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/playPauseButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_play_button"
+                        android:tint="@{isSentByMyself?@color/primary_color_light:@color/white}"
+                        android:visibility="@{isLoading?View.GONE:View.VISIBLE}"
+                        tools:ignore="UseAppTint" />
+
+                    <ProgressBar
+                        android:id="@+id/loader"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:indeterminate="true"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:progressTint="@{isSentByMyself?@color/primary_color_light:@color/white}"
+                        android:thumbTint="@{isSentByMyself?@color/primary_color_light:@color/white}"
+                        android:visibility="visible"
+                        app:seekBarProgressBackgroundTint="@{isSentByMyself}" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/percentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="0%"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/Text12Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textColor="@{!isSentByMyself?@color/white:@color/dark_chocolate}"
+                android:textSize="8sp"
+                app:set_relative_date="@{message.mTime}" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

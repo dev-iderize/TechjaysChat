@@ -1,0 +1,115 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+
+
+        <variable
+            name="ratio"
+            type="Float" />
+
+        <variable
+            name="isVideo"
+            type="Boolean" />
+
+        <variable
+            name="image"
+            type="String" />
+
+        <variable
+            name="isSentByMyself"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+
+        <import type="android.view.Gravity" />
+
+        <variable
+            name="message"
+            type="com.techjays.chatlibrary.model.Chat.ChatData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="@{!isSentByMyself?Gravity.END:Gravity.START}">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/inflate_user_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="@{isSentByMyself?View.VISIBLE:View.GONE}"
+            app:load_image="@{message.mProfilePic}"
+            app:shapeAppearanceOverlay="@style/roundedCornersImage" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@{isSentByMyself?@drawable/bg_userguide_bottomleft_rounded:@drawable/bg_userguide_topright_rounded}"
+            android:backgroundTint="@{!isSentByMyself?@color/primary_color_light:@color/white}"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp">
+
+            <TextView
+                style="@style/Text12Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="@{message.mName}"
+                android:textColor="@{isSentByMyself?@color/dark_chocolate:@color/white}"
+                android:visibility="@{!isSentByMyself?View.GONE : View.VISIBLE}" />
+
+            <RelativeLayout
+                android:id="@+id/video_Layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.santalu.aspectratioimageview.AspectRatioImageView
+                    android:id="@+id/aspect_ratio_image_view"
+                    android:layout_width="200dp"
+                    android:layout_height="0dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    app:set_aspect_ratio="@{ratio}"
+                    app:set_image="@{image}" />
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_play_icon_video"
+                    android:visibility="@{isVideo?View.VISIBLE:View.GONE}" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/Text12Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textColor="@{!isSentByMyself?@color/white:@color/dark_chocolate}"
+                android:textSize="8sp"
+                app:set_relative_date="@{message.mTime}" />
+
+
+            <TextView
+                android:id="@+id/percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="0%"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

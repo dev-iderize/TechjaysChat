@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
+import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
@@ -51,6 +52,7 @@ class LibAppServices {
         const val upload_image = "chat/file-upload/"
 
         const val get_chat_list = "chat/group/list/"
+        const val get_chats = "chat/group/messages/"
     }
 
     private interface ApiInterface {
@@ -186,6 +188,28 @@ class LibAppServices {
                 mParam["limit"] = limit.toString()
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
                 initService(c, call, ChatList::class.java, mHashCode, listener)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun getChatsFromGroup(
+            c: Context,
+            offset: Int,
+            limit: Int,
+            groupId: Int,
+            listener: ResponseListener,
+        ) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.get_chats
+                val mURL = API.constructUrl(mHashCode)
+                val mParam = HashMap<String, String>()
+                mParam["offset"] = offset.toString()
+                mParam["limit"] = limit.toString()
+                mParam["group_id"] = groupId.toString()
+                val call = apiService.GET(mURL, getAuthHeader(c), mParam)
+                initService(c, call, Chat::class.java, mHashCode, listener)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
