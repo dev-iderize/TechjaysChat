@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
+import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -48,6 +49,8 @@ class LibAppServices {
         const val delete_messages = "chat/delete-chat-messages/"
         const val upload_file = "chat/file-upload/"
         const val upload_image = "chat/file-upload/"
+
+        const val get_chat_list = "chat/group/list/"
     }
 
     private interface ApiInterface {
@@ -168,19 +171,21 @@ class LibAppServices {
          * Auth token needed
          */
 
-        fun getChatList(c: Context, offset: Int, limit: Int, listener: ResponseListener) {
+        fun getChatList(
+            c: Context,
+            offset: Int,
+            limit: Int,
+            listener: ResponseListener,
+        ) {
             try {
                 val apiService = getClient().create(ApiInterface::class.java)
-                val mHashCode = API.chat_list
+                val mHashCode = API.get_chat_list
                 val mURL = API.constructUrl(mHashCode)
-
                 val mParam = HashMap<String, String>()
                 mParam["offset"] = offset.toString()
                 mParam["limit"] = limit.toString()
-
                 val call = apiService.GET(mURL, getAuthHeader(c), mParam)
-                initService(c, call, LibChatList::class.java, mHashCode, listener)
-                Log.d("mParam --> ", mParam.toString())
+                initService(c, call, ChatList::class.java, mHashCode, listener)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -191,7 +196,7 @@ class LibAppServices {
             offset: Int,
             limit: Int,
             userId: String,
-            duelId:String,
+            duelId: String,
             listener: ResponseListener
         ) {
             try {
@@ -497,7 +502,7 @@ class LibAppServices {
         private fun getAuthHeaderPartVidrival(c: Context): HashMap<String, String> {
             val mHeader = HashMap<String, String>()
             mHeader["Authorization"] = "token 1c40b92d06bc7ec7744b60bd04e86ad52332264d"
-                Log.d("Auth Header --> ", mHeader.toString())
+            Log.d("Auth Header --> ", mHeader.toString())
 
             return mHeader
         }

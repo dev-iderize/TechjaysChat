@@ -32,6 +32,30 @@ object DateUtil {
             sdf.timeZone = TimeZone.getTimeZone("UTC")
         return sdf.format(c.time)
     }
+    fun convertTimeToTextExact(date: String?): String {
+        if (date == null) return ""
+
+        val utcFormatter = SimpleDateFormat(
+            if (date.endsWith("Z")) "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'" else "yyyy-MM-dd HH:mm:ss.SSSSSSXXX",
+            Locale.getDefault()
+        )
+        utcFormatter.timeZone = TimeZone.getTimeZone("UTC")
+        val pastTime = utcFormatter.parse(date)?.time ?: return ""
+        val nowTime = System.currentTimeMillis()
+        val diffInMillis = nowTime - pastTime
+        val diffInSeconds = diffInMillis / 1000L
+
+        return when {
+            diffInSeconds < 11L -> "now"
+            diffInSeconds < 60L -> "$diffInSeconds seconds ago"
+            diffInSeconds < 3600L -> "${diffInSeconds / 60L} minute${if (diffInSeconds / 60L == 1L) "" else "s"} ago"
+            diffInSeconds < 86400L -> "${diffInSeconds / 3600L} hour${if (diffInSeconds / 3600L == 1L) "" else "s"} ago"
+            diffInSeconds < 604800L -> "${diffInSeconds / 86400L} day${if (diffInSeconds / 86400L == 1L) "" else "s"} ago"
+            diffInSeconds < 2419200L -> "${diffInSeconds / 604800L} week${if (diffInSeconds / 604800L == 1L) "" else "s"} ago"
+            diffInSeconds < 26784000L -> "${diffInSeconds / 2419200L} month${if (diffInSeconds / 2419200L == 1L) "" else "s"} ago"
+            else -> "${diffInSeconds / 31536000L} year${if (diffInSeconds / 31536000L == 1L) "" else "s"} ago"
+        }
+    }
 
     val previous15DaysDate: String
         get() {

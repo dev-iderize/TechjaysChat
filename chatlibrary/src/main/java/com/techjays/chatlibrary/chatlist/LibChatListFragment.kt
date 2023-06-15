@@ -1,6 +1,10 @@
 package com.techjays.chatlibrary.chatlist
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -9,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,59 +25,58 @@ import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.api.LibAppServices
+import com.techjays.chatlibrary.api.Response
+import com.techjays.chatlibrary.api.ResponseListener
 import com.techjays.chatlibrary.base.LibBaseFragment
 import com.techjays.chatlibrary.chat.LibChatActivity
+import com.techjays.chatlibrary.databinding.LibActivityChatBinding
+import com.techjays.chatlibrary.databinding.LibActivityChatListBinding
+import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibUser
+import com.techjays.chatlibrary.model.OthersMessage
 import com.techjays.chatlibrary.util.ChatSocketListener
+import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.ArrayList
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LibChatListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View.OnClickListener {
+class LibChatListFragment : Fragment(),ResponseListener{
 
     private lateinit var mView: View
 
-    private lateinit var mRecyclerView: RecyclerView
+    lateinit var binding: LibActivityChatListBinding
+
+    // private val viewModel: NodesViewModel by activityViewModels()
+    lateinit var mListener: EndlessRecyclerViewScrollListener
     var mOffset = 0
-    var mLimit = 6
-    var isNextLink = false
-    private lateinit var mListener: EndlessRecyclerViewScrollListener
-    private lateinit var mSwipe: SwipeRefreshLayout
-    private lateinit var mLibChatViewModel: LibChatViewModel
-    var mData = ArrayList<LibChatList>()
-    private lateinit var mListAdapterLib: LibChatListAdapter
+    var mLimit = 10
+    var mNextLink = false
+
+    //   lateinit var nodeMap: Map<Int, NodesNewModel>
     private var ws: WebSocket? = null
+
     private lateinit var listener: ChatSocketListener
-    private lateinit var mDelete: ImageView
+    private lateinit var client: OkHttpClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mView = inflater.inflate(R.layout.lib_activity_chat_list, container, false)
-        init(mView)
-        return mView
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.lib_activity_chat_list, container, false)
+        return binding.root
     }
 
-    override fun init(view: View) {
-        mLibChatViewModel = LibChatViewModel(this.requireActivity())
-
-        mRecyclerView = mView.findViewById(R.id.recycler_chat_list)
-        mSwipe = view.findViewById(R.id.chat_swipe)
-        mDelete = view.findViewById(R.id.delete_button)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initBundle()
     }
 
-    override fun initBundle() {
+    private fun initBundle() {
         val bundle = arguments
         if (bundle != null) {
 
@@ -78,208 +84,158 @@ class LibChatListFragment : LibBaseFragment(), LibChatListAdapter.Callback, View
             val socketUrl = bundle.getString("socket_url")!!
             val chatToken = bundle.getString("chat_token")!!
             val authToken = bundle.getString("auth_token")!!
-            val color = bundle.getString("color")!!
-
-            val userData = Gson().fromJson(bundle.getString("user_data"), LibUser::class.java)
-
-            if (bundle.containsKey("chat_user_data")) {
-                val chatUserData =
-                    Gson().fromJson(
-                        bundle.getString("chat_user_data").toString(),
-                        LibUser::class.java
-                    )
-                val chatData = LibChatList()
-                chatData.mProfilePic = chatUserData.mProfilePic
-                chatData.mCompanyName = chatUserData.mUserName
-                chatData.mToUserId = chatUserData.mUserId.toString()
-                initChatMessage(chatData)
-            }
+            val userId = bundle.getInt("user_id")
 
             ChatLibrary.instance.authToken = authToken
             ChatLibrary.instance.chatToken = chatToken
             ChatLibrary.instance.baseUrl = baseURL
             ChatLibrary.instance.socketUrl = socketUrl
-            ChatLibrary.instance.mUserData = userData
-            ChatLibrary.instance.mColor = color
+            ChatLibrary.instance.mUserId = userId
 
-            initRecycler()
-            getChatList(true)
-            clickListener()
-            initObserver()
         }
-    }
-
-    private fun initObserver() {
-        if (!mLibChatViewModel.getChatObserver().hasActiveObservers()) {
-            mLibChatViewModel.getChatObserver().observe(requireActivity(), {
-                AppDialogs.hideProgressDialog()
-                mSwipe.isRefreshing = false
-                when (it?.requestType) {
-                    LibAppServices.API.chat_list.hashCode() -> {
-                        if (it.responseStatus!!) {
-                            isNextLink = (it as LibChatList).mNextLink
-                            if (mOffset == 0)
-                                mData.clear()
-                            mData.addAll(it.mData)
-                            mListAdapterLib.notifyDataSetChanged()
-                        } else
-                            AppDialogs.customOkAction(requireContext(), it.responseMessage)
-                    }
-
-                    LibAppServices.API.delete_chats.hashCode() -> {
-                        if (it.responseStatus!!) {
-                            val iterator = mData.iterator()
-                            while (iterator.hasNext()) {
-                                val item = iterator.next()
-                                if (item.isChecked) {
-                                    iterator.remove()
-                                }
-                            }
-                            mListAdapterLib.notifyDataSetChanged()
-                        } else AppDialogs.showSnackbar(mRecyclerView, it.responseMessage)
-                    }
-                }
-            })
-        }
-    }
-
-    private fun initRecycler() {
-        val layoutManager = LinearLayoutManager(requireContext())
-        mRecyclerView.layoutManager = layoutManager
-        mListAdapterLib = LibChatListAdapter(requireActivity(), mData, this)
-        mRecyclerView.adapter = mListAdapterLib
-
-        mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                try {
-                    if (isNextLink) {
-                        mOffset += mLimit
-                        getChatList(false)
-                    }
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-        mRecyclerView.addOnScrollListener(mListener)
-
-    }
-
-    private fun getChatList(show: Boolean) {
-        mSwipe.isRefreshing = !checkInternet()
-        if (checkInternet()) {
-            if (show)
-                AppDialogs.showProgressDialog(requireContext())
-            mLibChatViewModel.getChatList(mOffset, mLimit)
-        }
-    }
-
-    override fun clickListener() {
-        mSwipe.setOnRefreshListener {
-            mListener.resetState()
-            mOffset = 0
-            getChatList(false)
-            mDelete.visibility = View.GONE
-        }
-        mDelete.setOnClickListener(this)
-    }
-
-    private fun start() {
-        val request: Request = Request.Builder().url(ChatLibrary.instance.socketUrl).build()
-        var client: OkHttpClient = OkHttpClient()
-        listener = ChatSocketListener(object : ChatSocketListener.CallBack {
-            override fun onMessageReceive(libChatMessage: LibChatSocketMessages) {
-                requireActivity().runOnUiThread {
-                    var isAlreadyInList = false
-                    val isMySelf = libChatMessage.mData?.mSender == null
-                    if (!isMySelf) {
-                        for (item in mData) {
-                            if (libChatMessage.mData?.mSender!!.mUserId.toString()
-                                    .equals(item.mToUserId.toString())
-                            ) {
-                                isAlreadyInList = true
-                                Log.e("te", mData.indexOf(item).toString());
-                                mData[mData.indexOf(item)].mMessage =
-                                    libChatMessage.mData?.mMessage!!
-                                mData[mData.indexOf(item)].mProfilePic =
-                                    libChatMessage.mData?.mProfilePic!!
-                                mData[mData.indexOf(item)].newMessage = true
-                                var newChat: LibChatList = mData[mData.indexOf(item)]
-                                mData.remove(item)
-                                mData.add(0, newChat)
-                                mListAdapterLib.notifyDataSetChanged()
-                                break
-                            }
-                        }
-
-                        if (!isAlreadyInList) {
-                            var newChat: LibChatList = LibChatList()
-                            newChat.mMessage = libChatMessage.mData?.mMessage!!
-                            newChat.mToUserId = libChatMessage.mData?.mSender!!.mUserId.toString()
-                            newChat.mFirstName = libChatMessage.mData?.mSender!!.mUserName
-                            newChat.mProfilePic = libChatMessage.mData?.mProfilePic!!
-                            newChat.newMessage = true
-                            mData.add(0, newChat)
-                            mListAdapterLib.notifyDataSetChanged()
-                        }
-                    }
-
-                }
-            }
-        })
-        ws = client.newWebSocket(request, listener)
-        client.dispatcher().executorService().shutdown()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (ws != null) {
-            ws!!.cancel()
-            ws = null;
-        }
+        init()
     }
 
 
-    override fun onBackPressed() {
-    }
-
-    override fun onResumeFragment() {
-
-    }
-
-    override fun initChatMessage(selectedLibChat: LibChatList) {
-        if (mData.size > 0) {
-            try {
-                mData[mData.indexOf(selectedLibChat)].newMessage = false
-                mListAdapterLib.notifyDataSetChanged();
-            } catch (e: Exception) {
-                throw e
-            }
-        }
+    fun navToChatActivity(groupId: Int, groupName: String, groupProfilePic: String) {
         val i = Intent(requireActivity(), LibChatActivity::class.java)
-        i.putExtra("chat_user", selectedLibChat)
+        i.putExtra("groupName", groupName)
+        i.putExtra("groupProfilePic", groupProfilePic)
+        i.putExtra("groupId", groupId)
         startActivity(i)
     }
 
-    override fun initDelete() {
-        mDelete.visibility = if (mDelete.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    private fun initRecycler() {
+        val recycler = binding.recyclerView
+        recycler.layoutManager =
+            LinearLayoutManager(requireActivity())
+        val layoutManager = LinearLayoutManager(requireActivity())
+        getChatList(mOffset, mLimit)
+        recycler.layoutManager = layoutManager
+        mListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                try {
+                    if (mNextLink) {
+                        mOffset += mLimit
+                        getChatList(mOffset, mLimit)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+        }
+        recycler.addOnScrollListener(mListener)
     }
 
-    override fun onClick(view: View) {
-        if (view == mDelete) {
-            val id = ArrayList<String>()
-            for (i in mData) {
-                if (i.isChecked)
-                    id.add(i.mToUserId)
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun init() {
+        binding.activity = this
+        client = OkHttpClient()
+        listener = ChatSocketListener(requireContext(), ws)
+        requireActivity().registerReceiver(
+            chatWebSocketBroadcast, IntentFilter("chat_web_socket_message")
+        )
+        val chatToken = ChatLibrary.instance.chatToken
+        webSocketStart()
+        initRecycler()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listener.cancel()
+        requireActivity().unregisterReceiver(chatWebSocketBroadcast)
+    }
+
+    private fun webSocketStart() {
+        val request: Request =
+            Request.Builder().url(ChatLibrary.instance.baseUrl).build()
+        ws = client.newWebSocket(request, listener)
+        listener.initialize(ws!!)
+
+    }
+
+
+    fun getChatList(offset: Int, limit: Int) {
+        /*if (Utility.checkInternet(requireContext())) {*/
+        LibAppServices.getChatList(requireContext(), offset, limit, this)
+        // }
+    }
+
+    private val chatWebSocketBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
+        @SuppressLint("NotifyDataSetChanged")
+        override fun onReceive(
+            context: Context?, intent: Intent
+        ) {
+            if (intent.action == "chat_web_socket_message") {
+                val type = intent.getStringExtra("type")
+                val value = intent.getStringExtra("value")
+                val isSent = intent.getBooleanExtra("isSentMyself", true)
+                if (type != "connect") {
+                    val gson = Gson()
+                    val receivedChat = gson.fromJson(value, OthersMessage::class.java)
+                    val adapter = binding.recyclerView.adapter as ChatListAdapter
+                    val chat = receivedChat.toChatList(isSent)
+                    for (newChat in chat.mData) {
+                        adapter.updateItem(newChat)
+                    }
+                    binding.recyclerView.adapter!!.notifyDataSetChanged()
+
+                }
+                //
+
             }
-            if (id.isNotEmpty())
-                mLibChatViewModel.deleteChats(TextUtils.join(",", id))
-            else AppDialogs.showSnackbar(mDelete, "Please select something!")
+        }
+
+    }
+
+    fun OthersMessage.toChatList(isSentMyself: Boolean): ChatList {
+        val chat = ChatList()
+        val chatData = ChatList.ChatListData()
+
+        chatData.mMessageId = data.messageId
+        chatData.mGroupId = data.groupId
+        chatData.mFileType = data.fileType
+        chatData.mMessage = data.message
+        chatData.mTime = data.timestamp
+        chatData.mMessage = data.message
+        chatData.mLastSentMsgTimeStamp = data.timestamp
+        chatData.isSentByMyself = isSentMyself
+        chatData.mLastSentMsgTimeStamp = ""
+        chatData.mIsRead = false
+        chat.mData.add(chatData)
+        return chat
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResponse(r: Response?) {
+        if (r != null) {
+            when (r.requestType) {
+                LibAppServices.API.get_chat_list.hashCode() -> {
+                    //context.binding.isLoading = false
+                    if (r.responseStatus!!) {
+                        val chatList = (r as ChatList)
+                        mNextLink = chatList.next_link
+                        if (mOffset == 0) {
+                            binding.chatList = chatList
+                            binding.recyclerView.adapter =
+                                ChatListAdapter(
+                                    this@LibChatListFragment,
+                                    r.mData
+                                )
+                        } else {
+                            binding.chatList?.mData?.addAll(
+                                chatList.mData
+                            )
+                            binding.recyclerView.adapter?.notifyDataSetChanged()
+                        }
+                    } else
+                        Toast.makeText(requireContext(), r.responseMessage, Toast.LENGTH_LONG)
+                            .show()
+                }
+            }
+
         }
     }
 }

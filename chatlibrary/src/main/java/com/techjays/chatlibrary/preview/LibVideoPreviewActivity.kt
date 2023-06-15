@@ -13,7 +13,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.techjays.chatlibrary.R
-import kotlinx.android.synthetic.main.activity_lib_video_preview.*
 
 class LibVideoPreviewActivity : AppCompatActivity() {
 
@@ -51,7 +50,7 @@ class LibVideoPreviewActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        if (isUpload) {
+       /* if (isUpload) {
             libuploadButton.visibility = View.VISIBLE
         } else {
             libuploadButton.visibility = View.GONE
@@ -61,7 +60,7 @@ class LibVideoPreviewActivity : AppCompatActivity() {
             mCallback?.videoPreviewCallback(mUrl!!)
             onBackPressed()
 
-        }
+        }*/
 
         mPlayer = ExoPlayer.Builder(this).build()
         playerView.player = mPlayer

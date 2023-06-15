@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="haveNewMessage"
+            type="Boolean" />
+
+        <variable
+            name="mGroupName"
+            type="String" />
+
+        <variable
+            name="isMyself"
+            type="Boolean" />
+
+        <variable
+            name="listData"
+            type="com.techjays.chatlibrary.model.ChatList.ChatListData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_border_white"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="15dp"
+        android:paddingTop="15dp"
+        tools:ignore="RtlSymmetry">
+
+        <RelativeLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@{isMyself?@drawable/bg_purple_circle:@drawable/border_primary_light_circle_blue}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/text_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/inflate_user_image"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_user_icon_white"
+                app:load_image="@{listData.mDisplayPicture}"
+                app:shapeAppearanceOverlay="@style/roundedCornersImage" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/text_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/dot"
+            app:layout_constraintStart_toEndOf="@+id/profile_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/group_name"
+                style="@style/Text18Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingEnd="10dp"
+                android:text="@{isMyself?`My Circle`:listData.mGroupName}"
+                android:textColor="@color/dark_chocolate" />
+
+            <TextView
+                android:id="@+id/last_message"
+                style="@style/Text24Normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingEnd="10dp"
+                android:text="@{listData.mMessage}"
+                android:textColor="@{!listData.mIsRead&amp;&amp;!listData.mIsSentByMyself?@color/primary_color_light:@color/hint_grey}"
+                android:textSize="12sp"
+                android:visibility="@{listData.mMessage.length()==0||listData.mMessage==null ||!listData.mIsSentByMyself?View.GONE:View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_layout"
+                app:layout_constraintTop_toBottomOf="@+id/group_name" />
+
+            <TextView
+                style="@style/Text24Normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingEnd="10dp"
+                android:textAlignment="textEnd"
+                android:textColor="@{!listData.mIsRead&amp;&amp;!listData.mIsSentByMyself?@color/primary_color_light:@color/hint_grey}"
+                android:textSize="12sp"
+                android:visibility="@{listData.mMessage.length()==0||listData.mMessage==null ||!listData.mIsSentByMyself?View.GONE:View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/group_name"
+                app:set_relative_date="@{listData.mTime}" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/dot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:elevation="10dp"
+            android:src="@drawable/bg_circle_blue"
+            android:visibility="@{!listData.mIsSentByMyself&amp;&amp;!listData.mIsRead?View.VISIBLE:View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/primary_color_light" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

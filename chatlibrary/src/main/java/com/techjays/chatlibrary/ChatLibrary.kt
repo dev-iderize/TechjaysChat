@@ -12,6 +12,7 @@ class ChatLibrary private constructor() {
     var socketUrl = ""
     var chatToken = ""
     var authToken = ""
+    var mUserId: Int = -1
     var mUserData: LibUser? = null
     var mColor = ""
 

@@ -31,10 +31,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 
-class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
-    View.OnClickListener, ChatSocketListener.CallBack {
+class LibChatListActivity  {
 
-    private lateinit var mRecyclerView: RecyclerView
+    /*private lateinit var mRecyclerView: RecyclerView
     var mOffset = 0
     var mLimit = 6
     var isNextLink = false
@@ -65,12 +64,12 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
 
         try {
             val data = intent
-            /*val base_url = data.getStringExtra("base_url").toString()
+            *//*val base_url = data.getStringExtra("base_url").toString()
             val chat_token = data.getStringExtra("chat_token").toString()
             val socketUrl = data.getStringExtra("socket_url").toString()
             val auth_token = data.getStringExtra("auth_token").toString()
             val isPicMessage = data.getBooleanExtra("is_profile_pic",true)
-            val color = data.getStringExtra("color").toString()*/
+            val color = data.getStringExtra("color").toString()*//*
 
             mChatData = Gson().fromJson(
                 data.getStringExtra("chat_data").toString(),
@@ -303,5 +302,5 @@ class LibChatListActivity : LibBaseActivity(), LibChatListAdapter.Callback,
             }
 
         }
-    }
+    }*/
 }

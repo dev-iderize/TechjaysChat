@@ -14,7 +14,7 @@
         android:paddingBottom="10dp"
         android:paddingHorizontal="15dp"
         android:layout_height="75dp"
-        android:background="@color/chat_header_color"
+        android:background="@color/headingColor"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -103,7 +103,7 @@
                 android:id="@+id/delete_button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginEnd="@dimen/h5"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
                 android:layout_marginStart="10dp"
                 android:padding="3dp"
@@ -199,7 +199,7 @@
                 android:layout_weight="1"
                 android:maxHeight="70dp"
                 android:textCursorDrawable="@color/app_only_white"
-                android:background="@color/chat_blue"
+                android:background="@color/app_blue"
                 android:gravity="top|start"
                 android:hint="@string/type_message"
                 android:inputType="textMultiLine"

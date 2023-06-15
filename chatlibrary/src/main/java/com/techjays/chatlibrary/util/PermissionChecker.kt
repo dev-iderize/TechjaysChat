@@ -7,7 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import droidninja.filepicker.FilePickerConst.REQUEST_CODE_PERMISSION
+import com.techjays.chatlibrary.constants.Constant.REQUEST_CODE_PERMISSION
 import java.util.ArrayList
 
 open class PermissionChecker {
@@ -23,15 +23,13 @@ open class PermissionChecker {
     fun checkAllPermission(context: Context, aPermissions: Array<String>): Boolean {
         var isGranted = false
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                for (i in aPermissions.indices) {
-                    isGranted = false
-                    if (!checkPermission(context, aPermissions[i])) {
-                        askPermission(context, aPermissions[i])
-                        break
-                    } else isGranted = true
-                }
-            } else isGranted = true
+            for (i in aPermissions.indices) {
+                isGranted = false
+                if (!checkPermission(context, aPermissions[i])) {
+                    askPermission(context, aPermissions[i])
+                    break
+                } else isGranted = true
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             return isGranted
@@ -42,30 +40,28 @@ open class PermissionChecker {
 
     fun askPermission(context: Context, aPermission: String) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(context, aPermission) == PackageManager.PERMISSION_DENIED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(context as Activity, aPermission)) {
-                        mPermissions = ArrayList()
-                        mPermissions!!.add(aPermission)
-                        ActivityCompat.requestPermissions(
-                            context,
-                            mPermissions!!.toArray(arrayOfNulls<String>(mPermissions!!.size)),
-                            REQUEST_CODE_PERMISSION
-                        )
-                    } else {
-                        Log.d(aPermission, " -----> Never ask again")
-                        AppDialogs.customOkAction(
-                            context,
-                            "Permission Denied!",
-                            "Without this permission the app is unable to proceed further. Open app settings to grant the required permission",
-                            "Open Settings",
-                            object : AppDialogs.ConfirmListener {
-                                override fun yes() {
-                                    Helper.navigateAppSetting(context)
-                                }
-                            }, true
-                        )
-                    }
+            if (ContextCompat.checkSelfPermission(context, aPermission) == PackageManager.PERMISSION_DENIED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(context as Activity, aPermission)) {
+                    mPermissions = ArrayList()
+                    mPermissions!!.add(aPermission)
+                    ActivityCompat.requestPermissions(
+                        context,
+                        mPermissions!!.toArray(arrayOfNulls<String>(mPermissions!!.size)),
+                        REQUEST_CODE_PERMISSION
+                    )
+                } else {
+                    Log.d(aPermission, " -----> Never ask again")
+                    AppDialogs.customOkAction(
+                        context,
+                        "Permission Denied!",
+                        "Without this permission the app is unable to proceed further. Open app settings to grant the required permission",
+                        "Open Settings",
+                        object : AppDialogs.ConfirmListener {
+                            override fun yes() {
+                                Helper.navigateAppSetting(context)
+                            }
+                        }, true
+                    )
                 }
             }
         } catch (e: Exception) {
@@ -76,9 +72,8 @@ open class PermissionChecker {
     fun checkPermission(context: Context, aPermission: String): Boolean {
         var isGranted = false
         try {
-            isGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            isGranted =
                 ContextCompat.checkSelfPermission(context, aPermission) == PackageManager.PERMISSION_GRANTED
-            } else true
         } catch (e: Exception) {
             e.printStackTrace()
         }

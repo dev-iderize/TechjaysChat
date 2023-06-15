@@ -18,7 +18,7 @@
             android:layout_height="0dp"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
-            android:src="@color/colorPrimary"
+            android:src="@color/primary_color_light"
             android:visibility="invisible" />
 
         <include layout="@layout/checkbox" />

@@ -1,56 +1,5 @@
 package com.techjays.chatlibrary.chat
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.icu.text.NumberFormat
-import android.media.ExifInterface
-import android.net.Uri
-import android.os.Build
-import android.os.Build.VERSION.SDK_INT
-import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
-import android.text.TextUtils
-import android.util.Log
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.fxn.pix.Pix
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.gson.Gson
-import com.hbisoft.pickit.PickiT
-import com.hbisoft.pickit.PickiTCallbacks
-import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.api.LibAppServices
-import com.techjays.chatlibrary.base.LibBaseActivity
-import com.techjays.chatlibrary.constants.Constant
-import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_FILE
-import com.techjays.chatlibrary.constants.Constant.CHAT_TYPE_MESSAGE
-import com.techjays.chatlibrary.model.LibChatMessages
-import com.techjays.chatlibrary.model.LibChatSocketMessages
-import com.techjays.chatlibrary.model.LibChatUserModel
-import com.techjays.chatlibrary.model.common.Option
-import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
-import com.techjays.chatlibrary.util.*
-import com.techjays.chatlibrary.viewmodel.LibChatViewModel
-import com.techjays.inappcamera.InAppCameraActivity
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.lib_activity_chat.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
-import java.io.File
-import java.io.FileOutputStream
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -58,13 +7,16 @@ import kotlin.collections.ArrayList
  **/
 
 
-class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListener.CallBack,
-    LibChatAdapter.Callback, PickiTCallbacks, LibVideoPreviewActivity.Callback {
+class LibChatActivity {}
+/*
+{
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mPath: String
 
-    /*lateinit var mSelectedLibChatUser: LibChatList*/
+    */
+/*lateinit var mSelectedLibChatUser: LibChatList*//*
+
     private var mChatData = LibChatUserModel()
     lateinit var path: Uri
     var mOffset = 0
@@ -114,9 +66,11 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.lib_activity_chat)
         if (intent != null) {
-            /* if (intent.extras?.containsKey("chat_user")!!) {
+            */
+/* if (intent.extras?.containsKey("chat_user")!!) {
                  mChatData = intent.extras?.get("chat_user") as LibChatUserModel
-             }*/
+             }*//*
+
             val data = intent
 
             mChatData = Gson().fromJson(
@@ -173,10 +127,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             startActivityForResult(intent, 5)
         }
 
-        /*  libHeader.setOnClickListener {
+        */
+/*  libHeader.setOnClickListener {
               setResult(1002)
               finish()
-          }*/
+          }*//*
+
 
         if (!mChatData.mIsTypeMessage)
             r1.visibility = View.GONE
@@ -221,12 +177,15 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             imm.hideSoftInputFromWindow(v.windowToken, 0)
             false
         })
-        /*libAppBar.setBackgroundColor(
+        */
+/*libAppBar.setBackgroundColor(
             Color.parseColor(
                 ChatLibrary.instance.mColor
             )
-        )*/
-        /*val mBackground: Drawable = libSendButton.background
+        )*//*
+
+        */
+/*val mBackground: Drawable = libSendButton.background
         try {
             mBackground.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                 Utility.getColor(
@@ -236,7 +195,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             )
         } catch (e: Exception) {
             throw e
-        }*/
+        }*//*
+
     }
 
     fun doubleToInt(value: Double): String {
@@ -346,10 +306,12 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                             mRecyclerView.smoothScrollToPosition(0)
                         }
                         mAdapterLib.notifyDataSetChanged()
-                        /* if (mData.isNotEmpty())
+                        */
+/* if (mData.isNotEmpty())
                              Handler(Looper.myLooper()!!).postDelayed({
                                  mRecyclerView.smoothScrollToPosition(mData.size+1)
-                             }, 100)*/
+                             }, 100)*//*
+
                     } else if (!mLibChatViewModel.getChatImageObserver()
                             .hasActiveObservers()
                     ) else {
@@ -397,7 +359,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             }
 
             libBtnImage -> {
-                /*  val options: Options = Options.init()
+                */
+/*  val options: Options = Options.init()
                       .setRequestCode(100) //Request code for activity results
                       .setCount(1) //Number of images to restict selection count
                       .setFrontfacing(false) //Front Facing camera on start
@@ -408,7 +371,8 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                       .setPath("/vidrivals/images") //Custom Path For media Storage
 
 
-                  Pix.start(this@LibChatActivity, options)*/
+                  Pix.start(this@LibChatActivity, options)*//*
+
 
                 ImagePicker.with(this)
                     .crop()                    //Crop image(Optional), Check Customization for more option
@@ -598,16 +562,20 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                 mChatData.mReceiverUserId == receivedNewMessage.mData?.mSender?.mUserId.toString() -> {
                     newMessage.mMessage = receivedNewMessage.mData!!.mMessage
                     newMessage.mTimeStamp = receivedNewMessage.mData!!.mTimeStamp
-                    /*libChatEdit.text = "".toEditable()*/
+                    */
+/*libChatEdit.text = "".toEditable()*//*
+
                     mData.add(0, newMessage)
                     mRecyclerView.smoothScrollToPosition(0)
                     mAdapterLib.notifyDataSetChanged()
                 }
 
                 else -> {
-                    /*
+                    */
+/*
                         * Build notification on receiving broadcast from channel "ChatLibraryBuildNotification"
-                        * */
+                        * *//*
+
                     val intent = Intent("ChatLibraryBuildNotification")
                     intent.putExtra("data", Gson().toJson(receivedNewMessage))
                     sendBroadcast(intent)
@@ -711,7 +679,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
                getRotateImage(path)
         }
 
-        /*Utility.log(path)*/
+        */
+/*Utility.log(path)*//*
+
     }
 
     private fun uploadImage(path: String) {
@@ -756,7 +726,9 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             val fOut = FileOutputStream(path)
             output.compress(Bitmap.CompressFormat.PNG, 50, fOut)
             fOut.close()
-            /* val out = MediaStore.Images.Media.insertImage(getContentResolver(),filepath.getAbsolutePath(),filepath.getName(),filepath.getName());*/
+            */
+/* val out = MediaStore.Images.Media.insertImage(getContentResolver(),filepath.getAbsolutePath(),filepath.getName(),filepath.getName());*//*
+
             Utility.log(path)
             uploadImage(path)
         } catch (e: java.lang.Exception) {
@@ -778,4 +750,4 @@ class LibChatActivity : LibBaseActivity(), View.OnClickListener, ChatSocketListe
             mLibChatViewModel.uploadImageVideo(mUrl, "video")
         }
     }
-}
+}*/

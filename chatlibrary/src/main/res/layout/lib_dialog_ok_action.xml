@@ -38,7 +38,8 @@
 
     <ImageView
         android:id="@+id/dialog_close_button"
-        style="@style/CloseButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/ic_close"
         android:background="@drawable/bg_shadow_white_round"
         android:layout_alignParentEnd="true" />
