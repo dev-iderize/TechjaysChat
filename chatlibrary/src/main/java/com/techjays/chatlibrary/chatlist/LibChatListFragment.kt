@@ -44,19 +44,13 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.ArrayList
 
-class LibChatListFragment : Fragment(),ResponseListener{
-
-    private lateinit var mView: View
+class LibChatListFragment : Fragment(), ResponseListener {
 
     lateinit var binding: LibActivityChatListBinding
-
-    // private val viewModel: NodesViewModel by activityViewModels()
     lateinit var mListener: EndlessRecyclerViewScrollListener
     var mOffset = 0
     var mLimit = 10
     var mNextLink = false
-
-    //   lateinit var nodeMap: Map<Int, NodesNewModel>
     private var ws: WebSocket? = null
 
     private lateinit var listener: ChatSocketListener
@@ -158,9 +152,9 @@ class LibChatListFragment : Fragment(),ResponseListener{
 
 
     fun getChatList(offset: Int, limit: Int) {
-        /*if (Utility.checkInternet(requireContext())) {*/
-        LibAppServices.getChatList(requireContext(), offset, limit, this)
-        // }
+        if (Utility.checkInternet(requireContext())) {
+            LibAppServices.getChatList(requireContext(), offset, limit, this)
+        }
     }
 
     private val chatWebSocketBroadcast: BroadcastReceiver = object : BroadcastReceiver() {

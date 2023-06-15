@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         mButton2 = findViewById(R.id.nav_fragment)
         mButton2.setOnClickListener {
-
             val newFragment = LibChatListFragment()
 
             val bundle = Bundle()

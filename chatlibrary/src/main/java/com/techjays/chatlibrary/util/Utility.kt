@@ -46,6 +46,7 @@ object Utility {
         return df.format(value)
     }
 
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setBackgroundDrawableResource(window: Window, @DrawableRes drawableRes: Int) {
         val context = window.context
@@ -55,6 +56,19 @@ object Utility {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             statusBarColor = transparentColor
             setBackgroundDrawable(backgroundDrawable)
+        }
+    }
+
+    fun checkInternet(context: Context): Boolean {
+        return if (Utility.isInternetAvailable(context))
+            true
+        else {
+            AppDialogs.customOkAction(
+                context,
+                "No Internet"
+            )
+
+            false
         }
     }
 
@@ -320,7 +334,12 @@ object Utility {
         }
     }
 
-    fun loadUserImageWithCache(aURL: String?, image: ImageView, placeHolder: Int,context: Context) {
+    fun loadUserImageWithCache(
+        aURL: String?,
+        image: ImageView,
+        placeHolder: Int,
+        context: Context
+    ) {
         try {
             if (aURL.isNullOrEmpty()) {
                 image.setImageResource(placeHolder)
@@ -364,7 +383,7 @@ object Utility {
                         .load(aURL)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .centerCrop()
-                        .override(500,500)
+                        .override(500, 500)
                         .into(image)
                 } else {
                     Picasso.get().load(File(aURL))
