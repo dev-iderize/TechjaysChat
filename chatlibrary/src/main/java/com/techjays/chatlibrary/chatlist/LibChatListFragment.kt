@@ -99,11 +99,17 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     }
 
 
-    fun navToChatActivity(groupId: Int, groupName: String, groupProfilePic: String) {
+    fun navToChatActivity(
+        groupId: Int,
+        groupName: String,
+        groupProfilePic: String,
+        groupCreatorId: Int
+    ) {
         val i = Intent(requireActivity(), LibChatActivity::class.java)
         i.putExtra("groupName", groupName)
         i.putExtra("groupProfilePic", groupProfilePic)
         i.putExtra("groupId", groupId)
+        i.putExtra("creatorId", groupCreatorId)
         startActivity(i)
     }
 

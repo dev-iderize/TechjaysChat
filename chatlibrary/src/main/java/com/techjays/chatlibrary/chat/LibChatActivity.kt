@@ -72,6 +72,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     private lateinit var audioPickerLauncher: ActivityResultLauncher<String>
     private var ws: WebSocket? = null
     private lateinit var client: OkHttpClient
+    var groupName = ""
     var myId = -1
 
 
@@ -85,8 +86,14 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         Utility.statusBarColor(window, applicationContext, R.color.primary_color_light)
         audioRecorder = AudioRecorder(this, this)
         myId = ChatLibrary.instance.mUserId
-        val groupName = intent.getStringExtra("groupName")
+
         groupId = intent.getIntExtra("groupId", -1)
+        val aCreatorId = intent.getIntExtra("creatorId", -1)
+        Log.e("creatorId_______>", groupId.toString())
+        groupName = if (aCreatorId == myId)
+            "My Circle"
+        else
+            intent.getStringExtra("groupName")!!
         client = OkHttpClient()
         val groupProfilePic = intent.getStringExtra("groupProfilePic")
         binding.groupName = groupName
@@ -567,6 +574,5 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             binding.uploadProgressBar.visibility = View.GONE
             binding.uploadText.visibility = View.GONE
         }
-
     }
 }

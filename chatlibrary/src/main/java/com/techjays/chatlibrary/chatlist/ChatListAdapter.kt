@@ -28,7 +28,8 @@ class ChatListAdapter(
         holder.itemView.setOnClickListener {
             mContext.navToChatActivity(
                 eachListData.mGroupId,
-                eachListData.mGroupName, eachListData.mDisplayPicture
+                eachListData.mGroupName, eachListData.mDisplayPicture,
+                eachListData.mCreatorId
             )
         }
         holder.bind(eachListData, myUserId)
