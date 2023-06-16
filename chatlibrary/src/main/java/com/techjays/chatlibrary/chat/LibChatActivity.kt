@@ -45,6 +45,7 @@ import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.util.PermissionChecker
 import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
+import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.LibChatMessages
 
 import okhttp3.OkHttpClient
@@ -53,7 +54,7 @@ import okhttp3.WebSocket
 
 
 class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
-    AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback {
+    AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback, FileUploadProgress {
     private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST: Int = 10002
     lateinit var binding: ActivityChatBinding
     private lateinit var audioRecorder: AudioRecorder
@@ -118,7 +119,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
     fun fileUpload(uri: Uri) {
         if (Utility.checkInternet(this))
-            LibAppServices.fileUpload(this, uri, this)
+            LibAppServices.fileUpload(this, uri, this, this)
     }
 
 
@@ -535,6 +536,36 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     override fun showFailedMessage(msg: String) {
         runOnUiThread {
             AppDialogs.showToastDialog(this, msg)
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun changeProgress(progress: Int) {
+        runOnUiThread {
+            if (progress in 1..100) {
+                binding.uploadProgressBar.visibility = View.VISIBLE
+                binding.uploadText.visibility = View.VISIBLE
+                binding.uploadProgressBar.progress = progress
+                binding.uploadText.text = "$progress%"
+            }
+        }
+    }
+
+    override fun errorHappened() {
+        runOnUiThread {
+            binding.uploadProgressBar.visibility = View.GONE
+            binding.uploadText.visibility = View.GONE
+            AppDialogs.showToastDialog(this, "Something happened couldn't upload the file")
+        }
+
+
+    }
+
+    override fun completedSuccessfully() {
+        runOnUiThread {
+            binding.uploadProgressBar.visibility = View.GONE
+            binding.uploadText.visibility = View.GONE
         }
 
     }

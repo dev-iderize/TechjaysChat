@@ -11,7 +11,9 @@ import okio.Sink
 
 class ShieldUpChatLibProgressRequestBody(
     private val requestBody: RequestBody,
-    private val progressCallback: (Int) -> Unit
+    private val progressCallback: (Int) -> Unit,
+    private val errorCallback: (Throwable) -> Unit,
+    private val completionCallback: () -> Unit
 ) : RequestBody() {
 
     override fun contentType(): MediaType? = requestBody.contentType()
@@ -21,8 +23,14 @@ class ShieldUpChatLibProgressRequestBody(
     override fun writeTo(sink: BufferedSink) {
         val countingSink = CountingSink(sink)
         val bufferedSink = Okio.buffer(countingSink)
-        requestBody.writeTo(bufferedSink)
-        bufferedSink.flush()
+
+        try {
+            requestBody.writeTo(bufferedSink)
+            bufferedSink.flush()
+            completionCallback()
+        } catch (e: Exception) {
+            errorCallback(e)
+        }
     }
 
     private inner class CountingSink(delegate: Sink) : ForwardingSink(delegate) {
@@ -33,7 +41,7 @@ class ShieldUpChatLibProgressRequestBody(
             uploadedBytes += byteCount
             val progress = (uploadedBytes * 100 / contentLength()).toInt()
             progressCallback(progress)
-           // Log.e("progresss", progress.toString())
         }
     }
 }
+

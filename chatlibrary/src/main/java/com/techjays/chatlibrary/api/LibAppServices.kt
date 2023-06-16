@@ -12,6 +12,7 @@ import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
 import com.techjays.chatlibrary.helpers.ShieldUpChatLibProgressRequestBody
+import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.LibChatList
@@ -331,7 +332,12 @@ class LibAppServices {
             }
         }
 
-        fun fileUpload(c: Context, uri: Uri, listener: ResponseListener) {
+        fun fileUpload(
+            c: Context,
+            uri: Uri,
+            listener: ResponseListener,
+            mCallBack: FileUploadProgress
+        ) {
             try {
                 val apiService = getClient().create(ApiInterface::class.java)
                 val mHashCode = API.upload_file
@@ -350,14 +356,22 @@ class LibAppServices {
                     }
 
                     if (requestBody != null) {
-                        val progressRequestBody =
-                            ShieldUpChatLibProgressRequestBody(requestBody) { progress ->
-                                Log.e("progress", progress.toString())
+                        val progressRequestBody = ShieldUpChatLibProgressRequestBody(requestBody,
+                            { progress ->
+                                mCallBack.changeProgress(progress)
+                            },
+                            { error ->
+                                mCallBack.errorHappened()
+                                error.printStackTrace()
+                            },
+                            {
+                                mCallBack.completedSuccessfully()
                             }
+                        )
                         mParam["file\"; filename=\"$fileName\""] = progressRequestBody
-                      /*  mParam["file_type"] =
-                            RequestBody.create(MediaType.parse("text/plain"), "image")
-*/
+                        /*  mParam["file_type"] =
+                              RequestBody.create(MediaType.parse("text/plain"), "image")
+  */
                         val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
                         initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
                         Log.d("Param --> ", mParam.toString())
