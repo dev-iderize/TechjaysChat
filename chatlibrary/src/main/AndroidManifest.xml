@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.techjays.chatlibrary">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,11 +10,21 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
 
     <application
         android:requestLegacyExternalStorage="true"
+        android:theme="@style/Theme.Forcefield"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".preview.LibImagePreviewActivity"
@@ -24,11 +35,11 @@
         <activity
             android:name=".chat.LibChatActivity"
             android:exported="true"
-            android:theme="@style/Theme.Vidhire_android" />
+           />
         <activity
             android:name=".chatlist.LibChatListActivity"
             android:exported="true"
-            android:theme="@style/Theme.Vidhire_android" />
+            tools:ignore="Instantiatable" />
     </application>
 
 </manifest>

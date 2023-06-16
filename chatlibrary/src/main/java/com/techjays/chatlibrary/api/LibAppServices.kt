@@ -1,27 +1,37 @@
 package com.techjays.chatlibrary.api
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.constants.ProjectApplication
+import com.techjays.chatlibrary.helpers.ShieldUpChatLibProgressRequestBody
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
+import com.techjays.chatlibrary.model.User
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.Helper
 import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.util.Utility.getMimeType
 import okhttp3.*
+import okhttp3.internal.Util
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
@@ -50,6 +60,8 @@ class LibAppServices {
         const val delete_messages = "chat/delete-chat-messages/"
         const val upload_file = "chat/file-upload/"
         const val upload_image = "chat/file-upload/"
+        const val view_profile = "view_profile/"
+        const val web_socket_token = "chat/token/"
 
         const val get_chat_list = "chat/group/list/"
         const val get_chats = "chat/group/messages/"
@@ -242,6 +254,34 @@ class LibAppServices {
             }
         }
 
+        fun getProfile(c: Context, listener: ResponseListener) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.view_profile
+                val mURL = API.constructUrl(mHashCode)
+                val call = apiService.GET(mURL, getAuthHeaderPart(c))
+                initService(c, call, User::class.java, mHashCode, listener)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun getWSToken(
+            c: Context,
+            token: String,
+            listener: ResponseListener
+        ) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.web_socket_token
+                val mURL = API.constructUrl(mHashCode)
+                val call = apiService.GET(mURL, getSocketChatHeader(c, token))
+                initService(c, call, User::class.java, mHashCode, listener)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         /**
          * Delete Chat list - Multiple / Single
          * Method - POST
@@ -291,31 +331,60 @@ class LibAppServices {
             }
         }
 
-        fun fileUpload(c: Context, chatMessages: LibChatMessages, listener: ResponseListener) {
+        fun fileUpload(c: Context, uri: Uri, listener: ResponseListener) {
             try {
                 val apiService = getClient().create(ApiInterface::class.java)
                 val mHashCode = API.upload_file
                 val mURL = API.constructUrl(mHashCode)
                 val mParam = HashMap<String, RequestBody>()
 
-                val file = File(chatMessages.mFile)
-                Utility.log(file.toString())
-                val requestBody =
-                    RequestBody.create(
-                        MediaType.parse(
-                            getMimeType(chatMessages.mFile)
-                        ), file
-                    )
-                mParam["file\"; filename=\"" + file.name] = requestBody
-                mParam["file_type"] = requestBody("pdf")
-                /*mParam["to_user_id"] = requestBody(chatMessages.mToUserId)*/
+                val inputStream = c.contentResolver.openInputStream(uri)
+                val fileName = getFileName(uri, c)
 
-                val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
-                initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
-                Log.d("Param --> ", mParam.toString())
+                if (inputStream != null && fileName != null) {
+                    val requestBody = inputStream.use {
+                        val file = File(c.cacheDir, fileName)
+                        file.createNewFile()
+                        file.writeBytes(inputStream.readBytes())
+                        RequestBody.create(MediaType.parse(getMimeType(uri.path)), file)
+                    }
+
+                    if (requestBody != null) {
+                        val progressRequestBody =
+                            ShieldUpChatLibProgressRequestBody(requestBody) { progress ->
+                                Log.e("progress", progress.toString())
+                            }
+                        mParam["file\"; filename=\"$fileName\""] = progressRequestBody
+                      /*  mParam["file_type"] =
+                            RequestBody.create(MediaType.parse("text/plain"), "image")
+*/
+                        val call = apiService.MULTIPART(mURL, mParam, getAuthHeaderPart(c))
+                        initService(c, call, LibChatSocketMessages::class.java, mHashCode, listener)
+                        Log.d("Param --> ", mParam.toString())
+                    } else {
+                        // File conversion failed
+                        // Handle the error
+                    }
+                } else {
+                    // Failed to open input stream or obtain file name
+                    // Handle the error
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+
+        @SuppressLint("Range")
+        fun getFileName(uri: Uri, context: Context): String? {
+            var fileName: String? = null
+            val cursor: Cursor? = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.let {
+                if (it.moveToFirst()) {
+                    fileName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                }
+                cursor.close()
+            }
+            return fileName
         }
 
         fun mImageVideoUpload(c: Context, path: String, type: String, listener: ResponseListener) {
@@ -489,6 +558,16 @@ class LibAppServices {
             val mHeader = HashMap<String, String>()
             mHeader["Content-Type"] = "application/json"
             mHeader["Authorization"] = getAuthToken(c)
+
+            Log.d("Auth Header --> ", mHeader.toString())
+
+            return mHeader
+        }
+
+        private fun getSocketChatHeader(c: Context, token: String): HashMap<String, String> {
+            val mHeader = HashMap<String, String>()
+            mHeader["Content-Type"] = "application/json"
+            mHeader["Authorization"] = "Token $token"
 
             Log.d("Auth Header --> ", mHeader.toString())
 

@@ -21,7 +21,6 @@ import com.techjays.chatlibrary.chat.LibChatActivity
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.LibChatUserModel
-import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener

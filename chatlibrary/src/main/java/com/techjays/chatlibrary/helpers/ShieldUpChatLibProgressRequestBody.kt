@@ -7,10 +7,9 @@ import okio.Buffer
 import okio.BufferedSink
 import okio.ForwardingSink
 import okio.Okio
-import okio.Okio.sink
 import okio.Sink
 
-class ProgressRequestBody(
+class ShieldUpChatLibProgressRequestBody(
     private val requestBody: RequestBody,
     private val progressCallback: (Int) -> Unit
 ) : RequestBody() {
@@ -34,7 +33,7 @@ class ProgressRequestBody(
             uploadedBytes += byteCount
             val progress = (uploadedBytes * 100 / contentLength()).toInt()
             progressCallback(progress)
-            Log.e("progresss", progress.toString())
+           // Log.e("progresss", progress.toString())
         }
     }
 }

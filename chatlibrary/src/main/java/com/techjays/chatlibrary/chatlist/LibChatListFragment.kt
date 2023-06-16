@@ -34,8 +34,8 @@ import com.techjays.chatlibrary.databinding.LibActivityChatListBinding
 import com.techjays.chatlibrary.model.ChatList
 import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatSocketMessages
-import com.techjays.chatlibrary.model.LibUser
 import com.techjays.chatlibrary.model.OthersMessage
+import com.techjays.chatlibrary.model.User
 import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.viewmodel.LibChatViewModel
@@ -44,7 +44,7 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.ArrayList
 
-class LibChatListFragment : Fragment(), ResponseListener {
+class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.SocketCallback {
 
     lateinit var binding: LibActivityChatListBinding
     lateinit var mListener: EndlessRecyclerViewScrollListener
@@ -65,29 +65,37 @@ class LibChatListFragment : Fragment(), ResponseListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initBundle()
-    }
-
-    private fun initBundle() {
+    private fun initBundle(token: String) {
         val bundle = arguments
         if (bundle != null) {
 
             val baseURL = bundle.getString("base_url")!!
             val socketUrl = bundle.getString("socket_url")!!
-            val chatToken = bundle.getString("chat_token")!!
+            //  val chatToken = bundle.getString("chat_token")!!
             val authToken = bundle.getString("auth_token")!!
             val userId = bundle.getInt("user_id")
 
             ChatLibrary.instance.authToken = authToken
-            ChatLibrary.instance.chatToken = chatToken
+            ChatLibrary.instance.chatToken = token
             ChatLibrary.instance.baseUrl = baseURL
             ChatLibrary.instance.socketUrl = socketUrl
             ChatLibrary.instance.mUserId = userId
 
         }
         init()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val bundle = arguments
+        if (bundle != null) {
+            val authToken = bundle.getString("auth_token")!!
+            if (Utility.checkInternet(requireContext())) {
+                Log.e("auth_token", authToken)
+                ChatLibrary.instance.authToken = authToken
+                LibAppServices.getWSToken(requireContext(), authToken, this)
+            }
+        }
     }
 
 
@@ -127,13 +135,13 @@ class LibChatListFragment : Fragment(), ResponseListener {
     private fun init() {
         binding.activity = this
         client = OkHttpClient()
-        listener = ChatSocketListener(requireContext(), ws)
+        listener = ChatSocketListener(requireContext(), ws, this)
         requireActivity().registerReceiver(
             chatWebSocketBroadcast, IntentFilter("chat_web_socket_message")
         )
-        val chatToken = ChatLibrary.instance.chatToken
-        webSocketStart()
+        // val chatToken = ChatLibrary.instance.chatToken
         initRecycler()
+        webSocketStart()
     }
 
     override fun onDestroy() {
@@ -144,7 +152,7 @@ class LibChatListFragment : Fragment(), ResponseListener {
 
     private fun webSocketStart() {
         val request: Request =
-            Request.Builder().url(ChatLibrary.instance.baseUrl).build()
+            Request.Builder().url(ChatLibrary.instance.socketUrl).build()
         ws = client.newWebSocket(request, listener)
         listener.initialize(ws!!)
 
@@ -195,6 +203,7 @@ class LibChatListFragment : Fragment(), ResponseListener {
         chatData.mTime = data.timestamp
         chatData.mMessage = data.message
         chatData.mLastSentMsgTimeStamp = data.timestamp
+        //  chatData.mCreatorId = data.sender.userId
         chatData.isSentByMyself = isSentMyself
         chatData.mLastSentMsgTimeStamp = ""
         chatData.mIsRead = false
@@ -228,8 +237,24 @@ class LibChatListFragment : Fragment(), ResponseListener {
                         Toast.makeText(requireContext(), r.responseMessage, Toast.LENGTH_LONG)
                             .show()
                 }
+
+                LibAppServices.API.web_socket_token.hashCode() -> {
+                    if (r.responseStatus!!) {
+                        val data = r as User
+                        ChatLibrary.instance.chatToken = data.mUser?.mUserToken!!
+                        initBundle(data.mUser?.mUserToken!!)
+                    }
+                }
             }
 
         }
+    }
+
+    override fun showFailedMessage(msg: String) {
+
+        requireActivity().runOnUiThread {
+            AppDialogs.showToastDialog(requireContext(), msg)
+        }
+
     }
 }

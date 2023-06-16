@@ -61,13 +61,12 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.github.curioustechizen.android-ago:library:1.4.0'
     kapt 'com.github.bumptech.glide:compiler:4.14.2'
     implementation 'io.getstream:avatarview-glide:1.0.6'
-    //implementation 'com.droidninja:filepicker:2.2.5'
 
     // Network
     implementation 'com.google.code.gson:gson:2.9.1'

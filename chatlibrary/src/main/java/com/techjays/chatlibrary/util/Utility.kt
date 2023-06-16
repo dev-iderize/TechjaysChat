@@ -4,13 +4,15 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.Configuration
+import android.database.Cursor
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.icu.text.NumberFormat
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
+import android.provider.MediaStore
 import android.text.Selection
 import android.util.Base64
 import android.util.Log
@@ -71,6 +73,43 @@ object Utility {
             false
         }
     }
+
+    fun getLibraryRealPathFromUri( uri: Uri,context: Context): String? {
+        var filePath: String? = null
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = context.contentResolver.query(uri, projection, null, null, null)
+        cursor?.let {
+            if (it.moveToFirst()) {
+                val columnIndex: Int = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                filePath = it.getString(columnIndex)
+            }
+            cursor.close()
+        }
+        return filePath
+    }
+
+
+    fun getRealPathFromURI(contentURI: Uri, context: Context): String? {
+        val result: String
+        val cursor: Cursor? = context.contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            result = contentURI.path!!
+        } else {
+            cursor.moveToFirst()
+            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(idx)
+            cursor.close()
+        }
+        return result
+    }
+
+  /*  fun uriTolibraryFile(context: Context, uri: Uri): File? {
+        val filePath = getLibraryRealPathFromUri(context, uri)
+        filePath?.let {
+            return File(it)
+        }
+        return null
+    }*/
 
     @SuppressLint("MissingPermission")
     fun isInternetAvailable(context: Context?): Boolean {
@@ -262,13 +301,18 @@ object Utility {
      */
 
     fun getMimeType(url: String?): String {
-        var type = ""
+        if (url == null) {
+            return ""
+        }
+
         val extension = MimeTypeMap.getFileExtensionFromUrl(url)
         if (extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)!!
+            return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: ""
         }
-        return type
+
+        return ""
     }
+
 
     var mLastClickTime = 0L
     fun isOpenRecently(): Boolean {

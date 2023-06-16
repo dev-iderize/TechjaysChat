@@ -24,10 +24,6 @@ class ChatListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val eachListData = mListData[position]
-        /*  if (mContext.nodeMap.containsKey(eachListData.mCreatorId)) {
-              eachListData.mGroupName =
-                  mContext.nodeMap[eachListData.mCreatorId]?.name!! + "'s Circle"
-          }*/
         val myUserId = ChatLibrary.instance.mUserId
         holder.itemView.setOnClickListener {
             mContext.navToChatActivity(
@@ -41,9 +37,13 @@ class ChatListAdapter(
     fun updateItem(chat: ChatList.ChatListData) {
         val index = mListData.indexOfFirst { it.mGroupId == chat.mGroupId }
         if (index != -1) {
+            chat.mGroupName = mListData[index].mGroupName
             chat.mCreatorId = mListData[index].mCreatorId
-            mListData[index] = chat
-            notifyItemChanged(index)
+            chat.mIsSentByMyself = mListData[index].mIsSentByMyself
+            mListData.removeAt(index)
+            mListData.add(0, chat)
+            notifyItemMoved(index, 0)
+            notifyItemChanged(0)
         }
     }
 

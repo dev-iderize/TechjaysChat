@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -44,6 +45,7 @@ import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.util.PermissionChecker
 import com.techjays.chatlibrary.util.Utility
 import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
+import com.techjays.chatlibrary.model.LibChatMessages
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -51,7 +53,7 @@ import okhttp3.WebSocket
 
 
 class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
-    AudioRecorder.AudioRecorderCallBack {
+    AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback {
     private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST: Int = 10002
     lateinit var binding: ActivityChatBinding
     private lateinit var audioRecorder: AudioRecorder
@@ -87,31 +89,36 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         client = OkHttpClient()
         val groupProfilePic = intent.getStringExtra("groupProfilePic")
         binding.groupName = groupName
-        listener = ChatSocketListener(this, ws)
+        listener = ChatSocketListener(this, ws, this)
         binding.groupProfilePic = groupProfilePic
         webSocketStart()
-
         imagePickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 if (uri != null) {
-                    AppDialogs.showToastDialog(this, uri.toString())
+                    fileUpload(uri)
                 }
             }
 
         videoPickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 if (uri != null) {
-                    AppDialogs.showToastDialog(this, uri.toString())
+                    fileUpload(uri)
                 }
             }
         audioPickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 if (uri != null) {
-                    AppDialogs.showToastDialog(this, uri.toString())
+                    fileUpload(uri)
                 }
             }
 
 
+    }
+
+
+    fun fileUpload(uri: Uri) {
+        if (Utility.checkInternet(this))
+            LibAppServices.fileUpload(this, uri, this)
     }
 
 
@@ -399,20 +406,30 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     @SuppressLint("NotifyDataSetChanged")
     override fun onResponse(r: Response?) {
         if (r != null) {
-            if (r.requestType == LibAppServices.API.get_chats.hashCode()) {
-                if (r.responseStatus!!) {
-                    val ct = r as Chat
-                    isNextLink = r.next_link
-                    if (mOffset == 0) {
-                        binding.chatdata = ct
-                        binding.chatRecyclerView.adapter = ChatAdapter(this, r.mData)
-                        scrollToBottom()
-                    } else {
-                        binding.chatdata!!.mData.addAll(ct.mData)
+            when (r.requestType) {
+                LibAppServices.API.get_chats.hashCode() -> {
+                    if (r.responseStatus!!) {
+                        val ct = r as Chat
+                        isNextLink = r.next_link
+                        if (mOffset == 0) {
+                            binding.chatdata = ct
+                            binding.chatRecyclerView.adapter = ChatAdapter(this, r.mData)
+                            scrollToBottom()
+                        } else {
+                            binding.chatdata!!.mData.addAll(ct.mData)
+                        }
+                        binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
                     }
-                    binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
                 }
+
+                LibAppServices.API.upload_file.hashCode() -> {
+                    if (r.responseStatus!!) {
+                        Log.e("file_upload", r.toString())
+                    }
+                }
+
             }
+
         }
     }
 
@@ -513,5 +530,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             }
         } else
             AppDialogs.showToastshort(this, "couldn't find path for audio recordings")
+    }
+
+    override fun showFailedMessage(msg: String) {
+        runOnUiThread {
+            AppDialogs.showToastDialog(this, msg)
+        }
+
     }
 }

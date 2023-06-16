@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.techjays.chatlibrary.ChatLibrary
-//import com.techjays.shieldup.app.database.LocalStorageSP
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -13,7 +12,8 @@ import org.json.JSONObject
 
 class ChatSocketListener(
     private var mContext: Context,
-    private var ws: WebSocket?
+    private var ws: WebSocket?,
+    private var mCallback:SocketCallback
 ) : WebSocketListener() {
 
     fun initialize(webSocket: WebSocket) {
@@ -22,7 +22,6 @@ class ChatSocketListener(
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         if (ws != null) {
-
             Log.e("WEB-SOCKET OPENED:", "Success")
             ws!!.send(getConnectionParams())
         } else {
@@ -41,8 +40,8 @@ class ChatSocketListener(
 
         val userData = JSONObject()
         userData.put(
-            "user_id", ChatLibrary.instance.mUserId
-
+            "user_id",
+            ChatLibrary.instance.mUserId
         )
         obj.put("user_data", userData)
         Log.e("ConnectonPArams-->", obj.toString())
@@ -78,14 +77,24 @@ class ChatSocketListener(
         try {
             if (text.isNotEmpty()) {
                 val obj = JSONObject(text)
-                val intent = Intent()
-                val isSentMyself = !obj.getJSONObject("data").has("sender")
-                Log.e("issse", isSentMyself.toString())
-                intent.action = "chat_web_socket_message"
-                intent.putExtra("type", obj.get("type").toString())
-                intent.putExtra("value", text)
-                intent.putExtra("isSentMyself", isSentMyself)
-                mContext.sendBroadcast(intent)
+                if (obj.get("result") != false) {
+                    if (obj.get("type") != "connect") {
+                        val intent = Intent()
+                        val isSentMyself = !obj.getJSONObject("data").has("sender")
+                        Log.e("issse", isSentMyself.toString())
+                        intent.action = "chat_web_socket_message"
+                        intent.putExtra("type", obj.get("type").toString())
+                        intent.putExtra("value", text)
+                        intent.putExtra("isSentMyself", isSentMyself)
+                        mContext.sendBroadcast(intent)
+                    } else {
+                        //Log.e("connection.", text)
+                    }
+                } else {
+                    val msg = obj.get("msg").toString()
+                    Log.e("___________>>>>_____", msg)
+                    mCallback.showFailedMessage(msg)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -110,6 +119,10 @@ class ChatSocketListener(
 
     companion object {
         private const val NORMAL_CLOSURE_STATUS = 1000
+    }
+
+    interface SocketCallback{
+        fun showFailedMessage(msg:String)
     }
 
 

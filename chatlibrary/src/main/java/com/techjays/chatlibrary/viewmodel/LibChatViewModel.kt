@@ -42,9 +42,9 @@ class LibChatViewModel(private val mContext: Context) : ViewModel(), ResponseLis
         LibAppServices.deleteChats(mContext, ids, this)
     }
 
-    fun uploadFile(chatMessages: LibChatMessages) {
+   /* fun uploadFile(chatMessages: LibChatMessages) {
         LibAppServices.fileUpload(mContext, chatMessages, this)
-    }
+    }*/
 
     fun uploadImageVideo(path:String,type:String) {
         LibAppServices.mImageVideoUpload(mContext, path,type, this)
