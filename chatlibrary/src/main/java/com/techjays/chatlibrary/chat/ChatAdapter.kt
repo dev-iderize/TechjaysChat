@@ -87,6 +87,13 @@ class ChatAdapter(
                 binding.executePendingBindings()
             }
 
+          /*  VIEW_TYPE_TEXT -> {
+                val infoHolder = holder as InfoViewHolder
+                val binding = infoHolder.binding
+                binding.executePendingBindings()
+
+            }
+*/
             VIEW_TYPE_VIDEO -> {
                 val videoHolder = holder as VideoViewHolder
                 val binding = videoHolder.binding
