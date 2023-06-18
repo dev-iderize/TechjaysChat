@@ -13,6 +13,10 @@
             type="Boolean" />
 
         <variable
+            name="isActive"
+            type="Boolean" />
+
+        <variable
             name="groupName"
             type="String" />
 
@@ -106,8 +110,8 @@
                             style="@style/Text12Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="online"
-                            android:visibility="gone" />
+                            android:text="Inactive User"
+                            android:visibility="@{isActive?View.GONE:View.VISIBLE}" />
 
                     </LinearLayout>
 
@@ -132,10 +136,11 @@
             style="@style/CustomCardViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Theme.MaterialComponents.DayNight"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:elevation="30dp">
+            android:elevation="30dp"
+            android:theme="@style/Theme.MaterialComponents.DayNight"
+            android:visibility="@{isActive?View.VISIBLE:View.GONE}">
 
             <LinearLayout
 
@@ -161,13 +166,13 @@
                     android:layout_weight="1"
                     android:background="@drawable/bg_edittext_message_input"
                     android:hint="Type a message"
-                    android:imeOptions="actionSend"
                     android:imeActionLabel="Send"
+                    android:imeOptions="actionSend"
                     android:inputType="text"
-                    android:scrollbars="vertical"
                     android:maxLines="5"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="15dp"
+                    android:scrollbars="vertical"
                     android:textColor="@color/dark_chocolate"
                     android:textSize="14sp" />
 
@@ -205,6 +210,7 @@
                     app:tint="@color/primary_color_light" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

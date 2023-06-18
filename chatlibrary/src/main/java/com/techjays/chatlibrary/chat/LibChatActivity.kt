@@ -1,6 +1,8 @@
 package com.techjays.chatlibrary.chat
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -9,6 +11,8 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -21,11 +25,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.devlomi.record_view.OnRecordListener
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -35,7 +41,9 @@ import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
 import com.techjays.chatlibrary.databinding.ActivityChatBinding
+import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
 import com.techjays.chatlibrary.helpers.AudioRecorder
+import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.MyMessage
 import com.techjays.chatlibrary.model.OthersMessage
@@ -44,18 +52,20 @@ import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.util.PermissionChecker
 import com.techjays.chatlibrary.util.Utility
-import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
-import com.techjays.chatlibrary.interfaces.FileUploadProgress
-import com.techjays.chatlibrary.model.LibChatMessages
-
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback, FileUploadProgress {
     private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST: Int = 10002
+    private val VIDEO_CAPTURE_REQUEST_CODE = 4001
     lateinit var binding: ActivityChatBinding
     private lateinit var audioRecorder: AudioRecorder
     var mediaPlayer: MediaPlayer? = null
@@ -70,6 +80,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
     private lateinit var videoPickerLauncher: ActivityResultLauncher<String>
     private lateinit var audioPickerLauncher: ActivityResultLauncher<String>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+    private lateinit var videoCaptureLauncher: ActivityResultLauncher<Intent>
+
+    private var currentPhotoPath: String? = null
+
+    private var imageUri: Uri? = null
     private var ws: WebSocket? = null
     private lateinit var client: OkHttpClient
     var groupName = ""
@@ -113,10 +129,29 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                     fileUpload(uri)
                 }
             }
+
         audioPickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 if (uri != null) {
                     fileUpload(uri)
+                }
+            }
+        cameraLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    imageUri?.let { uri ->
+                        fileUpload(uri)
+                    }
+                }
+            }
+        videoCaptureLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val videoUri: Uri? = result.data?.data
+                    if (videoUri != null)
+                        fileUpload(videoUri)
+                } else {
+                    AppDialogs.showToastDialog(this, "Video capture failed")
                 }
             }
 
@@ -124,9 +159,44 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     }
 
 
-    fun fileUpload(uri: Uri) {
+    private fun fileUpload(uri: Uri) {
         if (Utility.checkInternet(this))
             LibAppServices.fileUpload(this, uri, this, this)
+    }
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val photoFile: File? = createImageFile(this)
+        photoFile?.let { file ->
+            val photoURI: Uri = getFileUri(this, file)
+            imageUri = photoURI
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            cameraLauncher.launch(takePictureIntent)
+        }
+    }
+
+    private fun createImageFile(context: Context): File? {
+        // Create an image file name
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val imageFile = File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        )
+
+        currentPhotoPath = imageFile.absolutePath
+
+        return imageFile
+    }
+
+    private fun getFileUri(context: Context, file: File): Uri {
+        return FileProvider.getUriForFile(
+            context,
+            "com.techjays.chatlibrary.fileprovider",
+            file
+        )
     }
 
 
@@ -165,6 +235,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
     private fun init() {
         binding.activity = this
+        binding.isActive = true
         getChatMessage()
         initRecycler()
         binding.recordButton.setRecordView(binding.recordView)
@@ -257,10 +328,31 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                     arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
                     READ_EXTERNAL_STORAGE_PERMISSION_REQUEST
                 )
-            } else
+            } else {
                 openImagePicker()
+                //  onProfileImageClick()
+            }
         }
 
+        bottomSheetView.cameraButton.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            mDialogAction = "CAMERA"
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    READ_EXTERNAL_STORAGE_PERMISSION_REQUEST
+                )
+            } else {
+                dispatchTakePictureIntent()
+                //  onProfileImageClick()
+            }
+        }
         bottomSheetView.videoButton.setOnClickListener {
             bottomSheetDialog.dismiss()
             mDialogAction = "VIDEO"
@@ -297,6 +389,24 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 openAudioPicker()
             }
         }
+        bottomSheetView.cameraVideoButon.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            mDialogAction = "CAPTURE_VIDEO"
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    READ_EXTERNAL_STORAGE_PERMISSION_REQUEST
+                )
+            } else {
+                dispatchTakeVideoIntent()
+            }
+        }
 
         bottomSheetDialog.show()
     }
@@ -321,6 +431,29 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "CAMERA") {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (requestCode == VIDEO_CAPTURE_REQUEST_CODE && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED && mDialogAction == "CAPTURE_VIDEO"
+        ) {
+            val videoFile: File? = createVideoFile()
+            if (videoFile != null) {
+                val videoUri: Uri = FileProvider.getUriForFile(this, "com.techjays.chatlibrary.fileprovider", videoFile!!)
+                val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+                takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
+                videoCaptureLauncher.launch(takeVideoIntent)
+            } else {
+                Toast.makeText(this, "Failed to create video file", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+        }
+
         if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "VIDEO") {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openVideoPicker()
@@ -349,6 +482,49 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     private fun openAudioPicker() {
         audioPickerLauncher.launch("audio/*")
     }
+
+    private fun handleCapturedVideo(videoUri: Uri) {
+        fileUpload(videoUri)
+    }
+
+    private fun dispatchTakeVideoIntent() {
+        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        if (takeVideoIntent.resolveActivity(packageManager) != null) {
+            val permission = Manifest.permission.CAMERA
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(permission), VIDEO_CAPTURE_REQUEST_CODE)
+            } else {
+                // Create a file to store the captured video
+                val videoFile: File? = createVideoFile()
+                if (videoFile != null) {
+                    val videoUri: Uri = FileProvider.getUriForFile(this, "com.techjays.chatlibrary.fileprovider", videoFile!!)
+                    takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
+                    videoCaptureLauncher.launch(Intent.createChooser(takeVideoIntent, "Capture Video"))
+                } else {
+
+                }
+            }
+        }
+    }
+
+
+    private fun createVideoFile(): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val videoFileName = "VIDEO_$timeStamp"
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_MOVIES)
+
+        return try {
+            File.createTempFile(
+                videoFileName,  /* prefix */
+                ".mp4",         /* suffix */
+                storageDir      /* directory */
+            )
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -545,6 +721,30 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             AppDialogs.showToastDialog(this, msg)
         }
 
+    }
+
+    fun onProfileImageClick() {
+        ImagePicker.with(this)
+            .cropSquare()
+            .galleryMimeTypes(
+                mimeTypes = arrayOf(
+                    "image/png",
+                    "image/jpg",
+                    "image/jpeg"
+                )
+            ).start()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        try {
+            if (resultCode == Activity.RESULT_OK) {
+                val aProfilePath = data?.data!!
+                fileUpload(aProfilePath)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     @SuppressLint("SetTextI18n")

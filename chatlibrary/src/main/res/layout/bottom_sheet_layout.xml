@@ -111,28 +111,92 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/cameraButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="invisible">
+                android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/Camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_video"
-                    app:tint="@color/primary_color_light" />
+                    android:src="@drawable/baseline_music_note_24"
+                    android:tint="@color/primary_color_light"
+                    tools:ignore="UseAppTint" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/videoButton"
+                    android:layout_below="@id/Camera"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:text="Video"
+                    android:text="Camera"
                     android:textColor="@color/primary_color_light" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/cameraVideoButon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/cameraVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/baseline_music_note_24"
+                    android:tint="@color/primary_color_light"
+                    tools:ignore="UseAppTint" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cameraVideo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="Camera Video"
+                    android:textColor="@color/primary_color_light" />
+
+
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/a"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/baseline_music_note_24"
+                    android:tint="@color/primary_color_light"
+                    tools:ignore="UseAppTint" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/b"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="Camera"
+                    android:textColor="@color/primary_color_light" />
+
+
+            </RelativeLayout>
         </LinearLayout>
 
     </LinearLayout>
