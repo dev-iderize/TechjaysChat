@@ -46,7 +46,7 @@
                     android:layout_below="@id/image_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:text="Gallery"
+                    android:text="@string/gallery"
                     android:textColor="@color/primary_color_light" />
 
 
@@ -166,7 +166,7 @@
                     android:layout_below="@id/cameraVideo"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:text="Camera Video"
+                    android:text="@string/camera_video"
                     android:textColor="@color/primary_color_light" />
 
 

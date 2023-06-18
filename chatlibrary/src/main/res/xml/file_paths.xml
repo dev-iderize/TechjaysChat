@@ -6,5 +6,8 @@
     <external-files-path
         name="my_videos"
         path="Movies" />
+    <external-files-path
+        name="my_audio"
+        path="Music" />
 
 </paths>

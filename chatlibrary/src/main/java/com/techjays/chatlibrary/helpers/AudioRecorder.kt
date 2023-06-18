@@ -2,8 +2,10 @@ package com.techjays.chatlibrary.helpers
 
 import android.content.Context
 import android.media.MediaRecorder
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -15,7 +17,7 @@ class AudioRecorder(
 ) {
     private val TAG = "com.techjays.chatlibrary.helpers.AudioRecorder"
     private val AUDIO_FILE_PREFIX = "Recording_"
-    private val AUDIO_FILE_SUFFIX = ".3gp"
+    private val AUDIO_FILE_SUFFIX = ".mp3"
 
     private var mediaRecorder: MediaRecorder? = null
     private var currentFilePath: String? = null
@@ -34,24 +36,36 @@ class AudioRecorder(
         currentFilePath = audioFile.absolutePath
         Log.e("file", "$currentFilePath")
 
-        mediaRecorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            setOutputFile(currentFilePath)
-            try {
-                prepare()
-                start()
-                isRecording = true
-                Log.d(TAG, "Recording started.")
-            } catch (e: IOException) {
-                Log.e(TAG, "Failed to start recording: ${e.message}")
-            }
+        mediaRecorder = MediaRecorder()
+        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        mediaRecorder?.setOutputFile(currentFilePath)
+
+        try {
+            mediaRecorder?.prepare()
+            mediaRecorder?.start()
+            isRecording = true
+            Log.d(TAG, "Recording started.")
+        } catch (e: IOException) {
+            Log.e(TAG, "Failed to start recording: ${e.message}")
         }
     }
 
+
+
+
+    private fun getFileUri(filePath: String?): Uri? {
+        return FileProvider.getUriForFile(
+            context,
+            "com.techjays.chatlibrary.fileprovider",
+            File(filePath!!)
+        )
+    }
+
+
     fun stopRecording() {
-        mAudioRecorderCallback.onAudioRecordingCompleted(currentFilePath)
+        mAudioRecorderCallback.onAudioRecordingCompleted(getFileUri(currentFilePath))
 
 
         try {
@@ -75,6 +89,6 @@ class AudioRecorder(
 
     interface AudioRecorderCallBack {
         fun onAudioRecordingCancelled(path: String?)
-        fun onAudioRecordingCompleted(path: String?)
+        fun onAudioRecordingCompleted(path: Uri?)
     }
 }

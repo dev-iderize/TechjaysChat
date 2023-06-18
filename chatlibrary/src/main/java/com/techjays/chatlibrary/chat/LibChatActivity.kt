@@ -151,7 +151,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                     if (videoUri != null)
                         fileUpload(videoUri)
                 } else {
-                    AppDialogs.showToastDialog(this, "Video capture failed")
+                    //  AppDialogs.showToastDialog(this, "Video capture failed")
                 }
             }
 
@@ -252,7 +252,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         listener.sendChat(v.text.toString(), groupId, ws!!)
                     v.text = ""
                     v.clearFocus()
-                    //  AppDialogs.hideSoftKeyboard(this@ChatActivity, binding.root)
                 }
                 return@setOnEditorActionListener true
             }
@@ -416,58 +415,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             Request.Builder().url(ChatLibrary.instance.socketUrl).build()
         ws = client.newWebSocket(request, listener)
         listener.initialize(ws!!)
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "IMAGE") {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImagePicker()
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
-        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "CAMERA") {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                dispatchTakePictureIntent()
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
-        if (requestCode == VIDEO_CAPTURE_REQUEST_CODE && grantResults.isNotEmpty() &&
-            grantResults[0] == PackageManager.PERMISSION_GRANTED && mDialogAction == "CAPTURE_VIDEO"
-        ) {
-            val videoFile: File? = createVideoFile()
-            if (videoFile != null) {
-                val videoUri: Uri = FileProvider.getUriForFile(this, "com.techjays.chatlibrary.fileprovider", videoFile!!)
-                val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-                takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
-                videoCaptureLauncher.launch(takeVideoIntent)
-            } else {
-                Toast.makeText(this, "Failed to create video file", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-        }
-
-        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "VIDEO") {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openVideoPicker()
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
-        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "AUDIO") {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openAudioPicker()
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
 
@@ -491,15 +438,31 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(packageManager) != null) {
             val permission = Manifest.permission.CAMERA
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(permission), VIDEO_CAPTURE_REQUEST_CODE)
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(permission),
+                    VIDEO_CAPTURE_REQUEST_CODE
+                )
             } else {
-                // Create a file to store the captured video
                 val videoFile: File? = createVideoFile()
                 if (videoFile != null) {
-                    val videoUri: Uri = FileProvider.getUriForFile(this, "com.techjays.chatlibrary.fileprovider", videoFile!!)
+                    val videoUri: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.techjays.chatlibrary.fileprovider",
+                        videoFile!!
+                    )
                     takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
-                    videoCaptureLauncher.launch(Intent.createChooser(takeVideoIntent, "Capture Video"))
+                    videoCaptureLauncher.launch(
+                        Intent.createChooser(
+                            takeVideoIntent,
+                            "Capture Video"
+                        )
+                    )
                 } else {
 
                 }
@@ -509,7 +472,8 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
 
     private fun createVideoFile(): File? {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val videoFileName = "VIDEO_$timeStamp"
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_MOVIES)
 
@@ -524,7 +488,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             null
         }
     }
-
 
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -694,24 +657,9 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
     }
 
-    override fun onAudioRecordingCompleted(path: String?) {
-        AppDialogs.showToastDialog(this, path!!)
+    override fun onAudioRecordingCompleted(path: Uri?) {
         if (path != null) {
-            if (path.isNotEmpty()) {
-                /* AppDialogs.forcefieldConfirmationDialog(
-                     this@ChatActivity,
-                     "",
-                     "Do you want to upload this audio?",
-                     object : AppDialogs.ConfirmListener {
-                         override fun yes() {
-                         }
-                     },
-                     "Yes",
-                     true,
-                     ""
-                 )*/
-
-            }
+            fileUpload(path)
         } else
             AppDialogs.showToastshort(this, "couldn't find path for audio recordings")
     }
@@ -723,29 +671,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
     }
 
-    fun onProfileImageClick() {
-        ImagePicker.with(this)
-            .cropSquare()
-            .galleryMimeTypes(
-                mimeTypes = arrayOf(
-                    "image/png",
-                    "image/jpg",
-                    "image/jpeg"
-                )
-            ).start()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        try {
-            if (resultCode == Activity.RESULT_OK) {
-                val aProfilePath = data?.data!!
-                fileUpload(aProfilePath)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     @SuppressLint("SetTextI18n")
     override fun changeProgress(progress: Int) {
@@ -773,6 +698,61 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         runOnUiThread {
             binding.uploadProgressBar.visibility = View.GONE
             binding.uploadText.visibility = View.GONE
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "IMAGE") {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openImagePicker()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "CAMERA") {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (requestCode == VIDEO_CAPTURE_REQUEST_CODE && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED && mDialogAction == "CAPTURE_VIDEO"
+        ) {
+            val videoFile: File? = createVideoFile()
+            if (videoFile != null) {
+                val videoUri: Uri = FileProvider.getUriForFile(
+                    this,
+                    "com.techjays.chatlibrary.fileprovider",
+                    videoFile!!
+                )
+                val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+                takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
+                videoCaptureLauncher.launch(takeVideoIntent)
+            } else {
+                Toast.makeText(this, "Failed to create video file", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+        }
+
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "VIDEO") {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openVideoPicker()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "AUDIO") {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openAudioPicker()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
