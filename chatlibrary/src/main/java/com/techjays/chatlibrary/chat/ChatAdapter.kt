@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.databinding.InflateAudioTypeBinding
+import com.techjays.chatlibrary.databinding.InflateChatInfoMessageBinding
 import com.techjays.chatlibrary.databinding.InflateChatYBinding
 import com.techjays.chatlibrary.databinding.InflateVideoTypeBinding
 import com.techjays.chatlibrary.helpers.AspectRatioCallback
@@ -27,6 +28,7 @@ class ChatAdapter(
         private const val VIEW_TYPE_TEXT = 0
         private const val VIEW_TYPE_VIDEO = 1
         private const val VIEW_TYPE_AUDIO = 2
+        private const val VIEW_TYPE_INFO_MESSAGE = 3
     }
 
     private var currentAudioUrl: String? = null
@@ -51,6 +53,11 @@ class ChatAdapter(
             VIEW_TYPE_AUDIO -> {
                 val audioItemView = InflateAudioTypeBinding.inflate(inflater, parent, false)
                 AudioViewHolder(audioItemView)
+            }
+
+            VIEW_TYPE_INFO_MESSAGE -> {
+                val infoItemView = InflateChatInfoMessageBinding.inflate(inflater, parent, false)
+                InfoViewHolder(infoItemView)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
@@ -87,13 +94,13 @@ class ChatAdapter(
                 binding.executePendingBindings()
             }
 
-          /*  VIEW_TYPE_TEXT -> {
+            VIEW_TYPE_INFO_MESSAGE -> {
                 val infoHolder = holder as InfoViewHolder
                 val binding = infoHolder.binding
                 binding.executePendingBindings()
 
             }
-*/
+
             VIEW_TYPE_VIDEO -> {
                 val videoHolder = holder as VideoViewHolder
                 val binding = videoHolder.binding
@@ -154,10 +161,19 @@ class ChatAdapter(
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return messages.size.toLong()
+    }
+
     inner class TextViewHolder(val binding: InflateChatYBinding) :
         RecyclerView.ViewHolder(binding.root) {
         // Text type view holder
     }
+
+    inner class InfoViewHolder(val binding: InflateChatInfoMessageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+    }
+
 
     inner class VideoViewHolder(val binding: InflateVideoTypeBinding) :
         RecyclerView.ViewHolder(binding.root) {}

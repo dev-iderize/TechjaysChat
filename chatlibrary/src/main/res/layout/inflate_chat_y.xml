@@ -66,8 +66,10 @@
                     android:id="@+id/textRecipientMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:autoLink="web"
                     android:maxWidth="250dp"
                     android:textColor="@{isSentByMyself?@color/dark_chocolate:@color/white}"
+                    android:textColorLink="@{isSentByMyself?@color/link_color:@color/white}"
                     android:textSize="18sp" />
 
                 <TextView

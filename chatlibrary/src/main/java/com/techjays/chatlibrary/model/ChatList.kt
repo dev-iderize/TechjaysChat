@@ -30,9 +30,6 @@ class ChatList : Response() {
         @SerializedName("message_type")
         var mMessageType: String = ""
 
-        @SerializedName("is_sent_myself")
-        var mIsSentByMyself: Boolean = true
-
         @SerializedName("timestamp")
         var mTime: String = ""
 

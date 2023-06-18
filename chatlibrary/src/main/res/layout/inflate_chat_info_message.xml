@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/hint_grey"
                 android:textSize="8sp"
                 android:text="16 Jun 10:45 PM" />

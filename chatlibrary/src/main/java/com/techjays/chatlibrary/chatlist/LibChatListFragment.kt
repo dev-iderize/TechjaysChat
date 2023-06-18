@@ -44,7 +44,8 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import java.util.ArrayList
 
-class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.SocketCallback {
+class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.SocketCallback,
+    ChatListAdapter.ChatListCallback {
 
     lateinit var binding: LibActivityChatListBinding
     lateinit var mListener: EndlessRecyclerViewScrollListener
@@ -231,7 +232,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
                             binding.recyclerView.adapter =
                                 ChatListAdapter(
                                     this@LibChatListFragment,
-                                    r.mData
+                                    r.mData, this
                                 )
                         } else {
                             binding.chatList?.mData?.addAll(
@@ -261,6 +262,17 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         requireActivity().runOnUiThread {
             AppDialogs.showToastDialog(requireContext(), msg)
         }
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun reset() {
+        val adapter = binding.recyclerView.adapter as ChatListAdapter
+        binding.chatList!!.mData.clear()
+        adapter.notifyDataSetChanged()
+        mOffset = 0
+        mListener.resetState()
+        getChatList(mOffset, mLimit)
 
     }
 }

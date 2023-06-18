@@ -5,6 +5,7 @@
     <color name="primary_color_dark30">#708AFF</color>
     <color name="primary_color_light30">#40ADE0FF</color>
     <color name="primary_color_light20">#30ADE0FF</color>
+    <color name="link_color">#0000EE</color>
     <color name="primary_color_light10">#10ADE0FF</color>
     <color name="firebase_color">#1212DF</color>
     <color name="primary_color_background_light">#4094A7FF</color>
