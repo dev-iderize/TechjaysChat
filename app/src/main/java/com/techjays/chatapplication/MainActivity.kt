@@ -58,10 +58,6 @@ class MainActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putString("base_url", baseUrl)
             bundle.putString("socket_url", "wss://stg-api.shieldup.ai/wss")
-           /* bundle.putString(
-                "chat_token",
-                chatToken
-            )*/
             bundle.putString("auth_token", UserToken)
             bundle.putInt("user_id", 218)
             newFragment.arguments = bundle

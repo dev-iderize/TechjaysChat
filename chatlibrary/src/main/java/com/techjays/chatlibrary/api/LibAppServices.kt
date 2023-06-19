@@ -44,10 +44,6 @@ class LibAppServices {
             return String.format("%s%s", ChatLibrary.instance.baseUrl, urlKey)
         }
 
-        fun constructVidRivalUrl(urlKey: String): String {
-            return String.format("%s%s", "https://dev-myvidrivals.myvidhire.com/api/v1/", urlKey)
-        }
-
         // API Case's
 
         // Notification

@@ -70,12 +70,17 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         val bundle = arguments
         if (bundle != null) {
 
+
             val baseURL = bundle.getString("base_url")!!
             val socketUrl = bundle.getString("socket_url")!!
             //  val chatToken = bundle.getString("chat_token")!!
             val authToken = bundle.getString("auth_token")!!
             val userId = bundle.getInt("user_id")
 
+            Log.e("baseurl", bundle.getString("base_url")!!)
+            Log.e("socket_", bundle.getString("socket_url")!!)
+            Log.e("auth_token", bundle.getString("auth_token")!!)
+            Log.e("muserId", userId.toString())
             ChatLibrary.instance.authToken = authToken
             ChatLibrary.instance.chatToken = token
             ChatLibrary.instance.baseUrl = baseURL
