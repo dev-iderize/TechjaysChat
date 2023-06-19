@@ -12,6 +12,6 @@
     <string name="upload">Upload</string>
     <string name="select_an_option">Select an option</string>
     <string name="video">Video</string>
-    <string name="camera_video">Camera Video</string>
+    <string name="camera_video">Record a video</string>
     <string name="gallery">Gallery</string>
 </resources>

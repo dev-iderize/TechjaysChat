@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -236,6 +237,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     private fun init() {
         binding.activity = this
         binding.isActive = true
+        mOffset = 0
         getChatMessage()
         initRecycler()
         binding.recordButton.setRecordView(binding.recordView)

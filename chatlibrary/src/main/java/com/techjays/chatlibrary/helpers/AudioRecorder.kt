@@ -24,25 +24,24 @@ class AudioRecorder(
     private var isRecording = false
 
     fun startRecording() {
-        if (isRecording) {
-            Log.d(TAG, "Recording already in progress.")
-            return
-        }
-
-        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val fileName = "$AUDIO_FILE_PREFIX$timestamp$AUDIO_FILE_SUFFIX"
-
-        val audioFile = File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), fileName)
-        currentFilePath = audioFile.absolutePath
-        Log.e("file", "$currentFilePath")
-
-        mediaRecorder = MediaRecorder()
-        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-        mediaRecorder?.setOutputFile(currentFilePath)
-
         try {
+            if (isRecording) {
+                Log.d(TAG, "Recording already in progress.")
+                return
+            }
+
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val fileName = "$AUDIO_FILE_PREFIX$timestamp$AUDIO_FILE_SUFFIX"
+
+            val audioFile = File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), fileName)
+            currentFilePath = audioFile.absolutePath
+            Log.e("file", "$currentFilePath")
+
+            mediaRecorder = MediaRecorder()
+            mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+            mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mediaRecorder?.setOutputFile(currentFilePath)
             mediaRecorder?.prepare()
             mediaRecorder?.start()
             isRecording = true
@@ -51,8 +50,6 @@ class AudioRecorder(
             Log.e(TAG, "Failed to start recording: ${e.message}")
         }
     }
-
-
 
 
     private fun getFileUri(filePath: String?): Uri? {
