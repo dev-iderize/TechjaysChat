@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.techjays.chatlibrary.ChatLibrary
+import com.techjays.chatlibrary.model.LibChatSocketMessages
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -13,7 +14,7 @@ import org.json.JSONObject
 class ChatSocketListener(
     private var mContext: Context,
     private var ws: WebSocket?,
-    private var mCallback:SocketCallback
+    private var mCallback: SocketCallback
 ) : WebSocketListener() {
 
     fun initialize(webSocket: WebSocket) {
@@ -59,9 +60,43 @@ class ChatSocketListener(
         val userData = JSONObject()
         userData.put("user_id", ChatLibrary.instance.mUserId)
         obj.put("user_data", userData)
-        Log.d("c", obj.toString())
+
         return obj.toString()
     }
+
+    fun sendFileParams(message: String, groupId: Int, chat: LibChatSocketMessages): String {
+        val obj = JSONObject()
+        obj.put("type", "chat")
+        obj.put("token", ChatLibrary.instance.chatToken)
+        obj.put("group_id", groupId)
+        obj.put("chat_type", "group")
+        obj.put("message_type", "file")
+        obj.put("file_type", chat.mData?.mFileType)
+        obj.put("medium_image", chat.mData?.mFileMediumThumbNail)
+        obj.put("thumbnail_image", chat.mData?.mFileThumbNail)
+        obj.put("message", chat.mData?.mMessage)
+        val userData = JSONObject()
+        userData.put("user_id", ChatLibrary.instance.mUserId)
+        obj.put("user_data", userData)
+        Log.e("object to file uoload------->>", obj.toString())
+        return obj.toString()
+    }
+
+
+    /*{
+        "type": "chat",
+        "token": "gAAAAABkibKDg-7PzDNxUa2z0RfV2KqC0KNTs2jqF9fTPgcpB5lkXWWfrNtlgFqH91mP4e78TUFipYP7ZxTOtuxQRAsjTRxJ7OeKmYirs33-PeXDQd2N0e0Kl0_iC0ELi445i6hATBiILO-0XYrdVTHwGGDtEOmABhfNeBToLcptTiajIfRRNQrdx4qZg8p7Se1W2ZgSnOfHDIAIZ-H9LjauzB_89uGjYLXEnN-Pv7Et51mqRQ4XNM4=",
+        "group_id": < GROUP ID >,
+        "chat_type": "group",
+        "message_type": "file",
+        "file_type": "< FILE TYPE FROM END POINT>",
+        "medium_image": "<MEDIUM IMG  URL FROM END POINT",
+        "thumbnail_image": "<THUMB NAIL IMG URL FROM END POINT>",
+        "message": "<MESSAGE TEXT>",
+        "user_data": {
+        "user_id": < USER ID >
+    }
+    }*/
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         Log.e("Receiving bytes : ", bytes.hex())
@@ -121,8 +156,8 @@ class ChatSocketListener(
         private const val NORMAL_CLOSURE_STATUS = 1000
     }
 
-    interface SocketCallback{
-        fun showFailedMessage(msg:String)
+    interface SocketCallback {
+        fun showFailedMessage(msg: String)
     }
 
 

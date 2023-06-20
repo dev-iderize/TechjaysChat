@@ -34,6 +34,7 @@ object DateUtil {
     }
     fun convertTimeToTextExact(date: String?): String {
         if (date == null) return ""
+        if (date=="") return "now"
 
         val utcFormatter = SimpleDateFormat(
             if (date.endsWith("Z")) "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'" else "yyyy-MM-dd HH:mm:ss.SSSSSSXXX",

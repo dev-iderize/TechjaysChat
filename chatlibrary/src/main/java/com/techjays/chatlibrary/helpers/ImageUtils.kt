@@ -17,9 +17,13 @@ object ImageUtils {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val url = URL(imageUrl)
-                val connection = url.openConnection() as HttpURLConnection
+                val connection = withContext(Dispatchers.IO) {
+                    url.openConnection()
+                } as HttpURLConnection
                 connection.doInput = true
-                connection.connect()
+                withContext(Dispatchers.IO) {
+                    connection.connect()
+                }
 
                 val inputStream: InputStream = connection.inputStream
                 val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)

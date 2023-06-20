@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.databinding.InflateAudioTypeBinding
 import com.techjays.chatlibrary.databinding.InflateChatInfoMessageBinding
@@ -19,6 +20,7 @@ import com.techjays.chatlibrary.databinding.InflateVideoTypeBinding
 import com.techjays.chatlibrary.helpers.AspectRatioCallback
 import com.techjays.chatlibrary.helpers.ImageUtils
 import com.techjays.chatlibrary.model.Chat
+import com.techjays.chatlibrary.util.AppDialogs
 
 class ChatAdapter(
     val context: LibChatActivity, private val messages: ArrayList<Chat.ChatData>
@@ -117,17 +119,17 @@ class ChatAdapter(
                 val videoHolder = holder as VideoViewHolder
                 val binding = videoHolder.binding
                 binding.message = message
+               // binding.image = message.mFileUrl
                 binding.isSentByMyself = !message.isSentByMyself
-
                 val isVideo = message.mMessageType == "video"
                 binding.isVideo = isVideo
-                videoImageUrls[videoHolder.bindingAdapterPosition] = message.mMessage
+                videoImageUrls[videoHolder.bindingAdapterPosition] = message.mMediumImage
 
-                ImageUtils.getAspectRatioFromUrl(message.mMessage, object : AspectRatioCallback {
+                ImageUtils.getAspectRatioFromUrl(message.mMediumImage, object : AspectRatioCallback {
                     override fun onAspectRatioLoaded(aspectRatio: Float, imageUrl: String) {
                         if (imageUrl == videoImageUrls[videoHolder.bindingAdapterPosition]) {
                             binding.ratio = aspectRatio
-                            binding.image = message.mMessage
+                            binding.image = message.mMediumImage
                         }
                     }
                 })
@@ -138,11 +140,11 @@ class ChatAdapter(
                         val i = Intent(context, VideoPlayerExoplayerActivity::class.java)
                         i.putExtra(
                             "videoUri",
-                            message.mMessage
+                            message.mFileUrl
                         )
                         context.startActivity(i)
                     } else {
-                        context.showImageViewer(message.mMessage)
+                        context.showImageViewer(message.mFileUrl)
                     }
                 }
                 binding.executePendingBindings()

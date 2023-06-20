@@ -46,6 +46,7 @@ import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
 import com.techjays.chatlibrary.helpers.AudioRecorder
 import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
+import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.MyMessage
 import com.techjays.chatlibrary.model.OthersMessage
 import com.techjays.chatlibrary.util.AppDialogs
@@ -432,10 +433,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         audioPickerLauncher.launch("audio/*")
     }
 
-    private fun handleCapturedVideo(videoUri: Uri) {
-        fileUpload(videoUri)
-    }
-
     private fun dispatchTakeVideoIntent(context: Context) {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(packageManager) != null) {
@@ -573,8 +570,21 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
                 LibAppServices.API.upload_file.hashCode() -> {
                     if (r.responseStatus!!) {
-                        Log.e("file_upload", r.toString())
-                    }
+                        r as LibChatSocketMessages
+                        val chat = Chat.ChatData()
+                        chat.mMessageType = r.mData?.mFileType!!
+                        chat.mMediumImage = r.mData?.mFileMediumThumbNail!!
+                        chat.mFileUrl = r.mData?.mFile!!
+                        chat.isSentByMyself = true
+                        val chatMain = Chat()
+                        chatMain.mData.addAll(arrayListOf( chat))
+                        binding.chatdata!!.mData.addAll(0, chatMain.mData)
+                        binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
+
+                        listener.sendFileParams(r.mMessage, groupId, r)
+
+                    } else
+                        AppDialogs.showToastshort(this, r.responseMessage)
                 }
 
             }
