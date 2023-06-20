@@ -20,7 +20,7 @@ import com.techjays.chatlibrary.util.Utility
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mButton2: Button
-    var UserToken = "f6f88ef67d8d9de499f54494571e8c1ba5a97b43"
+    var UserToken = "76d583adff23d85f2d47dddc30cb6583974b0137"
     var chatToken = ""
     val baseUrl = "https://stg-api.shieldup.ai/api/portal/"
 
@@ -28,25 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        /* LibAppServices.getProfile(this, object : ResponseListener {
-             override fun onResponse(r: Response?) {
-                 if (r != null) {
-                     r as User
-                     UserToken = r.mUser?.mUserToken!!
-                 }
-             }
-
-         })*/
         ChatLibrary.instance.baseUrl = baseUrl
-        /*LibAppServices.getWSToken(this, UserToken, object : ResponseListener {
-            override fun onResponse(r: Response?) {
-                if (r != null) {
-                    r as User
-                    chatToken = r.mUser?.mUserToken!!
-                }
-            }
-
-        })*/
         initView()
     }
 

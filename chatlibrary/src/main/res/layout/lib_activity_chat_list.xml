@@ -44,6 +44,7 @@
                 android:paddingBottom="20dp">
 
                 <TextView
+                    android:id="@+id/header"
                     style="@style/Text24Bold"
                     android:layout_width="0dp"
                     android:layout_marginTop="5dp"

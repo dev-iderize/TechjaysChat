@@ -195,7 +195,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     private fun getFileUri(context: Context, file: File): Uri {
         return FileProvider.getUriForFile(
             context,
-            "com.techjays.chatlibrary.fileprovider",
+            context.packageName + "fileProvider",
             file
         )
     }
@@ -405,7 +405,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                     READ_EXTERNAL_STORAGE_PERMISSION_REQUEST
                 )
             } else {
-                dispatchTakeVideoIntent()
+                dispatchTakeVideoIntent(this)
             }
         }
 
@@ -436,7 +436,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         fileUpload(videoUri)
     }
 
-    private fun dispatchTakeVideoIntent() {
+    private fun dispatchTakeVideoIntent(context: Context) {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(packageManager) != null) {
             val permission = Manifest.permission.CAMERA
@@ -455,7 +455,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 if (videoFile != null) {
                     val videoUri: Uri = FileProvider.getUriForFile(
                         this,
-                        "com.techjays.chatlibrary.fileprovider",
+                        context.packageName + "fileProvider",
                         videoFile!!
                     )
                     takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)

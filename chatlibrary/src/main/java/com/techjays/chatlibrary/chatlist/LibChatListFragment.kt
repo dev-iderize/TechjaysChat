@@ -147,6 +147,10 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     private fun init() {
         binding.activity = this
         client = OkHttpClient()
+        binding.header.setOnLongClickListener {
+            AppDialogs.showToastDialog(requireContext(), ChatLibrary.instance.baseUrl)
+            return@setOnLongClickListener true
+        }
         listener = ChatSocketListener(requireContext(), ws, this)
         requireActivity().registerReceiver(
             chatWebSocketBroadcast, IntentFilter("chat_web_socket_message")
