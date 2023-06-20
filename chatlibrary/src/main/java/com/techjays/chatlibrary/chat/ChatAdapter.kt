@@ -97,6 +97,18 @@ class ChatAdapter(
             VIEW_TYPE_INFO_MESSAGE -> {
                 val infoHolder = holder as InfoViewHolder
                 val binding = infoHolder.binding
+                binding.message = message
+                val mNotificationType = when {
+                    message.mMessage.contains("turned on their Shield") -> "SHIELD_ON"
+
+                    message.mMessage.contains("turned off their Shield") -> "SHIELD_OFF"
+
+                    message.mMessage.contains("turned off their SOS") -> "SOS_OFF"
+
+                    message.mMessage.contains("triggered SOS") -> "SOS_ON"
+                    else -> ""
+                }
+                binding.messageType = mNotificationType
                 binding.executePendingBindings()
 
             }
@@ -157,6 +169,7 @@ class ChatAdapter(
         return when (message.mMessageType) {
             "audio" -> VIEW_TYPE_AUDIO
             "video", "image" -> VIEW_TYPE_VIDEO
+            "notification" -> VIEW_TYPE_INFO_MESSAGE
             else -> VIEW_TYPE_TEXT
         }
     }
