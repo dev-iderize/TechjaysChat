@@ -55,7 +55,7 @@ class AudioRecorder(
     private fun getFileUri(filePath: String?): Uri? {
         return FileProvider.getUriForFile(
             context,
-            "com.techjays.chatlibrary.fileprovider",
+            context.packageName + "fileProvider",
             File(filePath!!)
         )
     }
