@@ -577,10 +577,10 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         chat.mFileUrl = r.mData?.mFile!!
                         chat.isSentByMyself = true
                         val chatMain = Chat()
-                        chatMain.mData.addAll(arrayListOf( chat))
+                        chatMain.mData.addAll(arrayListOf(chat))
                         binding.chatdata!!.mData.addAll(0, chatMain.mData)
                         binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
-
+                        scrollToBottom()
                         listener.sendFileParams(r.mMessage, groupId, r)
 
                     } else
