@@ -6,7 +6,7 @@ package com.techjays.chatlibrary
  */
 class ChatLibrary private constructor() {
 
-    var baseUrl = ""
+    var baseUrl = "https://stg-api.shieldup.ai/api/portal/"
     var socketUrl = ""
     var chatToken = ""
     var authToken = ""
