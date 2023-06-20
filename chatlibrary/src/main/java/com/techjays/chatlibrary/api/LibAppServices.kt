@@ -364,7 +364,7 @@ class LibAppServices {
                                 mCallBack.completedSuccessfully()
                             }
                         )
-                        mParam["file\"; filename=\"$fileName\""] = progressRequestBody
+                        mParam["file\"; filename=\"$fileName"] = progressRequestBody
                         /*  mParam["file_type"] =
                               RequestBody.create(MediaType.parse("text/plain"), "image")
   */

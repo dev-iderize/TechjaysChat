@@ -24,8 +24,17 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:replace="android:theme"
-        android:theme="@style/Theme.Forcefield">
+        android:theme="@style/Theme.Forcefield"
+        tools:replace="android:theme">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.techjays.shieldupfileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <activity
             android:name=".MainActivity"
             android:exported="true">
