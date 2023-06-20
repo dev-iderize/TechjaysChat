@@ -648,13 +648,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                     val gson = Gson()
                     if (isSent) {
                         val recievedChat = gson.fromJson(value, MyMessage::class.java)
-                        val chat = recievedChat.toChatModel(isSent)
+                        val chat = recievedChat.toChatModel(true)
                         binding.chatdata!!.mData.addAll(0, chat.mData)
                     } else {
                         val recievedChat = gson.fromJson(value, OthersMessage::class.java)
-                        val chat = recievedChat.toChat(isSent)
+                        val chat = recievedChat.toChat(false)
                         binding.chatdata!!.mData.addAll(0, chat.mData)
-
                     }
                     binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
                     scrollToBottom()
