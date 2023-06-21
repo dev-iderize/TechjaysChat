@@ -155,7 +155,7 @@ class ChatAdapter(
                 val audioHolder = holder as AudioViewHolder
                 val binding = audioHolder.binding
                 binding.message = message
-                binding.isSentByMyself = message.isSentByMyself
+                binding.isSentByMyself = !message.isSentByMyself
                 binding.executePendingBindings()
             }
         }
@@ -208,7 +208,7 @@ class ChatAdapter(
             playPauseButton.setOnClickListener {
                 binding.isLoading = true
                 val message = messages[bindingAdapterPosition]
-                val audioUrl = message.mMessage
+                val audioUrl = message.mFileUrl
                 stopOtherMediaPlayers()
 
                 if (isAudioPlaying && currentAudioUrl == audioUrl) {

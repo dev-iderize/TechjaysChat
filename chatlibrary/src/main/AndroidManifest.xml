@@ -31,10 +31,13 @@
             android:exported="false" />
         <activity
             android:name=".chat.LibChatActivity"
-            android:exported="true"
-           />
+            android:exported="true" />
         <activity
             android:name=".chatlist.LibChatListActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".chat.VideoPlayerExoplayerActivity"
             android:exported="true"
             tools:ignore="Instantiatable" />
     </application>

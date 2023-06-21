@@ -245,8 +245,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         binding.chatRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
-                // Check if the user has scrolled upwards
                 if (dy > 0 && binding.fab.isShown) {
                     binding.fab.hide()
                 } else if (dy < 0 && !binding.fab.isShown) {
@@ -589,7 +587,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         r as LibChatSocketMessages
                         val chat = Chat.ChatData()
                         chat.mMessageType = r.mData?.mFileType!!
-                        chat.mMediumImage = r.mData?.mFileMediumThumbNail!!
+                        chat.mMediumImage = r.mData?.mFileThumbNail!!
                         chat.mFileUrl = r.mData?.mFile!!
                         chat.isSentByMyself = true
                         val chatMain = Chat()
@@ -707,6 +705,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 binding.uploadText.visibility = View.VISIBLE
                 binding.uploadProgressBar.progress = progress
                 binding.uploadText.text = "$progress%"
+                binding.btnPlus.visibility = View.GONE
             }
         }
     }
@@ -715,6 +714,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         runOnUiThread {
             binding.uploadProgressBar.visibility = View.GONE
             binding.uploadText.visibility = View.GONE
+            binding.btnPlus.visibility = View.VISIBLE
             AppDialogs.showToastDialog(this, "Something happened couldn't upload the file")
         }
 
@@ -725,6 +725,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         runOnUiThread {
             binding.uploadProgressBar.visibility = View.GONE
             binding.uploadText.visibility = View.GONE
+            binding.btnPlus.visibility = View.VISIBLE
         }
     }
 
