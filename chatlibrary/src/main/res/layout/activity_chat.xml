@@ -126,9 +126,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:paddingBottom="20dp"
                 android:layout_marginBottom="60dp"
                 android:layout_weight="1"
+                android:paddingBottom="20dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
 
@@ -155,9 +155,9 @@
                     android:id="@+id/btn_plus"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
-                    android:padding="10dp"
                     android:layout_marginEnd="10dp"
                     android:onClick="@{()->activity.showBottomSheet()}"
+                    android:padding="10dp"
                     android:rotation="360"
                     android:src="@drawable/ic_plus_white" />
 
@@ -212,6 +212,20 @@
                     app:tint="@color/primary_color_light" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:fabSize="mini"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"
+            app:icon="@drawable/baseline_keyboard_arrow_down_24"
+            android:textAllCaps="false"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            android:visibility="gone" />
+
 
         <RelativeLayout
             android:layout_width="wrap_content"

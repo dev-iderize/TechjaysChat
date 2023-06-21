@@ -74,29 +74,13 @@ class ChatSocketListener(
         obj.put("file_type", chat.mData?.mFileType)
         obj.put("medium_image", chat.mData?.mFileMediumThumbNail)
         obj.put("thumbnail_image", chat.mData?.mFileThumbNail)
-        obj.put("message", chat.mData?.mMessage)
+        obj.put("message", chat.mData?.mFile)
         val userData = JSONObject()
         userData.put("user_id", ChatLibrary.instance.mUserId)
         obj.put("user_data", userData)
         Log.e("object to file uoload------->>", obj.toString())
         return obj.toString()
     }
-
-
-    /*{
-        "type": "chat",
-        "token": "gAAAAABkibKDg-7PzDNxUa2z0RfV2KqC0KNTs2jqF9fTPgcpB5lkXWWfrNtlgFqH91mP4e78TUFipYP7ZxTOtuxQRAsjTRxJ7OeKmYirs33-PeXDQd2N0e0Kl0_iC0ELi445i6hATBiILO-0XYrdVTHwGGDtEOmABhfNeBToLcptTiajIfRRNQrdx4qZg8p7Se1W2ZgSnOfHDIAIZ-H9LjauzB_89uGjYLXEnN-Pv7Et51mqRQ4XNM4=",
-        "group_id": < GROUP ID >,
-        "chat_type": "group",
-        "message_type": "file",
-        "file_type": "< FILE TYPE FROM END POINT>",
-        "medium_image": "<MEDIUM IMG  URL FROM END POINT",
-        "thumbnail_image": "<THUMB NAIL IMG URL FROM END POINT>",
-        "message": "<MESSAGE TEXT>",
-        "user_data": {
-        "user_id": < USER ID >
-    }
-    }*/
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         Log.e("Receiving bytes : ", bytes.hex())

@@ -242,6 +242,22 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         getChatMessage()
         initRecycler()
         binding.recordButton.setRecordView(binding.recordView)
+        binding.chatRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                // Check if the user has scrolled upwards
+                if (dy > 0 && binding.fab.isShown) {
+                    binding.fab.hide()
+                } else if (dy < 0 && !binding.fab.isShown) {
+                    binding.fab.show()
+                }
+            }
+        })
+        binding.fab.setOnClickListener {
+            binding.chatRecyclerView.smoothScrollToPosition(0)
+            binding.fab.hide()
+        }
         binding.isMicPermissionAvailable = PermissionChecker().checkPermission(
             applicationContext,
             android.Manifest.permission.RECORD_AUDIO
