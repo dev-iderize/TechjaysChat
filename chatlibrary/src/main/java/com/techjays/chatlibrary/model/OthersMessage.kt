@@ -11,7 +11,7 @@ data class OthersMessage(
 ) {
     data class ChatData(
         @SerializedName("sender") val sender: Sender,
-        @SerializedName("profile_pic") val profilePic: String,
+        @SerializedName("profile_pic") val profilePic: String?,
         @SerializedName("group_id") val groupId: Int,
         @SerializedName("message_id") val messageId: Int,
         @SerializedName("message_type") val messageType: String,

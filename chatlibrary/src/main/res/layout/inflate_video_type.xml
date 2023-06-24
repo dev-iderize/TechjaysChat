@@ -65,9 +65,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:text="@{message.mName}"
-                android:textColor="@{isSentByMyself?@color/dark_chocolate:@color/white}"
-                android:visibility="@{!isSentByMyself?View.GONE : View.VISIBLE}" />
+                android:text="@{message.mFirstName+` `+message.mLastName}"
+                android:textColor="@color/dark_chocolate"
+                android:visibility="@{isSentByMyself?View.VISIBLE :View.GONE }" />
 
             <RelativeLayout
                 android:id="@+id/video_Layout"

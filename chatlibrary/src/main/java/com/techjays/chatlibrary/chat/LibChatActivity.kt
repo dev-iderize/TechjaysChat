@@ -65,10 +65,12 @@ import java.util.Locale
 
 
 class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
-    AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback, FileUploadProgress {
+    AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback, FileUploadProgress,
+    ChatAdapter.ChatCallback {
     private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST: Int = 10002
     private val VIDEO_CAPTURE_REQUEST_CODE = 4001
     lateinit var binding: ActivityChatBinding
+    var scrolledToTop = false
     private lateinit var audioRecorder: AudioRecorder
     var mediaPlayer: MediaPlayer? = null
     var mDialogAction = ""
@@ -248,12 +250,13 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 if (dy > 0 && binding.fab.isShown) {
                     binding.fab.hide()
                 } else if (dy < 0 && !binding.fab.isShown) {
-                    binding.fab.show()
+                    scrolledToTop = true
+                    binding.fab.hide()
                 }
             }
         })
         binding.fab.setOnClickListener {
-            binding.chatRecyclerView.smoothScrollToPosition(0)
+            binding.chatRecyclerView.scrollToPosition(0)
             binding.fab.hide()
         }
         binding.isMicPermissionAvailable = PermissionChecker().checkPermission(
@@ -435,18 +438,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     }
 
 
-    private fun openImagePicker() {
-        imagePickerLauncher.launch("image/*")
-    }
-
-    private fun openVideoPicker() {
-        videoPickerLauncher.launch("video/*")
-    }
-
-    private fun openAudioPicker() {
-        audioPickerLauncher.launch("audio/*")
-    }
-
     private fun dispatchTakeVideoIntent(context: Context) {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         if (takeVideoIntent.resolveActivity(packageManager) != null) {
@@ -573,19 +564,23 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         isNextLink = r.next_link
                         if (mOffset == 0) {
                             binding.chatdata = ct
-                            binding.chatRecyclerView.adapter = ChatAdapter(this, r.mData)
-                            scrollToBottom()
+                            binding.chatRecyclerView.adapter = ChatAdapter(this, r.mData, this)
+
+
                         } else {
                             binding.chatdata!!.mData.addAll(ct.mData)
                         }
                         binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
+                        if (mOffset == 0)
+                            scrollToBottom()
+
                     }
                 }
 
                 LibAppServices.API.upload_file.hashCode() -> {
                     if (r.responseStatus!!) {
                         r as LibChatSocketMessages
-                        val chat = Chat.ChatData()
+                        /*val chat = Chat.ChatData()
                         chat.mMessageType = r.mData?.mFileType!!
                         chat.mMediumImage = r.mData?.mFileThumbNail!!
                         chat.mFileUrl = r.mData?.mFile!!
@@ -594,7 +589,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         chatMain.mData.addAll(arrayListOf(chat))
                         binding.chatdata!!.mData.addAll(0, chatMain.mData)
                         binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
-                        scrollToBottom()
+                        scrollToBottom()*/
                         listener.sendFileParams(r.mMessage, groupId, r)
 
                     } else
@@ -615,6 +610,10 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 mFileType = this@toChatModel.data.fileType
                 mMessage = this@toChatModel.data.message
                 mTime = this@toChatModel.data.timestamp
+                mMediumImage =
+                    if (mMessageType == "file") this@toChatModel.data.thumbnailImage else ""
+                mThumbnailImage =
+                    if (mMessageType == "file") this@toChatModel.data.thumbnailImage else ""
                 mProfilePic = ""
                 mFirstName = ""
                 mLastName = ""
@@ -633,12 +632,14 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         val chatData = Chat.ChatData()
 
         chatData.mMessageId = data.messageId
-        chatData.mMessageType = if (data.message.contains("chat")) "message" else ""
+        chatData.mMessageType = if (data.message.contains("chat")) "message" else data.messageType
         chatData.mFileType = data.fileType
         chatData.mMessage = data.message
         chatData.mTime = data.timestamp
-        chatData.mProfilePic = data.profilePic
+        chatData.mProfilePic = data.profilePic!!
         chatData.mFirstName = data.sender.firstName
+        chatData.mThumbnailImage =
+            if (data.messageType == "file") data.thumbnailImage else ""
         chatData.mLastName = data.sender.lastName
         chatData.mName = "${data.sender.firstName} ${data.sender.lastName}"
         chatData.mUserId = data.sender.userId
@@ -729,6 +730,19 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         }
     }
 
+    private fun openImagePicker() {
+        imagePickerLauncher.launch("image/*")
+    }
+
+    private fun openVideoPicker() {
+        videoPickerLauncher.launch("video/*")
+    }
+
+    private fun openAudioPicker() {
+        audioPickerLauncher.launch("audio/*")
+    }
+
+
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>,
         grantResults: IntArray
@@ -782,5 +796,10 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onScrollToDown() {
+        if (!scrolledToTop)
+            scrollToBottom()
     }
 }

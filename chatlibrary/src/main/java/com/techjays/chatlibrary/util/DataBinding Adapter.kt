@@ -37,6 +37,32 @@ class DataBidingAdapter {
             seekBar.progressBackgroundTintList = ColorStateList.valueOf(progressBackgroundTint)
         }
 
+
+        @JvmStatic
+        @BindingAdapter("chat_info_message")
+        fun setChatInfoMessage(
+            textView: TextView,
+            message: com.techjays.chatlibrary.model.Chat.ChatData
+        ) {
+            val mNotificationType = when {
+                message.mMessage.contains("turned on their Shield") -> "SHIELD_ON"
+
+                message.mMessage.contains("turned off their Shield") -> "SHIELD_OFF"
+
+                message.mMessage.contains("turned off their SOS") -> "SOS_OFF"
+
+                message.mMessage.contains("triggered SOS") -> "SOS_ON"
+                else -> "I_AM_SAFE"
+            }
+            textView.text = Utility.setChatNotification(
+                message.mMessage,
+                Utility.displayLocalTime(message.mTime),
+                Utility.notificationColor(mNotificationType),
+                textView.context.applicationContext
+            )
+        }
+
+
         @JvmStatic
         @BindingAdapter("set_relative_date")
         fun setRelativeDate(view: TextView, aData: String) {
@@ -74,7 +100,8 @@ class DataBidingAdapter {
                 Utility.loadUserImage(
                     url,
                     view,
-                    R.drawable.ic_acc)
+                    R.drawable.ic_acc
+                )
 
             } else {
                 val aPlaceholder =

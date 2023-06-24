@@ -13,7 +13,10 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 object ImageUtils {
+    private var totalImagesRequested = 0
+    private var totalAspectRatiosReceived = 0
     fun getAspectRatioFromUrl(imageUrl: String, callback: AspectRatioCallback) {
+        totalImagesRequested++
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val url = URL(imageUrl)
@@ -37,6 +40,11 @@ object ImageUtils {
 
                 withContext(Dispatchers.Main) {
                     callback.onAspectRatioLoaded(aspectRatio, imageUrl)
+                    totalAspectRatiosReceived++
+
+                    if (totalAspectRatiosReceived == totalImagesRequested) {
+                        callback.onEveryImageLoaded()
+                    }
                 }
             } catch (e: IOException) {
                 Log.e("com.techjays.chatlibrary.helpers.ImageUtils", "Error loading image from URL: ${e.message}")
@@ -52,4 +60,5 @@ object ImageUtils {
 }
 interface AspectRatioCallback {
     fun onAspectRatioLoaded(aspectRatio: Float, imageUrl: String)
+    fun onEveryImageLoaded()
 }

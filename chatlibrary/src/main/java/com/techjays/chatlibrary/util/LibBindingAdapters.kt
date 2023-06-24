@@ -10,8 +10,6 @@ import java.util.TimeZone
 class LibBindingAdapters {
     companion object {
 
-        @JvmStatic
-        @BindingAdapter("display_local_time")
         fun displayLocalTime(view: TextView, time: String?) {
             if (time != null) {
                 val inputFormat = SimpleDateFormat(

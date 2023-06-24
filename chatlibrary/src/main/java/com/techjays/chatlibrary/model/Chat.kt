@@ -22,7 +22,10 @@ class Chat : Response() {
         var mFileType: String = ""
 
         @SerializedName("medium_image")
-        var mMediumImage: String = "https://stg-forcefield-india.s3.amazonaws.com/media/public/chat/files/medium_image/file_145.png"
+        var mMediumImage: String = ""
+
+        @SerializedName("thumbnail_image")
+        var mThumbnailImage: String = ""
 
         @SerializedName("file_url")
         var mFileUrl: String = ""

@@ -14,6 +14,12 @@ import android.os.Build
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.text.Selection
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
 import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
@@ -26,6 +32,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -37,6 +44,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -61,6 +69,72 @@ object Utility {
         }
     }
 
+    fun notificationColor(type: String): Int {
+        val color = when (type) {
+            "SHIELD_ON" -> R.color.app_amber
+            "SHIELD_OFF" -> R.color.dark_chocolate
+            "SOS_ON" -> R.color.pastel_red
+            "SOS_OFF" -> R.color.dark_chocolate
+            else -> R.color.primary_color_light
+        }
+        return color
+    }
+
+
+    fun setChatNotification(
+        first: String,
+        third: String,
+        color: Int,
+        context: Context,
+        second: String = " at "
+    ): Spannable {
+        val finalString = first + second + third
+        val sb: Spannable = SpannableString(finalString)
+
+        val bold = ResourcesCompat.getFont(context, R.font.public_sans_extra_bold) as Typeface
+        sb.setSpan(
+            bold,
+            0,
+            first.length + second.length + third.length,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        sb.setSpan(
+            ForegroundColorSpan(getColor(context, color)), 0, first.length,
+            Spanned.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        sb.setSpan(
+            ForegroundColorSpan(getColor(context, R.color.dark_chocolate)),
+            first.length,
+            first.length+second.length,
+            Spanned.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        sb.setSpan(
+            ForegroundColorSpan(getColor(context, R.color.hint_grey)),
+            second.length+first.length,
+            first.length + second.length + third.length,
+            Spanned.SPAN_INCLUSIVE_INCLUSIVE
+        )
+
+        return sb
+    }
+
+    fun displayLocalTime(time: String?): String {
+        if (time != null) {
+            val inputFormat = SimpleDateFormat(
+                if (time.endsWith("Z")) "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'" else "yyyy-MM-dd HH:mm:ss.SSSSSSXXX",
+                Locale.getDefault()
+            )
+            val outputFormat = SimpleDateFormat("dd MMM yy hh:mm a", Locale.getDefault())
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val inputDate = inputFormat.parse(time)
+
+            return outputFormat.format(inputDate!!)
+        } else {
+            return "unknown time"
+        }
+
+    }
+
     fun checkInternet(context: Context): Boolean {
         return if (Utility.isInternetAvailable(context))
             true
@@ -74,7 +148,7 @@ object Utility {
         }
     }
 
-    fun getLibraryRealPathFromUri( uri: Uri,context: Context): String? {
+    fun getLibraryRealPathFromUri(uri: Uri, context: Context): String? {
         var filePath: String? = null
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor: Cursor? = context.contentResolver.query(uri, projection, null, null, null)
@@ -103,13 +177,13 @@ object Utility {
         return result
     }
 
-  /*  fun uriTolibraryFile(context: Context, uri: Uri): File? {
-        val filePath = getLibraryRealPathFromUri(context, uri)
-        filePath?.let {
-            return File(it)
-        }
-        return null
-    }*/
+    /*  fun uriTolibraryFile(context: Context, uri: Uri): File? {
+          val filePath = getLibraryRealPathFromUri(context, uri)
+          filePath?.let {
+              return File(it)
+          }
+          return null
+      }*/
 
     @SuppressLint("MissingPermission")
     fun isInternetAvailable(context: Context?): Boolean {

@@ -23,7 +23,7 @@ import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.util.AppDialogs
 
 class ChatAdapter(
-    val context: LibChatActivity, private val messages: ArrayList<Chat.ChatData>
+    val context: LibChatActivity, private val messages: ArrayList<Chat.ChatData>,private val mCallBack:ChatCallback
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -100,17 +100,7 @@ class ChatAdapter(
                 val infoHolder = holder as InfoViewHolder
                 val binding = infoHolder.binding
                 binding.message = message
-                val mNotificationType = when {
-                    message.mMessage.contains("turned on their Shield") -> "SHIELD_ON"
 
-                    message.mMessage.contains("turned off their Shield") -> "SHIELD_OFF"
-
-                    message.mMessage.contains("turned off their SOS") -> "SOS_OFF"
-
-                    message.mMessage.contains("triggered SOS") -> "SOS_ON"
-                    else -> ""
-                }
-                binding.messageType = mNotificationType
                 binding.executePendingBindings()
 
             }
@@ -119,20 +109,25 @@ class ChatAdapter(
                 val videoHolder = holder as VideoViewHolder
                 val binding = videoHolder.binding
                 binding.message = message
-               // binding.image = message.mFileUrl
                 binding.isSentByMyself = !message.isSentByMyself
-                val isVideo = message.mMessageType == "video"
+                val isVideo = message.mMessageType == "video" || message.mFileType == "video"
                 binding.isVideo = isVideo
-                videoImageUrls[videoHolder.bindingAdapterPosition] = message.mMediumImage
-
-                ImageUtils.getAspectRatioFromUrl(message.mMediumImage, object : AspectRatioCallback {
-                    override fun onAspectRatioLoaded(aspectRatio: Float, imageUrl: String) {
-                        if (imageUrl == videoImageUrls[videoHolder.bindingAdapterPosition]) {
-                            binding.ratio = aspectRatio
-                            binding.image = message.mMediumImage
+                videoImageUrls[videoHolder.bindingAdapterPosition] = message.mThumbnailImage
+                ImageUtils.getAspectRatioFromUrl(
+                    message.mThumbnailImage,
+                    object : AspectRatioCallback {
+                        override fun onAspectRatioLoaded(aspectRatio: Float, imageUrl: String) {
+                            if (imageUrl == videoImageUrls[videoHolder.bindingAdapterPosition]) {
+                                binding.ratio = aspectRatio
+                                binding.image = message.mThumbnailImage
+                            }
                         }
-                    }
-                })
+
+                        override fun onEveryImageLoaded() {
+                            mCallBack.onScrollToDown()
+
+                        }
+                    })
 
 
                 binding.videoLayout.setOnClickListener {
@@ -140,11 +135,11 @@ class ChatAdapter(
                         val i = Intent(context, VideoPlayerExoplayerActivity::class.java)
                         i.putExtra(
                             "videoUri",
-                            message.mFileUrl
+                            message.mMessage
                         )
                         context.startActivity(i)
                     } else {
-                        context.showImageViewer(message.mFileUrl)
+                        context.showImageViewer(message.mMessage)
                     }
                 }
                 binding.executePendingBindings()
@@ -168,7 +163,14 @@ class ChatAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val message = messages[position]
-        return when (message.mMessageType) {
+        val type: String = when {
+            message.mMessageType == "audio" || message.mFileType == "audio" -> "audio"
+            message.mMessageType == "image" || message.mFileType == "image" -> "image"
+            message.mMessageType == "video" || message.mFileType == "video" -> "video"
+            message.mMessageType == "notification" || message.mFileType == "notification" -> "notification"
+            else -> "chat"
+        }
+        return when (type) {
             "audio" -> VIEW_TYPE_AUDIO
             "video", "image" -> VIEW_TYPE_VIDEO
             "notification" -> VIEW_TYPE_INFO_MESSAGE
@@ -208,7 +210,7 @@ class ChatAdapter(
             playPauseButton.setOnClickListener {
                 binding.isLoading = true
                 val message = messages[bindingAdapterPosition]
-                val audioUrl = message.mFileUrl
+                val audioUrl = message.mMessage
                 stopOtherMediaPlayers()
 
                 if (isAudioPlaying && currentAudioUrl == audioUrl) {
@@ -335,5 +337,9 @@ class ChatAdapter(
         }
 
 
+    }
+
+    interface ChatCallback{
+        fun onScrollToDown()
     }
 }

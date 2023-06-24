@@ -5,23 +5,20 @@
     <data>
 
         <variable
-            name="messageType"
-            type="String" />
-
-        <variable
             name="message"
             type="com.techjays.chatlibrary.model.Chat.ChatData" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginVertical="20dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginHorizontal="20dp"
 
             android:gravity="end"
             android:paddingVertical="25dp"
@@ -44,22 +41,11 @@
                         style="@style/Text12Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="2dp"
-                        app:display_local_time="@{message.mTime}"
-                        android:textColor="@color/hint_grey"
-                        android:textSize="8sp" />
-
-                    <TextView
-                        style="@style/Text12Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:fontFamily="@font/public_sans_bold"
                         android:gravity="center"
                         android:paddingHorizontal="10dp"
-                        android:text="@{message.mMessage}"
                         android:textAlignment="center"
-                        android:textColor="@{messageType.equals(`SOS_ON`)?@color/pastel_red:messageType.equals(`SHIELD_ON`)? @color/app_amber:@color/dark_chocolate}" />
+                        app:chat_info_message="@{message}" />
 
 
                 </LinearLayout>

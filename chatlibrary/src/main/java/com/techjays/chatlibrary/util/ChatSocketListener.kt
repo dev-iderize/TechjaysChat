@@ -2,6 +2,7 @@ package com.techjays.chatlibrary.util
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -49,6 +50,7 @@ class ChatSocketListener(
         return obj.toString()
     }
 
+
     private fun sendChatParams(message: String, groupId: Int): String {
         val obj = JSONObject()
         obj.put("type", "chat")
@@ -61,24 +63,46 @@ class ChatSocketListener(
         userData.put("user_id", ChatLibrary.instance.mUserId)
         obj.put("user_data", userData)
 
+
         return obj.toString()
+
     }
 
+
     fun sendFileParams(message: String, groupId: Int, chat: LibChatSocketMessages): String {
+
+
+        /*    {
+                "type": "chat",
+                "token": "gAAAAABkk-5waQdnncOYmM8ZPSpbnsfHPfER9o_l99bf9mi2JT831CGAMuFr0b8-0od4OJq8M6RqqjO3nlSD6yXxC3_tjN2f2KqujX-sIWQfGJl52BKEmRIQ-S1JHe95uOK6-H28NWXUSszPZVPDO-Q1Ibx1E6R5-ML7_A-j0Ia7jrFca5N08vcjtXvE24Yt7whdk55dnAtamCjAZvIBS-pmmi32XHFcblBjTRddEa0YMC5jECfG-BM=",
+                "group_id": 1,
+                "chat_type": "group",
+                "message_type": "file",
+                "message": "https://stg-forcefield-india.s3.amazonaws.com/media/public/chat/files/file_1.png",
+                "file_type": "image",
+                "medium_image": "https://stg-forcefield-india.s3.amazonaws.com/media/public/chat/files/file_1.png",
+                "thumbnail_image": "https://stg-forcefield-india.s3.amazonaws.com/media/public/chat/files/file_1.png",
+                "user_data": {
+                "user_id": 6
+            }*/
         val obj = JSONObject()
         obj.put("type", "chat")
         obj.put("token", ChatLibrary.instance.chatToken)
         obj.put("group_id", groupId)
         obj.put("chat_type", "group")
         obj.put("message_type", "file")
+        obj.put("message", chat.mData?.mFile)
         obj.put("file_type", chat.mData?.mFileType)
+        //obj.put("file_url", chat.mData?.mFile)
         obj.put("medium_image", chat.mData?.mFileMediumThumbNail)
         obj.put("thumbnail_image", chat.mData?.mFileThumbNail)
-        obj.put("message", chat.mData?.mFile)
+
         val userData = JSONObject()
         userData.put("user_id", ChatLibrary.instance.mUserId)
         obj.put("user_data", userData)
-        Log.e("object to file uoload------->>", obj.toString())
+        if (ws != null)
+            ws!!.send(obj.toString())
+        //  Log.e("object to file uoload------->>", obj.toString())
         return obj.toString()
     }
 
