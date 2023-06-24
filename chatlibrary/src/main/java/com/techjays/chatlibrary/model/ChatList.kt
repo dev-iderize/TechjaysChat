@@ -30,6 +30,12 @@ class ChatList : Response() {
         @SerializedName("message_type")
         var mMessageType: String = ""
 
+        @SerializedName("first_name")
+        var mFirstName: String = ""
+
+        @SerializedName("last_name")
+        var mLastName: String = ""
+
         @SerializedName("timestamp")
         var mTime: String = ""
 

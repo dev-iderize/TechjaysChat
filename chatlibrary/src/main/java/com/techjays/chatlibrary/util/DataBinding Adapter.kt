@@ -1,24 +1,19 @@
 package com.techjays.chatlibrary.util
 
 import android.content.res.ColorStateList
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
-import android.text.Spannable
-import android.view.Gravity
+import android.graphics.drawable.Drawable
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.github.curioustechizen.ago.RelativeTimeTextView
 import com.google.android.material.imageview.ShapeableImageView
 import com.santalu.aspectratioimageview.AspectRatioImageView
 import com.squareup.picasso.Picasso
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.model.ChatList
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -67,6 +62,46 @@ class DataBidingAdapter {
         @BindingAdapter("set_relative_date")
         fun setRelativeDate(view: TextView, aData: String) {
             view.text = DateUtil.convertTimeToTextExact(aData)
+        }
+
+        @JvmStatic
+        @BindingAdapter("view_visibility")
+        fun setViewVisibility(view: TextView, aData: ChatList.ChatListData) {
+            val viewCondition =
+                aData.mMessage.isNotEmpty() && aData.mMessage != null && aData.mMessageType != "file"
+            view.visibility = if (viewCondition) View.VISIBLE else View.GONE
+        }
+
+        @JvmStatic
+        @BindingAdapter(value = ["myDrawableStart", "myDrawableTint"], requireAll = false)
+        fun setDrawableStart(textView: TextView, aData: ChatList.ChatListData, tint: Int) {
+            val drawable = Utility.getDrawable(
+                textView.context.applicationContext,
+                Utility.findSuitableDrawables(aData.mFileType)
+            )
+
+            val tintedDrawable = if (tint != 0) {
+                drawable?.mutate()?.apply {
+                    DrawableCompat.setTint(this, tint)
+                }
+            } else {
+                drawable
+            }
+
+            textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                tintedDrawable,
+                null,
+                null,
+                null
+            )
+        }
+
+
+        @JvmStatic
+        @BindingAdapter("myText")
+        fun capitalizeFirstLetter(textView: TextView, text: String) {
+            val inputString = text.replaceFirstChar { it.uppercase() }
+            textView.text = inputString
         }
 
         @JvmStatic

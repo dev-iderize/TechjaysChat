@@ -57,6 +57,18 @@ object Utility {
     }
 
 
+    fun findSuitableDrawables(fileType: String): Int {
+
+       return when (fileType) {
+            "image" -> R.drawable.lib_photo_24
+            "video" -> R.drawable.lib_video_file_24
+            "audio" -> R.drawable.lib_mic_24
+            else -> R.drawable.lib_mic_24
+        }
+
+    }
+
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setBackgroundDrawableResource(window: Window, @DrawableRes drawableRes: Int) {
         val context = window.context
@@ -103,14 +115,14 @@ object Utility {
             Spanned.SPAN_INCLUSIVE_INCLUSIVE
         )
         sb.setSpan(
-            ForegroundColorSpan(getColor(context, R.color.dark_chocolate)),
+            ForegroundColorSpan(getColor(context, R.color.hint_grey)),
             first.length,
-            first.length+second.length,
+            first.length + second.length,
             Spanned.SPAN_INCLUSIVE_INCLUSIVE
         )
         sb.setSpan(
-            ForegroundColorSpan(getColor(context, R.color.hint_grey)),
-            second.length+first.length,
+            ForegroundColorSpan(getColor(context, R.color.dark_chocolate)),
+            second.length + first.length,
             first.length + second.length + third.length,
             Spanned.SPAN_INCLUSIVE_INCLUSIVE
         )
@@ -119,7 +131,7 @@ object Utility {
     }
 
     fun displayLocalTime(time: String?): String {
-        if (time != null) {
+        return if (time != null) {
             val inputFormat = SimpleDateFormat(
                 if (time.endsWith("Z")) "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'" else "yyyy-MM-dd HH:mm:ss.SSSSSSXXX",
                 Locale.getDefault()
@@ -128,9 +140,9 @@ object Utility {
             inputFormat.timeZone = TimeZone.getTimeZone("UTC")
             val inputDate = inputFormat.parse(time)
 
-            return outputFormat.format(inputDate!!)
+            outputFormat.format(inputDate!!)
         } else {
-            return "unknown time"
+            "unknown time"
         }
 
     }

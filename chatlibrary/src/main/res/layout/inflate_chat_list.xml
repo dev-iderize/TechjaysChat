@@ -91,10 +91,31 @@
                 android:text="@{listData.mMessage}"
                 android:textColor="@{!listData.mIsRead&amp;&amp;!listData.isSentByMyself?@color/primary_color_light:@color/hint_grey}"
                 android:textSize="12sp"
-                android:visibility="@{listData.mMessage.length()==0||listData.mMessage==null ?View.GONE:View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profile_layout"
-                app:layout_constraintTop_toBottomOf="@+id/group_name" />
+                app:layout_constraintTop_toBottomOf="@+id/group_name"
+                app:view_visibility="@{listData}" />
+
+            <TextView
+                android:id="@+id/file_last_message"
+                style="@style/Text24Normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingEnd="10dp"
+                app:myText="@{listData.mFileType}"
+                android:textColor="@{!listData.mIsRead&amp;&amp;!listData.isSentByMyself?@color/primary_color_light:@color/hint_grey}"
+                android:textSize="12sp"
+                android:visibility="@{listData.mMessageType.equals(`file`)?View.VISIBLE :View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_layout"
+                app:layout_constraintTop_toBottomOf="@+id/group_name"
+                app:myDrawableStart="@{listData}"
+                app:myDrawableTint="@{!listData.mIsRead&amp;&amp;!listData.isSentByMyself?@color/primary_color_light:@color/hint_grey}" />
 
             <TextView
                 style="@style/Text24Normal"
