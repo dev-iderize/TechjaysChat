@@ -59,17 +59,16 @@ object Utility {
 
     fun findSuitableDrawables(fileType: String): Int {
 
-       return when (fileType) {
+        return when (fileType) {
             "image" -> R.drawable.lib_photo_24
             "video" -> R.drawable.lib_video_file_24
             "audio" -> R.drawable.lib_mic_24
-            else -> R.drawable.lib_mic_24
+            else -> R.drawable.lib_notifications_active_24
         }
 
     }
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setBackgroundDrawableResource(window: Window, @DrawableRes drawableRes: Int) {
         val context = window.context
         val backgroundDrawable = ContextCompat.getDrawable(context, drawableRes) ?: return

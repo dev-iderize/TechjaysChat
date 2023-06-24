@@ -99,9 +99,12 @@ class DataBidingAdapter {
 
         @JvmStatic
         @BindingAdapter("myText")
-        fun capitalizeFirstLetter(textView: TextView, text: String) {
-            val inputString = text.replaceFirstChar { it.uppercase() }
-            textView.text = inputString
+        fun capitalizeFirstLetter(textView: TextView, data: ChatList.ChatListData) {
+            if (data.mFileType != "message") {
+                val inputString = data.mFileType.replaceFirstChar { it.uppercase() }
+                textView.text = inputString
+            } else
+                textView.text = data.mMessage
         }
 
         @JvmStatic

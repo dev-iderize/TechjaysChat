@@ -107,7 +107,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingEnd="10dp"
-                app:myText="@{listData.mFileType}"
+                app:myText="@{listData}"
                 android:textColor="@{!listData.mIsRead&amp;&amp;!listData.isSentByMyself?@color/primary_color_light:@color/hint_grey}"
                 android:textSize="12sp"
                 android:visibility="@{listData.mMessageType.equals(`file`)?View.VISIBLE :View.GONE}"
