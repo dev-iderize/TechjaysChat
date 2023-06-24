@@ -1,7 +1,6 @@
 package com.techjays.chatlibrary.util
 
 import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
@@ -17,7 +16,7 @@ import com.techjays.chatlibrary.model.ChatList
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class DataBidingAdapter {
+class LibDataBidingAdapter {
     companion object {
 
 
