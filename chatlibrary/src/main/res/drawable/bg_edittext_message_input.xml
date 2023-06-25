@@ -1,7 +1,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FFFFFF" /> <!-- Background color of the EditText -->
+    <solid android:color="@color/white" /> <!-- Background color of the EditText -->
     <corners android:radius="20dp" /> <!-- Radius for rounded corners -->
     <stroke
-        android:color="#CCCCCC"
-    android:width="1dp" /> <!-- Stroke width (optional) -->
+        android:width="0.5dp"
+        android:color="@color/hint_grey" /> <!-- Stroke width (optional) -->
 </shape>

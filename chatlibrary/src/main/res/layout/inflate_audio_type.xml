@@ -70,13 +70,13 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/bg_circle_blue"
-                        android:backgroundTint="@{!isSentByMyself?@color/dark_chocolate:@color/dark_chocolate}">
+                        android:backgroundTint="@color/only_black">
 
                         <ImageView
                             android:layout_width="10dp"
                             android:layout_height="10dp"
                             android:layout_centerHorizontal="true"
-                            android:backgroundTint="@{isSentByMyself?@color/dark_chocolate:@color/dark_chocolate}"
+                            android:backgroundTint="@color/app_only_white"
                             android:src="@drawable/recv_ic_mic_white" />
                     </RelativeLayout>
                 </RelativeLayout>
