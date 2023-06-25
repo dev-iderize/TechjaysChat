@@ -1,5 +1,6 @@
 package com.techjays.chatlibrary.chat
 
+import AudioRecorder
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -32,7 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.devlomi.record_view.OnRecordListener
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -43,7 +43,6 @@ import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
 import com.techjays.chatlibrary.databinding.ActivityChatBinding
 import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
-import com.techjays.chatlibrary.helpers.AudioRecorder
 import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.LibChatSocketMessages
@@ -104,7 +103,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 R.layout.activity_chat
             ) as ActivityChatBinding
         Utility.statusBarColor(window, applicationContext, R.color.primary_color_light)
-        audioRecorder = AudioRecorder(this, this)
+        audioRecorder = AudioRecorder(this, this, packageName + "fileProvider")
         myId = ChatLibrary.instance.mUserId
 
         groupId = intent.getIntExtra("groupId", -1)
@@ -302,6 +301,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 if (audioRecorder != null)
                     audioRecorder.stopRecording()
             }
+
 
             override fun onLock() {
             }

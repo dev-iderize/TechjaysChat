@@ -23,7 +23,9 @@ import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.util.AppDialogs
 
 class ChatAdapter(
-    val context: LibChatActivity, private val messages: ArrayList<Chat.ChatData>,private val mCallBack:ChatCallback
+    val context: LibChatActivity,
+    private val messages: ArrayList<Chat.ChatData>,
+    private val mCallBack: ChatCallback
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -250,31 +252,35 @@ class ChatAdapter(
         }
 
         private fun playAudio(audioUrl: String) {
-            context.mediaPlayer?.reset()
-            context.mediaPlayer = MediaPlayer().apply {
-                setDataSource(audioUrl)
-                prepare()
-                start()
-                currentAudioUrl = audioUrl
-                isAudioPlaying = true
-            }
-            pausedPosition = 0
-            handler.postDelayed({
-                updateSeekBar(binding.progressBar)
-            }, 1000)
-            currentPlayingPosition = bindingAdapterPosition
-            binding.isLoading = false
-            context.mediaPlayer?.setOnCompletionListener {
-                isAudioPlaying = false
+            if (audioUrl != null && audioUrl.isNotEmpty()) {
+                context.mediaPlayer?.reset()
+                context.mediaPlayer = MediaPlayer().apply {
+                    setDataSource(audioUrl)
+                    prepare()
+                    start()
+                    currentAudioUrl = audioUrl
+                    isAudioPlaying = true
+                }
                 pausedPosition = 0
-                currentPlayingPosition = -1
-                currentAudioUrl = null
-                binding.playPauseButton.setImageResource(R.drawable.ic_play_button)
-                binding.progressBar.progress = 0
-                binding.seekBar.progress = 0
+                handler.postDelayed({
+                    updateSeekBar(binding.progressBar)
+                }, 1000)
+                currentPlayingPosition = bindingAdapterPosition
+                binding.isLoading = false
+                context.mediaPlayer?.setOnCompletionListener {
+                    isAudioPlaying = false
+                    pausedPosition = 0
+                    currentPlayingPosition = -1
+                    currentAudioUrl = null
+                    binding.playPauseButton.setImageResource(R.drawable.ic_play_button)
+                    binding.progressBar.progress = 0
+                    binding.seekBar.progress = 0
+                }
+                if (currentPlayingPosition == bindingAdapterPosition) binding.seekBar.visibility =
+                    View.VISIBLE
             }
-            if (currentPlayingPosition == bindingAdapterPosition) binding.seekBar.visibility =
-                View.VISIBLE
+            else
+                AppDialogs.showToastshort(context,"invalid audio")
         }
 
 
@@ -339,7 +345,7 @@ class ChatAdapter(
 
     }
 
-    interface ChatCallback{
+    interface ChatCallback {
         fun onScrollToDown()
     }
 }

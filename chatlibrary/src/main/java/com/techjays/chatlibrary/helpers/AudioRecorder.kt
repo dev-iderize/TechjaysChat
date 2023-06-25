@@ -1,5 +1,3 @@
-package com.techjays.chatlibrary.helpers
-
 import android.content.Context
 import android.media.MediaRecorder
 import android.net.Uri
@@ -9,13 +7,15 @@ import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class AudioRecorder(
     private val context: Context,
-    private val mAudioRecorderCallback: AudioRecorderCallBack
+    private val mAudioRecorderCallback: AudioRecorderCallBack,
+    private val fileProviderAuthority: String // Add this parameter for FileProvider authority
 ) {
-    private val TAG = "com.techjays.chatlibrary.helpers.AudioRecorder"
+    private val TAG = context.packageName + ".AudioRecorder"
     private val AUDIO_FILE_PREFIX = "Recording_"
     private val AUDIO_FILE_SUFFIX = ".mp3"
 
@@ -29,7 +29,6 @@ class AudioRecorder(
                 Log.d(TAG, "Recording already in progress.")
                 return
             }
-
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val fileName = "$AUDIO_FILE_PREFIX$timestamp$AUDIO_FILE_SUFFIX"
 
@@ -39,8 +38,8 @@ class AudioRecorder(
 
             mediaRecorder = MediaRecorder()
             mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             mediaRecorder?.setOutputFile(currentFilePath)
             mediaRecorder?.prepare()
             mediaRecorder?.start()
@@ -51,41 +50,43 @@ class AudioRecorder(
         }
     }
 
-
     private fun getFileUri(filePath: String?): Uri? {
         return FileProvider.getUriForFile(
             context,
-            context.packageName + "fileProvider",
+            fileProviderAuthority,
             File(filePath!!)
         )
     }
 
-
     fun stopRecording() {
-        mAudioRecorderCallback.onAudioRecordingCompleted(getFileUri(currentFilePath))
-
+        val fileUri = getFileUri(currentFilePath)
 
         try {
             mediaRecorder?.apply {
+                setOnErrorListener(null)
+                setOnInfoListener(null)
+                setPreviewDisplay(null)
                 stop()
                 release()
                 mediaRecorder = null
                 isRecording = false
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to stop recording: ${e.message}")
         }
+
+        mAudioRecorderCallback.onAudioRecordingCompleted(fileUri)
 
         Log.d(TAG, "Recording stopped. File saved to: $currentFilePath")
         if (!isRecording) {
             Log.d(TAG, "No recording in progress.")
-
             return
         }
-
     }
+
 
     interface AudioRecorderCallBack {
         fun onAudioRecordingCancelled(path: String?)
-        fun onAudioRecordingCompleted(path: Uri?)
+        fun onAudioRecordingCompleted(uri: Uri?)
     }
 }
