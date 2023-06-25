@@ -76,8 +76,9 @@
                     android:id="@+id/textReadMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
                     android:layout_gravity="end"
-                    android:text="Read more..."
+                    android:text="@string/read_more"
                     android:textColor="@{isSentByMyself?@color/primary_color_light:@color/white}"
                     android:textSize="14sp"
                     android:visibility="gone" />
