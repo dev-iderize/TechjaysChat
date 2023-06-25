@@ -4,6 +4,7 @@ import AudioRecorder
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,6 +16,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -51,6 +53,7 @@ import com.techjays.chatlibrary.model.OthersMessage
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
+import com.techjays.chatlibrary.util.Helper
 import com.techjays.chatlibrary.util.PermissionChecker
 import com.techjays.chatlibrary.util.Utility
 import okhttp3.OkHttpClient
@@ -67,6 +70,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     AudioRecorder.AudioRecorderCallBack, ChatSocketListener.SocketCallback, FileUploadProgress,
     ChatAdapter.ChatCallback {
     private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST: Int = 10002
+    private val CAMERA_PERMISSION_CODE: Int = 10004
     private val VIDEO_CAPTURE_REQUEST_CODE = 4001
     lateinit var binding: ActivityChatBinding
     var scrolledToTop = false
@@ -312,14 +316,14 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
 
     fun openMicDialog() {
-        /*AppDialogs.forcefieldConfirmationDialog(
-            this@ChatActivity, "Allow Access", "You need microphone permission to record audio",
-            object : AppDialogs.ConfirmListener {
-                override fun yes() {
-                    Helper.navigateAppSetting(this@ChatActivity)
-                }
-            }, "Go to Settings", false, ""
-        )*/
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle("Permission denied")
+        builder.setMessage("Please enable microphone permission to record your audio")
+        builder.setPositiveButton("Go to settings") { _, _ ->
+            Helper.navigateAppSetting(this)
+        }
+        builder.setNegativeButton("Cancel", null)
+        builder.create().show()
     }
 
     private fun showHideLayouts(isVoice: Boolean) {
@@ -349,7 +353,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 )
             } else {
                 openImagePicker()
-                //  onProfileImageClick()
             }
         }
 
@@ -369,7 +372,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 )
             } else {
                 dispatchTakePictureIntent()
-                //  onProfileImageClick()
             }
         }
         bottomSheetView.videoButton.setOnClickListener {
@@ -419,7 +421,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             ) {
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     READ_EXTERNAL_STORAGE_PERMISSION_REQUEST
                 )
             } else {
@@ -483,9 +485,9 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
         return try {
             File.createTempFile(
-                videoFileName,  /* prefix */
-                ".mp4",         /* suffix */
-                storageDir      /* directory */
+                videoFileName,
+                ".mp4",
+                storageDir
             )
         } catch (e: IOException) {
             e.printStackTrace()
@@ -580,16 +582,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 LibAppServices.API.upload_file.hashCode() -> {
                     if (r.responseStatus!!) {
                         r as LibChatSocketMessages
-                        /*val chat = Chat.ChatData()
-                        chat.mMessageType = r.mData?.mFileType!!
-                        chat.mMediumImage = r.mData?.mFileThumbNail!!
-                        chat.mFileUrl = r.mData?.mFile!!
-                        chat.isSentByMyself = true
-                        val chatMain = Chat()
-                        chatMain.mData.addAll(arrayListOf(chat))
-                        binding.chatdata!!.mData.addAll(0, chatMain.mData)
-                        binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
-                        scrollToBottom()*/
                         listener.sendFileParams(r.mMessage, groupId, r)
 
                     } else
@@ -765,18 +757,10 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         if (requestCode == VIDEO_CAPTURE_REQUEST_CODE && grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED && mDialogAction == "CAPTURE_VIDEO"
         ) {
-            val videoFile: File? = createVideoFile()
-            if (videoFile != null) {
-                val videoUri: Uri = FileProvider.getUriForFile(
-                    this,
-                    "com.techjays.chatlibrary.fileprovider",
-                    videoFile!!
-                )
-                val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-                takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri)
-                videoCaptureLauncher.launch(takeVideoIntent)
+            if (PermissionChecker().checkPermission(this, Manifest.permission.CAMERA)) {
+                dispatchTakeVideoIntent(this)
             } else {
-                Toast.makeText(this, "Failed to create video file", Toast.LENGTH_SHORT).show()
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
             }
         } else {
             Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
@@ -787,6 +771,14 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 openVideoPicker()
             } else {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (mDialogAction == "CAPTURE_VIDEO") {
+                dispatchTakeVideoIntent(this)
+            }
+            if (mDialogAction == "CAMERA") {
+                dispatchTakePictureIntent()
             }
         }
         if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST && mDialogAction == "AUDIO") {
