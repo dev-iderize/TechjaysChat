@@ -147,6 +147,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     private fun init() {
         binding.activity = this
         client = OkHttpClient()
+        binding.isEmpty = false
         binding.header.setOnLongClickListener {
             AppDialogs.showToastDialog(requireContext(), ChatLibrary.instance.baseUrl)
             return@setOnLongClickListener true
@@ -155,7 +156,6 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         requireActivity().registerReceiver(
             chatWebSocketBroadcast, IntentFilter("chat_web_socket_message")
         )
-        // val chatToken = ChatLibrary.instance.chatToken
         initRecycler()
         webSocketStart()
     }
@@ -240,6 +240,9 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
                         mNextLink = chatList.next_link
                         if (mOffset == 0) {
                             binding.chatList = chatList
+
+                            binding.isEmpty = r.mData.size == 0
+
                             binding.recyclerView.adapter =
                                 ChatListAdapter(
                                     this@LibChatListFragment,
