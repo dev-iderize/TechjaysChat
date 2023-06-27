@@ -178,7 +178,7 @@ object Utility {
         val color = when (type) {
             "SHIELD_ON" -> R.color.app_amber
             "SHIELD_OFF" -> R.color.dark_chocolate
-            "SOS_ON" -> R.color.pastel_red
+            "SOS_ON", "SOS_AUTO_TRIGGER" -> R.color.pastel_red
             "SOS_OFF" -> R.color.dark_chocolate
             else -> R.color.primary_color_light
         }

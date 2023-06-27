@@ -230,7 +230,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         chatData.mTime = data.timestamp
         chatData.mMessage = data.message
         chatData.mMessageType = data.messageType
-//        chatData.mPhoneNumber = data.phoneNumber
+        chatData.mPhoneNumber = data.sender.phoneNumber
         chatData.mDisplayPicture = if (data.profilePic.isNullOrEmpty()) "" else data.profilePic
         chatData.mLastSentMsgTimeStamp = data.timestamp
         //  chatData.mCreatorId = data.sender.userId

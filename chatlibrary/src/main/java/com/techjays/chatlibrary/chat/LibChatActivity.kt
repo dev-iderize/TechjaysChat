@@ -3,20 +3,17 @@ package com.techjays.chatlibrary.chat
 import AudioRecorder
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -632,6 +629,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         chatData.mFirstName = data.sender.firstName
         chatData.mThumbnailImage =
             if (data.messageType == "file") data.thumbnailImage else ""
+        chatData.mPhoneNumber = data.sender.phoneNumber
         chatData.mLastName = data.sender.lastName
         chatData.mName = "${data.sender.firstName} ${data.sender.lastName}"
         chatData.mUserId = data.sender.userId
@@ -654,16 +652,19 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 if (type != "connect") {
                     val gson = Gson()
                     if (isSent) {
-                        val recievedChat = gson.fromJson(value, MyMessage::class.java)
-                        val chat = recievedChat.toChatModel(true)
+                        val receivedChat = gson.fromJson(value, MyMessage::class.java)
+                        val chat = receivedChat.toChatModel(true)
                         binding.chatdata!!.mData.addAll(0, chat.mData)
                     } else {
-                        val recievedChat = gson.fromJson(value, OthersMessage::class.java)
-                        val chat = recievedChat.toChat(false)
-                        binding.chatdata!!.mData.addAll(0, chat.mData)
+                        val receivedChat = gson.fromJson(value, OthersMessage::class.java)
+                        if (receivedChat.data.groupId == groupId) {
+                            val chat = receivedChat.toChat(false)
+                            binding.chatdata!!.mData.addAll(0, chat.mData)
+
+                            binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
+                            scrollToBottom()
+                        }
                     }
-                    binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
-                    scrollToBottom()
                 }
             }
 

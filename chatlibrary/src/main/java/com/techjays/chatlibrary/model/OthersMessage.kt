@@ -20,14 +20,13 @@ data class OthersMessage(
         @SerializedName("medium_image") val mediumImage: String,
         @SerializedName("thumbnail_image") val thumbnailImage: String,
         @SerializedName("timestamp") val timestamp: String,
-       /* @SerializedName("phone_number")*/
-        var phoneNumber: String = "9`7012716346"
     )
 
     data class Sender(
         @SerializedName("user_id") val userId: Int,
         @SerializedName("username") val username: String,
         @SerializedName("first_name") val firstName: String,
+        @SerializedName("phone_number") val phoneNumber: String,
         @SerializedName("last_name") val lastName: String,
         @SerializedName("profile_image") val profileImage: String,
         @SerializedName("profile_thumbnail_image") val profileThumbnailImage: String

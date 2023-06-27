@@ -44,6 +44,8 @@ class LibDataBidingAdapter {
 
                 message.mMessage.contains("turned off") && message.mMessage.contains("Shield") -> "SHIELD_OFF"
 
+                message.mMessage.contains("auto-triggered") -> "SOS_AUTO_TRIGGER"
+
                 message.mMessage.contains("turned off") && message.mMessage.contains("SOS") -> "SOS_OFF"
 
                 message.mMessage.contains("triggered") && message.mMessage.contains("SOS") -> "SOS_ON"
@@ -54,6 +56,7 @@ class LibDataBidingAdapter {
                     "SHIELD_ON" -> "You turned on your Shield"
                     "SHIELD_OFF" -> "You turned off your Shield"
                     "SOS_ON" -> "You triggered your SOS"
+                    "SOS_AUTO_TRIGGER" -> "Your SOS was auto-triggered"
                     "SOS_OFF" -> "You turned off your SOS"
                     "I_AM_SAFE" -> "You sent to your contacts that you are safe"
                     else -> ""
