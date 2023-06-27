@@ -1,8 +1,10 @@
 package com.techjays.chatlibrary.util
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.*
@@ -12,6 +14,7 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.text.Selection
 import android.text.Spannable
@@ -39,6 +42,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import java.io.File
 import java.io.FileInputStream
@@ -46,6 +50,8 @@ import java.io.FileNotFoundException
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
 object Utility {
@@ -77,6 +83,94 @@ object Utility {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             statusBarColor = transparentColor
             setBackgroundDrawable(backgroundDrawable)
+        }
+    }
+
+    fun replaceContactName(message: String, phoneNumber: String?, context: Context): String {
+
+        if (ContextCompat.checkSelfPermission(
+                context, Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val uri: Uri = Uri.withAppendedPath(
+                ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)
+            )
+            val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
+            var contactName = ""
+            val cursor: Cursor? = context.contentResolver.query(uri, projection, null, null, null)
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    contactName = cursor.getString(0)
+                }
+                cursor.close()
+            }
+            if (contactName != "") {
+                var replacedMessage = ""
+                val matcher = getMatchedStars(message)
+                while (matcher!!.find()) {
+                    replacedMessage =
+                        matcher!!.replaceAll(if (message.contains(":")) "$contactName:" else contactName)
+                }
+                if (replacedMessage != "") return replacedMessage
+            }
+        }
+
+        return getBolded(message, getMatchedStars(message)!!, context).toString()
+    }
+
+    private fun getMatchedStars(text: String): Matcher? {
+        return Pattern.compile("\\*(.*?)\\*").matcher(text)
+    }
+
+    private fun getBolded(text: String, matcher: Matcher, context: Context): Spannable {
+        val noStarText = text.replace("*", "")
+
+        val spannable: Spannable = SpannableString(noStarText)
+        var count = 1
+        while (matcher.find()) {
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD), matcher.start(),
+                matcher.end() - count - 1,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            spannable.setSpan(
+                ForegroundColorSpan(getColor(context, R.color.dark_chocolate)),
+                matcher.start(),
+                matcher.end() - count - 1,
+                Spanned.SPAN_INCLUSIVE_INCLUSIVE
+            )
+
+            count += 2
+        }
+        return spannable
+    }
+
+    fun getLibContactName(phoneNumber: String?, context: Context): String {
+        if (phoneNumber.isNullOrEmpty())
+            return ""
+        else {
+            if (phoneNumber != ChatLibrary.instance.mPhoneNumber) {
+                if (ContextCompat.checkSelfPermission(
+                        context, Manifest.permission.READ_CONTACTS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    val uri: Uri = Uri.withAppendedPath(
+                        ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)
+                    )
+                    val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
+                    var contactName = ""
+                    val cursor: Cursor? =
+                        context.contentResolver.query(uri, projection, null, null, null)
+                    if (cursor != null) {
+                        if (cursor.moveToFirst()) {
+                            contactName = cursor.getString(0)
+                        }
+                        cursor.close()
+                    }
+                    return contactName
+                } else return ""
+            } else
+                return "You"
         }
     }
 

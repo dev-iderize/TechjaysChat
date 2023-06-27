@@ -65,13 +65,19 @@
                 android:background="@color/trasns"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe"
                     android:layout_width="match_parent"
-                    android:visibility="@{!isEmpty?View.VISIBLE:View.GONE}"
-                    android:layout_height="match_parent"
-                    android:paddingHorizontal="10dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingHorizontal="10dp"
+                        android:visibility="@{!isEmpty?View.VISIBLE:View.GONE}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
             </LinearLayout>
@@ -81,9 +87,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{isEmpty?View.VISIBLE:View.GONE}"
-            android:layout_height="wrap_content">
+            android:visibility="@{isEmpty?View.VISIBLE:View.GONE}">
 
             <ImageView
                 android:id="@+id/image_icon"
@@ -91,30 +97,31 @@
                 android:layout_height="200dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/chatlist_empty1" />
+
             <TextView
                 android:id="@+id/main_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="@color/dark_chocolate"
                 android:layout_marginTop="380dp"
                 android:fontFamily="@font/public_sans_bold"
-                android:text="No chats yet!"/>
+                android:gravity="center"
+                android:text="No chats yet!"
+                android:textColor="@color/dark_chocolate"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:textSize="14sp"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/hint_grey"
-                android:layout_marginTop="10dp"
-                android:maxWidth="250dp"
-                android:fontFamily="@font/public_sans_bold"
                 android:layout_below="@+id/main_text"
-                android:text="To start messaging, please add contacts to your contact list."/>
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/public_sans_bold"
+                android:gravity="center"
+                android:maxWidth="250dp"
+                android:text="To start messaging, please add contacts to your contact list."
+                android:textColor="@color/hint_grey"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 

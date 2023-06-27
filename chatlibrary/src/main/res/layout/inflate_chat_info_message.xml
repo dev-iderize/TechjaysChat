@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginHorizontal="20dp"
-
             android:gravity="end"
             android:paddingVertical="25dp"
             app:cardCornerRadius="5dp">

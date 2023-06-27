@@ -39,6 +39,9 @@ class Chat : Response() {
         @SerializedName("profile_img")
         var mProfilePic: String = ""
 
+        @SerializedName("phone_number")
+        var mPhoneNumber: String = ""
+
         @SerializedName("first_name")
         var mFirstName: String = ""
 

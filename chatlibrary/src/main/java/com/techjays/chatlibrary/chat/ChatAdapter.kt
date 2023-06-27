@@ -21,6 +21,7 @@ import com.techjays.chatlibrary.helpers.AspectRatioCallback
 import com.techjays.chatlibrary.helpers.ImageUtils
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.util.AppDialogs
+import com.techjays.chatlibrary.util.Utility
 
 class ChatAdapter(
     val context: LibChatActivity,
@@ -78,9 +79,18 @@ class ChatAdapter(
             VIEW_TYPE_TEXT -> {
                 val textHolder = holder as TextViewHolder
                 val binding = textHolder.binding
+                val name = Utility.getLibContactName(
+                    message.mPhoneNumber,
+                    context
+                )
+                if (name.isNotEmpty()) {
+                    message.mFirstName = name
+                    message.mLastName = ""
+                }
                 binding.message = message
                 val maxCharLength = 150
                 binding.isSentByMyself = !message.isSentByMyself
+
 
                 val fullMessage = message.mMessage
                 if (message.mMessage.length > maxCharLength) {
@@ -102,14 +112,20 @@ class ChatAdapter(
                 val infoHolder = holder as InfoViewHolder
                 val binding = infoHolder.binding
                 binding.message = message
-
                 binding.executePendingBindings()
-
             }
 
             VIEW_TYPE_VIDEO -> {
                 val videoHolder = holder as VideoViewHolder
                 val binding = videoHolder.binding
+                val name = Utility.getLibContactName(
+                    message.mPhoneNumber,
+                    context
+                )
+                if (name.isNotEmpty()) {
+                    message.mFirstName = name
+                    message.mLastName = ""
+                }
                 binding.message = message
                 binding.isSentByMyself = !message.isSentByMyself
                 val isVideo = message.mMessageType == "video" || message.mFileType == "video"
@@ -151,6 +167,14 @@ class ChatAdapter(
             else -> {
                 val audioHolder = holder as AudioViewHolder
                 val binding = audioHolder.binding
+                val name = Utility.getLibContactName(
+                    message.mPhoneNumber,
+                    context
+                )
+                if (name.isNotEmpty()) {
+                    message.mFirstName = name
+                    message.mLastName = ""
+                }
                 binding.message = message
                 binding.isSentByMyself = !message.isSentByMyself
                 binding.executePendingBindings()
@@ -278,9 +302,8 @@ class ChatAdapter(
                 }
                 if (currentPlayingPosition == bindingAdapterPosition) binding.seekBar.visibility =
                     View.VISIBLE
-            }
-            else
-                AppDialogs.showToastshort(context,"invalid audio")
+            } else
+                AppDialogs.showToastshort(context, "invalid audio")
         }
 
 

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.santalu.aspectratioimageview.AspectRatioImageView
 import com.squareup.picasso.Picasso
+import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.model.ChatList
 import de.hdodenhof.circleimageview.CircleImageView
@@ -39,17 +40,33 @@ class LibDataBidingAdapter {
             message: com.techjays.chatlibrary.model.Chat.ChatData
         ) {
             val mNotificationType = when {
-                message.mMessage.contains("turned on their Shield") -> "SHIELD_ON"
+                message.mMessage.contains("turned on") && message.mMessage.contains("Shield") -> "SHIELD_ON"
 
-                message.mMessage.contains("turned off their Shield") -> "SHIELD_OFF"
+                message.mMessage.contains("turned off") && message.mMessage.contains("Shield") -> "SHIELD_OFF"
 
-                message.mMessage.contains("turned off their SOS") -> "SOS_OFF"
+                message.mMessage.contains("turned off") && message.mMessage.contains("SOS") -> "SOS_OFF"
 
-                message.mMessage.contains("triggered SOS") -> "SOS_ON"
+                message.mMessage.contains("triggered") && message.mMessage.contains("SOS") -> "SOS_ON"
                 else -> "I_AM_SAFE"
             }
+            if (message.mPhoneNumber.contains(ChatLibrary.instance.mPhoneNumber)) {
+                message.mMessage = when (mNotificationType) {
+                    "SHIELD_ON" -> "You turned on your Shield"
+                    "SHIELD_OFF" -> "You turned off your Shield"
+                    "SOS_ON" -> "You triggered your SOS"
+                    "SOS_OFF" -> "You turned off your SOS"
+                    "I_AM_SAFE" -> "You sent to your contacts that you are safe"
+                    else -> ""
+                }
+            }
+
+
             textView.text = Utility.setChatNotification(
-                message.mMessage,
+                Utility.replaceContactName(
+                    message.mMessage,
+                    message.mPhoneNumber,
+                    textView.context.applicationContext
+                ),
                 Utility.displayLocalTime(message.mTime),
                 Utility.notificationColor(mNotificationType),
                 textView.context.applicationContext
@@ -103,7 +120,11 @@ class LibDataBidingAdapter {
                 val inputString = data.mFileType.replaceFirstChar { it.uppercase() }
                 textView.text = inputString
             } else
-                textView.text = data.mMessage
+                textView.text = Utility.replaceContactName(
+                    data.mMessage,
+                    data.mPhoneNumber,
+                    textView.context.applicationContext
+                )
         }
 
         @JvmStatic

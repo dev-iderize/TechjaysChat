@@ -19,7 +19,9 @@ data class OthersMessage(
         @SerializedName("file_type") val fileType: String,
         @SerializedName("medium_image") val mediumImage: String,
         @SerializedName("thumbnail_image") val thumbnailImage: String,
-        @SerializedName("timestamp") val timestamp: String
+        @SerializedName("timestamp") val timestamp: String,
+       /* @SerializedName("phone_number")*/
+        var phoneNumber: String = "9`7012716346"
     )
 
     data class Sender(

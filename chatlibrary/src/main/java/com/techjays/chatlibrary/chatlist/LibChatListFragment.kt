@@ -76,6 +76,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
             //  val chatToken = bundle.getString("chat_token")!!
             val authToken = bundle.getString("auth_token")!!
             val userId = bundle.getInt("user_id")
+            val phoneNumber = bundle.getString("phone_number")!!
 
             Log.e("baseurl", bundle.getString("base_url")!!)
             Log.e("socket_", bundle.getString("socket_url")!!)
@@ -86,6 +87,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
             ChatLibrary.instance.baseUrl = baseURL
             ChatLibrary.instance.socketUrl = socketUrl
             ChatLibrary.instance.mUserId = userId
+            ChatLibrary.instance.mPhoneNumber = phoneNumber
 
         }
         init()
@@ -148,6 +150,15 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         binding.activity = this
         client = OkHttpClient()
         binding.isEmpty = false
+
+        binding.swipe.setOnRefreshListener {
+            binding.swipe.isRefreshing = false
+            mListener.resetState()
+            mOffset = 0
+            binding.chatList!!.mData.clear()
+            getChatList(mOffset, mLimit)
+
+        }
         binding.header.setOnLongClickListener {
             AppDialogs.showToastDialog(requireContext(), ChatLibrary.instance.baseUrl)
             return@setOnLongClickListener true
@@ -219,6 +230,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         chatData.mTime = data.timestamp
         chatData.mMessage = data.message
         chatData.mMessageType = data.messageType
+//        chatData.mPhoneNumber = data.phoneNumber
         chatData.mDisplayPicture = if (data.profilePic.isNullOrEmpty()) "" else data.profilePic
         chatData.mLastSentMsgTimeStamp = data.timestamp
         //  chatData.mCreatorId = data.sender.userId

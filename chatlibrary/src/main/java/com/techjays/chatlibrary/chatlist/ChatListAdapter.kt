@@ -1,5 +1,6 @@
 package com.techjays.chatlibrary.chatlist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,6 +9,7 @@ import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.databinding.InflateChatListBinding
 import com.techjays.chatlibrary.model.ChatList
+import com.techjays.chatlibrary.util.Utility
 
 
 class ChatListAdapter(
@@ -33,7 +35,7 @@ class ChatListAdapter(
                 eachListData.mCreatorId
             )
         }
-        holder.bind(eachListData, myUserId)
+        holder.bind(eachListData, myUserId, mContext.requireContext())
     }
 
     fun updateItem(chat: ChatList.ChatListData) {
@@ -42,6 +44,12 @@ class ChatListAdapter(
             chat.mGroupName = mListData[index].mGroupName
             chat.mCreatorId = mListData[index].mCreatorId
             chat.isSentByMyself = mListData[index].isSentByMyself
+            val name = Utility.getLibContactName(
+                chat.mPhoneNumber,
+                mContext.requireContext()
+            )
+            if (name.isNotEmpty())
+                mListData[index].mGroupName = "$name's Circle"
             mListData.removeAt(index)
             mListData.add(0, chat)
             notifyItemMoved(index, 0)
@@ -62,7 +70,13 @@ class ChatListAdapter(
     class ViewHolder(private val binding: InflateChatListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: ChatList.ChatListData, myUserId: Int) {
+        fun bind(data: ChatList.ChatListData, myUserId: Int, context: Context) {
+            val name = Utility.getLibContactName(
+                data.mPhoneNumber,
+                context
+            )
+            if (name.isNotEmpty())
+                data.mGroupName = "$name's Circle"
             binding.listData = data
             binding.isMyself = myUserId == data.mCreatorId
             val haveNewMessage = !data.mIsRead

@@ -11,6 +11,7 @@ class ChatLibrary private constructor() {
     var chatToken = ""
     var authToken = ""
     var mUserId: Int = -1
+    var mPhoneNumber: String = ""
     var mColor = ""
 
     companion object {
