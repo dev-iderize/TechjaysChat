@@ -58,7 +58,7 @@ class LibDataBidingAdapter {
                     "SOS_ON" -> "You triggered your SOS"
                     "SOS_AUTO_TRIGGER" -> "Your SOS was auto-triggered"
                     "SOS_OFF" -> "You turned off your SOS"
-                    "I_AM_SAFE" -> "You sent to your contacts that you are safe"
+                    "I_AM_SAFE" -> "You checked in as safe"
                     else -> ""
                 }
             }
