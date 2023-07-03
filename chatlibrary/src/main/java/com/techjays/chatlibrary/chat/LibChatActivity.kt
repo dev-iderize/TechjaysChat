@@ -269,7 +269,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 if (v.text.toString().trim().isNotEmpty()) {
                     if (ws != null)
-                        listener.sendChat(v.text.toString(), groupId, ws!!)
+                        listener.sendChat(v.text.toString(), groupId, groupName, ws!!)
                     v.text = ""
                     v.clearFocus()
                 }
@@ -579,7 +579,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 LibAppServices.API.upload_file.hashCode() -> {
                     if (r.responseStatus!!) {
                         r as LibChatSocketMessages
-                        listener.sendFileParams(r.mMessage, groupId, r)
+                        listener.sendFileParams(r.mMessage, groupId, r, groupName)
 
                     } else
                         AppDialogs.showToastshort(this, r.responseMessage)
