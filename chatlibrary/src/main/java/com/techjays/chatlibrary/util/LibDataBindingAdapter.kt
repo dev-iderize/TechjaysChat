@@ -6,6 +6,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isGone
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -87,32 +88,37 @@ class LibDataBidingAdapter {
         @BindingAdapter("view_visibility")
         fun setViewVisibility(view: TextView, aData: ChatList.ChatListData) {
             val viewCondition =
-                aData.mMessage.isNotEmpty() && aData.mMessage != null && aData.mMessageType != "file"
+                aData.mMessage != null && aData.mMessage.isNotEmpty() && aData.mMessageType != "file"
             view.visibility = if (viewCondition) View.VISIBLE else View.GONE
         }
 
         @JvmStatic
         @BindingAdapter(value = ["myDrawableStart", "myDrawableTint"], requireAll = false)
         fun setDrawableStart(textView: TextView, aData: ChatList.ChatListData, tint: Int) {
-            val drawable = Utility.getDrawable(
-                textView.context.applicationContext,
-                Utility.findSuitableDrawables(aData.mFileType)
-            )
+            if (aData.mMessage != ""&& aData.mMessage!=null) {
 
-            val tintedDrawable = if (tint != 0) {
-                drawable?.mutate()?.apply {
-                    DrawableCompat.setTint(this, tint)
+                val drawable = Utility.getDrawable(
+                    textView.context.applicationContext,
+                    Utility.findSuitableDrawables(aData.mFileType)
+                )
+
+                val tintedDrawable = if (tint != 0) {
+                    drawable?.mutate()?.apply {
+                        DrawableCompat.setTint(this, tint)
+                    }
+                } else {
+                    drawable
                 }
-            } else {
-                drawable
-            }
 
-            textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                tintedDrawable,
-                null,
-                null,
-                null
-            )
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    tintedDrawable,
+                    null,
+                    null,
+                    null
+                )
+            } else {
+                textView.visibility=View.GONE
+            }
         }
 
 
@@ -122,12 +128,17 @@ class LibDataBidingAdapter {
             if (data.mFileType != "message") {
                 val inputString = data.mFileType.replaceFirstChar { it.uppercase() }
                 textView.text = inputString
-            } else
-                textView.text = Utility.replaceContactName(
-                    data.mMessage,
-                    data.mPhoneNumber,
-                    textView.context.applicationContext
-                )
+            } else {
+                try {
+                    textView.text = Utility.replaceContactName(
+                        data.mMessage,
+                        data.mPhoneNumber,
+                        textView.context.applicationContext
+                    )
+                } catch (e: Exception) {
+                    textView.text = data.mMessage
+                }
+            }
         }
 
         @JvmStatic

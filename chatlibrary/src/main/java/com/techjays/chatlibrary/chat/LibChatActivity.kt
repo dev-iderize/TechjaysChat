@@ -661,8 +661,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         if (receivedChat.data.groupId == groupId) {
                             val chat = receivedChat.toChat(false)
                             binding.chatdata!!.mData.addAll(0, chat.mData)
-
-
                         }
                     }
                     binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
