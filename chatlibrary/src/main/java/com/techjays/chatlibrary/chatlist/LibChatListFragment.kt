@@ -173,8 +173,11 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
 
     override fun onDestroy() {
         super.onDestroy()
-        listener.cancel()
-        requireActivity().unregisterReceiver(chatWebSocketBroadcast)
+        try {
+            listener.cancel()
+            requireActivity().unregisterReceiver(chatWebSocketBroadcast)
+        } catch (_: Exception) {
+        }
     }
 
     private fun webSocketStart() {
