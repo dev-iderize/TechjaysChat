@@ -54,7 +54,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     var mNextLink = false
     private var ws: WebSocket? = null
 
-    private lateinit var listener: ChatSocketListener
+    private  var listener: ChatSocketListener?=null
     private lateinit var client: OkHttpClient
 
     override fun onCreateView(
@@ -174,7 +174,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     override fun onDestroy() {
         super.onDestroy()
         try {
-            listener.cancel()
+            listener?.cancel()
             requireActivity().unregisterReceiver(chatWebSocketBroadcast)
         } catch (_: Exception) {
         }
@@ -183,8 +183,8 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     private fun webSocketStart() {
         val request: Request =
             Request.Builder().url(ChatLibrary.instance.socketUrl).build()
-        ws = client.newWebSocket(request, listener)
-        listener.initialize(ws!!)
+        ws = client.newWebSocket(request, listener!!)
+        listener?.initialize(ws!!)
 
     }
 
