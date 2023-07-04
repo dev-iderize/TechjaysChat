@@ -202,14 +202,16 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
                 val value = intent.getStringExtra("value")
                 val isSent = intent.getBooleanExtra("isSentMyself", true)
                 if (type != "connect") {
-                    val gson = Gson()
-                    val receivedChat = gson.fromJson(value, OthersMessage::class.java)
-                    val adapter = binding.recyclerView.adapter as ChatListAdapter
-                    val chat = receivedChat.toChatList(isSent)
-                    for (newChat in chat.mData) {
-                        adapter.updateItem(newChat)
+                    if (!isSent) {
+                        val gson = Gson()
+                        val receivedChat = gson.fromJson(value, OthersMessage::class.java)
+                        val adapter = binding.recyclerView.adapter as ChatListAdapter
+                        val chat = receivedChat.toChatList(isSent)
+                        for (newChat in chat.mData) {
+                            adapter.updateItem(newChat)
+                        }
+                        binding.recyclerView.adapter!!.notifyDataSetChanged()
                     }
-                    binding.recyclerView.adapter!!.notifyDataSetChanged()
 
                 }
                 //
@@ -230,7 +232,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         chatData.mTime = data.timestamp
         chatData.mMessage = data.message
         chatData.mMessageType = data.messageType
-        chatData.mPhoneNumber = data.sender.phoneNumber
+        chatData.mPhoneNumber = data.sender.mPhoneNumber
         chatData.mDisplayPicture = if (data.profilePic.isNullOrEmpty()) "" else data.profilePic
         chatData.mLastSentMsgTimeStamp = data.timestamp
         //  chatData.mCreatorId = data.sender.userId

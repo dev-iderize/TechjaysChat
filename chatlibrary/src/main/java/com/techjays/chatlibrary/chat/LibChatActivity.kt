@@ -606,6 +606,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 mProfilePic = ""
                 mFirstName = ""
                 mLastName = ""
+                mPhoneNumber = data.mPhoneNumber
                 mName = "$mFirstName $mLastName"
                 mUserId = -1
                 isSentByMyself = isSentMyself ?: false
@@ -629,7 +630,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         chatData.mFirstName = data.sender.firstName
         chatData.mThumbnailImage =
             if (data.messageType == "file") data.thumbnailImage else ""
-        chatData.mPhoneNumber = data.sender.phoneNumber
+        chatData.mPhoneNumber = data.sender.mPhoneNumber
         chatData.mLastName = data.sender.lastName
         chatData.mName = "${data.sender.firstName} ${data.sender.lastName}"
         chatData.mUserId = data.sender.userId
@@ -661,10 +662,11 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                             val chat = receivedChat.toChat(false)
                             binding.chatdata!!.mData.addAll(0, chat.mData)
 
-                            binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
-                            scrollToBottom()
+
                         }
                     }
+                    binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
+                    scrollToBottom()
                 }
             }
 

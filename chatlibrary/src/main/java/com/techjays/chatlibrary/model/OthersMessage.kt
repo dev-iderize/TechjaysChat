@@ -14,6 +14,7 @@ data class OthersMessage(
         @SerializedName("profile_pic") val profilePic: String?,
         @SerializedName("group_id") val groupId: Int,
         @SerializedName("message_id") val messageId: Int,
+        @SerializedName("phone_number") var mPhoneNumber: String = "",
         @SerializedName("message_type") val messageType: String,
         @SerializedName("message") val message: String,
         @SerializedName("file_type") val fileType: String,
@@ -26,7 +27,7 @@ data class OthersMessage(
         @SerializedName("user_id") val userId: Int,
         @SerializedName("username") val username: String,
         @SerializedName("first_name") val firstName: String,
-        @SerializedName("phone_number") val phoneNumber: String,
+        @SerializedName("phone_number") var mPhoneNumber: String = "",
         @SerializedName("last_name") val lastName: String,
         @SerializedName("profile_image") val profileImage: String,
         @SerializedName("profile_thumbnail_image") val profileThumbnailImage: String
