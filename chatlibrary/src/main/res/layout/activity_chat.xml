@@ -210,6 +210,15 @@
                     android:src="@drawable/ic_microphone_deactivated"
                     android:visibility="@{isMicPermissionAvailable?View.GONE:View.VISIBLE}"
                     app:tint="@color/primary_color_light" />
+
+                <ImageView
+                    android:id="@+id/send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_send"
+                    android:visibility="gone"
+                    app:tint="@color/primary_color_light" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -218,13 +227,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:fabSize="mini"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="100dp"
-            app:icon="@drawable/baseline_keyboard_arrow_down_24"
-            android:textAllCaps="false"
             android:src="@drawable/baseline_keyboard_arrow_down_24"
-            android:visibility="gone" />
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:fabSize="mini"
+            app:icon="@drawable/baseline_keyboard_arrow_down_24" />
 
 
         <RelativeLayout

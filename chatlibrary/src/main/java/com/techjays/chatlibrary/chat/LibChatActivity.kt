@@ -20,6 +20,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -94,6 +95,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     private lateinit var client: OkHttpClient
     var groupName = ""
     var myId = -1
+    var mServerGroupName = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,7 +107,10 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             ) as ActivityChatBinding
         Utility.statusBarColor(window, applicationContext, R.color.primary_color_light)
         audioRecorder = AudioRecorder(this, this, packageName + "fileProvider")
+
         myId = ChatLibrary.instance.mUserId
+
+
 
         groupId = intent.getIntExtra("groupId", -1)
         val aCreatorId = intent.getIntExtra("creatorId", -1)
@@ -114,6 +119,8 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             "My Circle"
         else
             intent.getStringExtra("groupName")!!
+
+        mServerGroupName = intent.getStringExtra("groupName")!!
         client = OkHttpClient()
         val groupProfilePic = intent.getStringExtra("groupProfilePic")
         binding.groupName = groupName
@@ -244,6 +251,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         getChatMessage()
         initRecycler()
         binding.recordButton.setRecordView(binding.recordView)
+        binding.etMessage.addTextChangedListener(this)
         binding.chatRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -269,7 +277,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 if (v.text.toString().trim().isNotEmpty()) {
                     if (ws != null)
-                        listener.sendChat(v.text.toString(), groupId, groupName, ws!!)
+                        listener.sendChat(
+                            v.text.toString(),
+                            groupId,
+                            intent.getStringExtra("group_name")!!,
+                            ws!!
+                        )
                     v.text = ""
                     v.clearFocus()
                 }
@@ -277,11 +290,25 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             }
             return@setOnEditorActionListener false
         }
+
+        binding.send.setOnClickListener {
+            val v = binding.etMessage as TextView
+            if (v.text.toString().trim().isNotEmpty()) {
+                if (ws != null)
+                    listener.sendChat(
+                        v.text.toString(),
+                        groupId,
+                        mServerGroupName,
+                        ws!!
+                    )
+                v.text = ""
+                v.clearFocus()
+            }
+        }
         binding.recordView.setOnRecordListener(object : OnRecordListener {
             override fun onStart() {
                 showHideLayouts(true)
                 audioRecorder.startRecording()
-
             }
 
             override fun onCancel() {
@@ -502,13 +529,13 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     }
 
     override fun afterTextChanged(s: Editable?) {
-        if (s != null) {
-            if (s.trim().isNotEmpty()) {
-                showHideLayouts(false)
-
-            }
+        if (s != null && s.trim().isNotEmpty()) {
+            binding.send.visibility = View.VISIBLE
         }
-
+        else
+        {
+            binding.send.visibility = View.GONE
+        }
     }
 
 
@@ -579,7 +606,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 LibAppServices.API.upload_file.hashCode() -> {
                     if (r.responseStatus!!) {
                         r as LibChatSocketMessages
-                        listener.sendFileParams(r.mMessage, groupId, r, groupName)
+                        listener.sendFileParams(
+                            r.mMessage,
+                            groupId,
+                            r,
+                            intent.getStringExtra("group_name")!!
+                        )
 
                     } else
                         AppDialogs.showToastshort(this, r.responseMessage)
