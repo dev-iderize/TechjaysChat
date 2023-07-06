@@ -1,26 +1,15 @@
 package com.techjays.chatapplication
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.api.LibAppServices
-import com.techjays.chatlibrary.api.Response
-import com.techjays.chatlibrary.api.ResponseListener
-import com.techjays.chatlibrary.chatlist.LibChatListActivity
 import com.techjays.chatlibrary.chatlist.LibChatListFragment
-import com.techjays.chatlibrary.model.User
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.Utility
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mButton2: Button
-    var UserToken = "c3901780510ded844ac0354d922374ce22a422fc"
+    var UserToken = "9c0f75e42c08e14bea130cf718a92d21d6dfa906"
     var chatToken = ""
     val baseUrl = "https://stg-api.shieldup.ai/api/portal/"
 

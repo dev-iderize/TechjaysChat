@@ -53,7 +53,7 @@ import com.techjays.chatlibrary.util.ChatSocketListener
 import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.util.Helper
 import com.techjays.chatlibrary.util.PermissionChecker
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.LibChatUtility
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -106,7 +106,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                 this,
                 R.layout.activity_chat
             ) as ActivityChatBinding
-        Utility.statusBarColor(window, applicationContext, R.color.primary_color_light)
+        LibChatUtility.statusBarColor(window, applicationContext, R.color.primary_color_light)
         audioRecorder = AudioRecorder(this, this, packageName + "fileProvider")
 
         myId = ChatLibrary.instance.mUserId
@@ -118,9 +118,9 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         Log.e("creatorId_______>", groupId.toString())
         groupName = when {
             aCreatorId == myId -> "My Circle"
-            Utility.getLibContactName(intent.getStringExtra("phone_number"), this)
+            LibChatUtility.getLibContactName(intent.getStringExtra("phone_number"), this)
                 .isNotEmpty() -> {
-                "${Utility.getLibContactName(intent.getStringExtra("phone_number"), this)}'s Circle"
+                "${LibChatUtility.getLibContactName(intent.getStringExtra("phone_number"), this)}'s Circle"
 
             }
 
@@ -177,7 +177,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
 
     private fun fileUpload(uri: Uri) {
-        if (Utility.checkInternet(this))
+        if (LibChatUtility.checkInternet(this))
             LibAppServices.fileUpload(this, uri, this, this)
     }
 
@@ -218,7 +218,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
 
 
     fun getChatMessage() {
-        if (Utility.checkInternet(this))
+        if (LibChatUtility.checkInternet(this))
             LibAppServices.getChatsFromGroup(this, mOffset, mLimit, groupId, this)
     }
 

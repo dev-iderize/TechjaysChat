@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.databinding.InflateAudioTypeBinding
 import com.techjays.chatlibrary.databinding.InflateChatInfoMessageBinding
@@ -21,7 +20,7 @@ import com.techjays.chatlibrary.helpers.AspectRatioCallback
 import com.techjays.chatlibrary.helpers.ImageUtils
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.LibChatUtility
 
 class ChatAdapter(
     val context: LibChatActivity,
@@ -79,7 +78,7 @@ class ChatAdapter(
             VIEW_TYPE_TEXT -> {
                 val textHolder = holder as TextViewHolder
                 val binding = textHolder.binding
-                val name = Utility.getLibContactName(
+                val name = LibChatUtility.getLibContactName(
                     message.mPhoneNumber,
                     context
                 )
@@ -118,7 +117,7 @@ class ChatAdapter(
             VIEW_TYPE_VIDEO -> {
                 val videoHolder = holder as VideoViewHolder
                 val binding = videoHolder.binding
-                val name = Utility.getLibContactName(
+                val name = LibChatUtility.getLibContactName(
                     message.mPhoneNumber,
                     context
                 )
@@ -167,7 +166,7 @@ class ChatAdapter(
             else -> {
                 val audioHolder = holder as AudioViewHolder
                 val binding = audioHolder.binding
-                val name = Utility.getLibContactName(
+                val name = LibChatUtility.getLibContactName(
                     message.mPhoneNumber,
                     context
                 )
@@ -277,13 +276,17 @@ class ChatAdapter(
 
         private fun playAudio(audioUrl: String) {
             if (audioUrl != null && audioUrl.isNotEmpty()) {
-                context.mediaPlayer?.reset()
-                context.mediaPlayer = MediaPlayer().apply {
-                    setDataSource(audioUrl)
-                    prepare()
-                    start()
-                    currentAudioUrl = audioUrl
-                    isAudioPlaying = true
+                try {
+                    context.mediaPlayer?.reset()
+                    context.mediaPlayer = MediaPlayer().apply {
+                        setDataSource(audioUrl)
+                        prepare()
+                        start()
+                        currentAudioUrl = audioUrl
+                        isAudioPlaying = true
+                    }
+                } catch (_: Exception) {
+
                 }
                 pausedPosition = 0
                 handler.postDelayed({

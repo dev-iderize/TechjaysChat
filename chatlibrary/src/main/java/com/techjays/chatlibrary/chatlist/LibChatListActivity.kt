@@ -1,35 +1,5 @@
 package com.techjays.chatlibrary.chatlist
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Bundle
-import android.text.TextUtils
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.gson.Gson
-import com.techjays.chatlibrary.ChatLibrary
-import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.api.LibAppServices.API.chat_list
-import com.techjays.chatlibrary.api.LibAppServices.API.delete_chats
-import com.techjays.chatlibrary.base.LibBaseActivity
-import com.techjays.chatlibrary.chat.LibChatActivity
-import com.techjays.chatlibrary.model.LibChatList
-import com.techjays.chatlibrary.model.LibChatSocketMessages
-import com.techjays.chatlibrary.model.LibChatUserModel
-import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.ChatSocketListener
-import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
-import com.techjays.chatlibrary.util.Utility
-import com.techjays.chatlibrary.viewmodel.LibChatViewModel
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
-
 class LibChatListActivity  {
 
     /*private lateinit var mRecyclerView: RecyclerView

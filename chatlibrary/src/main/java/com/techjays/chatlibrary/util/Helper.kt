@@ -113,7 +113,7 @@ object Helper {
 
 
     fun navigateProfile(activity: FragmentActivity, id: String, showHeader: Boolean) {
-        if (Utility.isInternetAvailable(activity)) {
+        if (LibChatUtility.isInternetAvailable(activity)) {
             val mFragmentManager = LibFragmentManager(activity)
             val bundle = Bundle()
             bundle.putString("user_id", id)

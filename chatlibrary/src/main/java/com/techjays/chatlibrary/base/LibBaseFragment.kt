@@ -5,7 +5,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.LibChatUtility
 
 abstract class LibBaseFragment : Fragment() {
 
@@ -20,7 +20,7 @@ abstract class LibBaseFragment : Fragment() {
     abstract fun clickListener()
 
     fun checkInternet(): Boolean {
-        return if (Utility.isInternetAvailable(this.context))
+        return if (LibChatUtility.isInternetAvailable(this.context))
             true
         else {
             AppDialogs.customOkAction(

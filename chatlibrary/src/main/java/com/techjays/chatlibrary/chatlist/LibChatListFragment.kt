@@ -6,19 +6,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
@@ -27,22 +23,16 @@ import com.techjays.chatlibrary.util.EndlessRecyclerViewScrollListener
 import com.techjays.chatlibrary.api.LibAppServices
 import com.techjays.chatlibrary.api.Response
 import com.techjays.chatlibrary.api.ResponseListener
-import com.techjays.chatlibrary.base.LibBaseFragment
 import com.techjays.chatlibrary.chat.LibChatActivity
-import com.techjays.chatlibrary.databinding.LibActivityChatBinding
 import com.techjays.chatlibrary.databinding.LibActivityChatListBinding
 import com.techjays.chatlibrary.model.ChatList
-import com.techjays.chatlibrary.model.LibChatList
-import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.OthersMessage
 import com.techjays.chatlibrary.model.User
 import com.techjays.chatlibrary.util.ChatSocketListener
-import com.techjays.chatlibrary.util.Utility
-import com.techjays.chatlibrary.viewmodel.LibChatViewModel
+import com.techjays.chatlibrary.util.LibChatUtility
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
-import java.util.ArrayList
 
 class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.SocketCallback,
     ChatListAdapter.ChatListCallback {
@@ -98,7 +88,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         val bundle = arguments
         if (bundle != null) {
             val authToken = bundle.getString("auth_token")!!
-            if (Utility.checkInternet(requireContext())) {
+            if (LibChatUtility.checkInternet(requireContext())) {
                 Log.e("auth_token", authToken)
                 ChatLibrary.instance.authToken = authToken
                 LibAppServices.getWSToken(requireContext(), authToken, this)
@@ -192,7 +182,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
 
 
     fun getChatList(offset: Int, limit: Int) {
-        if (Utility.checkInternet(requireContext())) {
+        if (LibChatUtility.checkInternet(requireContext())) {
             LibAppServices.getChatList(requireContext(), offset, limit, this)
         }
     }

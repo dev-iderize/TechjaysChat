@@ -5,7 +5,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.techjays.chatlibrary.util.AppDialogs
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.LibChatUtility
 
 
 abstract class LibBaseActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ abstract class LibBaseActivity : AppCompatActivity() {
     abstract fun init()
 
     fun checkInternet(): Boolean {
-        return if (Utility.isInternetAvailable(this))
+        return if (LibChatUtility.isInternetAvailable(this))
             true
         else {
             AppDialogs.customOkAction(

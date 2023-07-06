@@ -15,24 +15,19 @@ import com.techjays.chatlibrary.helpers.ShieldUpChatLibProgressRequestBody
 import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.ChatList
-import com.techjays.chatlibrary.model.LibChatList
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.User
 import com.techjays.chatlibrary.util.AppDialogs
 import com.techjays.chatlibrary.util.Helper
-import com.techjays.chatlibrary.util.Utility
-import com.techjays.chatlibrary.util.Utility.getMimeType
+import com.techjays.chatlibrary.util.LibChatUtility
+import com.techjays.chatlibrary.util.LibChatUtility.getMimeType
 import okhttp3.*
-import okhttp3.internal.Util
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
@@ -405,7 +400,7 @@ class LibAppServices {
                 val mParam = HashMap<String, RequestBody>()
 
                 val file = File(path)
-                Utility.log(file.toString())
+                LibChatUtility.log(file.toString())
                 val requestBody =
                     RequestBody.create(
                         MediaType.parse(
@@ -490,7 +485,7 @@ class LibAppServices {
         ): Response? {
             val response: Response?
 
-            if (!Utility.isInternetAvailable(context)) {
+            if (!LibChatUtility.isInternetAvailable(context)) {
                 okHttpClient?.dispatcher()?.cancelAll()
                 return null
             }
@@ -514,7 +509,7 @@ class LibAppServices {
                         response?.responseStatus = false
                     }
                 } catch (e: Exception) {
-                    Utility
+                    LibChatUtility
                     AppDialogs.customOkAction(context, e.message!!)
                     return null
                 }

@@ -2,7 +2,6 @@ package com.techjays.chatlibrary.util
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -22,7 +21,6 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
 import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
@@ -54,7 +52,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
-object Utility {
+object LibChatUtility {
 
     private val df = DecimalFormat(".##########")
 
@@ -86,36 +84,39 @@ object Utility {
         }
     }
 
-    fun replaceContactName(message: String, phoneNumber: String?, context: Context): String {
-
-        if (ContextCompat.checkSelfPermission(
-                context, Manifest.permission.READ_CONTACTS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            val uri: Uri = Uri.withAppendedPath(
-                ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)
-            )
-            val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
-            var contactName = ""
-            val cursor: Cursor? = context.contentResolver.query(uri, projection, null, null, null)
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    contactName = cursor.getString(0)
+    fun replaceContactName(message: String?, phoneNumber: String?, context: Context): String {
+        if (message != null && phoneNumber != null && message.isNotEmpty() && message.isNotEmpty()) {
+            if (ContextCompat.checkSelfPermission(
+                    context, Manifest.permission.READ_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val uri: Uri = Uri.withAppendedPath(
+                    ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber)
+                )
+                val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
+                var contactName = ""
+                val cursor: Cursor? =
+                    context.contentResolver.query(uri, projection, null, null, null)
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        contactName = cursor.getString(0)
+                    }
+                    cursor.close()
                 }
-                cursor.close()
-            }
-            if (contactName != "") {
-                var replacedMessage = ""
-                val matcher = getMatchedStars(message)
-                while (matcher!!.find()) {
-                    replacedMessage =
-                        matcher!!.replaceAll(if (message.contains(":")) "$contactName:" else contactName)
+                if (contactName != "") {
+                    var replacedMessage = ""
+                    val matcher = getMatchedStars(message)
+                    while (matcher!!.find()) {
+                        replacedMessage =
+                            matcher!!.replaceAll(if (message.contains(":")) "$contactName:" else contactName)
+                    }
+                    if (replacedMessage != "") return replacedMessage
                 }
-                if (replacedMessage != "") return replacedMessage
             }
-        }
 
-        return getBolded(message, getMatchedStars(message)!!, context).toString()
+            return getBolded(message, getMatchedStars(message)!!, context).toString()
+        } else
+            return ""
     }
 
     private fun getMatchedStars(text: String): Matcher? {
@@ -241,7 +242,7 @@ object Utility {
     }
 
     fun checkInternet(context: Context): Boolean {
-        return if (Utility.isInternetAvailable(context))
+        return if (LibChatUtility.isInternetAvailable(context))
             true
         else {
             AppDialogs.customOkAction(

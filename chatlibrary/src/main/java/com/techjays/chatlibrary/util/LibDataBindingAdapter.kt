@@ -6,7 +6,6 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.isGone
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -65,14 +64,14 @@ class LibDataBidingAdapter {
             }
 
 
-            textView.text = Utility.setChatNotification(
-                Utility.replaceContactName(
+            textView.text = LibChatUtility.setChatNotification(
+                LibChatUtility.replaceContactName(
                     message.mMessage,
                     message.mPhoneNumber,
                     textView.context.applicationContext
                 ),
-                Utility.displayLocalTime(message.mTime),
-                Utility.notificationColor(mNotificationType),
+                LibChatUtility.displayLocalTime(message.mTime),
+                LibChatUtility.notificationColor(mNotificationType),
                 textView.context.applicationContext
             )
         }
@@ -97,9 +96,9 @@ class LibDataBidingAdapter {
         fun setDrawableStart(textView: TextView, aData: ChatList.ChatListData, tint: Int) {
             if (aData.mMessage != "" && aData.mMessage != null) {
 
-                val drawable = Utility.getDrawable(
+                val drawable = LibChatUtility.getDrawable(
                     textView.context.applicationContext,
-                    Utility.findSuitableDrawables(aData.mFileType)
+                    LibChatUtility.findSuitableDrawables(aData.mFileType)
                 )
 
                 val tintedDrawable = if (tint != 0) {
@@ -153,14 +152,14 @@ class LibDataBidingAdapter {
                             else -> ""
                         }
                     }
-                    textView.text = Utility.replaceContactName(
+                    textView.text = LibChatUtility.replaceContactName(
                         data.mMessage,
                         data.mPhoneNumber,
                         textView.context.applicationContext
                     )
                 } catch (e: Exception) {
 
-                    textView.text = Utility.replaceContactName(
+                    textView.text = LibChatUtility.replaceContactName(
                         data.mMessage,
                         data.mPhoneNumber,
                         textView.context.applicationContext
@@ -197,7 +196,7 @@ class LibDataBidingAdapter {
         @JvmStatic
         fun loadImage(view: ShapeableImageView, url: String?) {
             if (!url.isNullOrEmpty()) {
-                Utility.loadUserImage(
+                LibChatUtility.loadUserImage(
                     url,
                     view,
                     R.drawable.ic_acc

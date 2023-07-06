@@ -21,7 +21,7 @@ import com.techjays.chatlibrary.model.LibChatUserModel
 import com.techjays.chatlibrary.preview.LibImagePreviewActivity
 import com.techjays.chatlibrary.preview.LibVideoPreviewActivity
 import com.techjays.chatlibrary.util.DateUtil
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.LibChatUtility
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -106,7 +106,7 @@ class LibChatAdapter(
         }
 
         if (chatList.mIsSentByMyself) {
-            Utility.loadUserImage(
+            LibChatUtility.loadUserImage(
                 mChatData.mSenderProfilePicUrl,
                 holder.mProfile,
                 mContext
@@ -114,7 +114,7 @@ class LibChatAdapter(
             holder.mName.text = mChatData.mSenderFullName
 
         } else {
-            Utility.loadUserImage(
+            LibChatUtility.loadUserImage(
                 mChatData.mReceiverProfilePicUrl,
                 holder.mProfile,
                 mContext
@@ -134,7 +134,7 @@ class LibChatAdapter(
             holder.txMessage.text = chatList.mMessage
         when (chatList.mFileType) {
             Constant.CHAT_TYPE_IMAGE_, Constant.CHAT_TYPE_IMAGE,Constant.CHAT_TYPE_VIDEO -> {
-                Utility.loadUserImageWithCache2(
+                LibChatUtility.loadUserImageWithCache2(
                     chatList.mMessage,
                     holder.mThumbNail,
                     mContext
@@ -202,7 +202,7 @@ class LibChatAdapter(
                 }
 
                 else -> {
-                    Utility.log(mData[position].mMessageType)
+                    LibChatUtility.log(mData[position].mMessageType)
                     if (mData[position].mFileType == Constant.CHAT_TYPE_IMAGE || mData[position].mFileType == Constant.CHAT_TYPE_IMAGE_) {
                         MESSAGE_TYPE_SENT_IMAGE
                     } else {

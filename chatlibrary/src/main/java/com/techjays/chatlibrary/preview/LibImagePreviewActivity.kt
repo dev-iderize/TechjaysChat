@@ -3,7 +3,6 @@ package com.techjays.chatlibrary.preview
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.techjays.chatlibrary.R
-import com.techjays.chatlibrary.util.Utility
 
 class LibImagePreviewActivity : AppCompatActivity() {
 

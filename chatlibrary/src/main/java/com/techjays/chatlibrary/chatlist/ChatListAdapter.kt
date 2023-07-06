@@ -9,7 +9,7 @@ import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
 import com.techjays.chatlibrary.databinding.InflateChatListBinding
 import com.techjays.chatlibrary.model.ChatList
-import com.techjays.chatlibrary.util.Utility
+import com.techjays.chatlibrary.util.LibChatUtility
 
 
 class ChatListAdapter(
@@ -45,7 +45,7 @@ class ChatListAdapter(
             chat.mGroupName = mListData[index].mGroupName
             chat.mCreatorId = mListData[index].mCreatorId
             chat.isSentByMyself = mListData[index].isSentByMyself
-            val name = Utility.getLibContactName(
+            val name = LibChatUtility.getLibContactName(
                 chat.mPhoneNumber,
                 mContext.requireContext()
             )
@@ -72,7 +72,7 @@ class ChatListAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ChatList.ChatListData, myUserId: Int, context: Context) {
-            val name = Utility.getLibContactName(
+            val name = LibChatUtility.getLibContactName(
                 data.mPhoneNumber,
                 context
             )
