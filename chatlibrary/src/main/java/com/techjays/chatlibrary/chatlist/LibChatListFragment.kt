@@ -111,13 +111,15 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         groupId: Int,
         groupName: String,
         groupProfilePic: String,
-        groupCreatorId: Int
+        groupCreatorId: Int,
+        phone:String
     ) {
         val i = Intent(requireActivity(), LibChatActivity::class.java)
         i.putExtra("groupName", groupName)
         i.putExtra("groupProfilePic", groupProfilePic)
         i.putExtra("groupId", groupId)
         i.putExtra("creatorId", groupCreatorId)
+        i.putExtra("phone_number", phone)
         startActivity(i)
     }
 

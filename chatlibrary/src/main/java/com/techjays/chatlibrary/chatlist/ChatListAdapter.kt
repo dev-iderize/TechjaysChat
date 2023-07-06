@@ -28,11 +28,12 @@ class ChatListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val eachListData = mListData[position]
         val myUserId = ChatLibrary.instance.mUserId
+        val mServerName = eachListData.mGroupName
         holder.itemView.setOnClickListener {
             mContext.navToChatActivity(
                 eachListData.mGroupId,
-                eachListData.mGroupName, eachListData.mDisplayPicture,
-                eachListData.mCreatorId
+                mServerName, eachListData.mDisplayPicture,
+                eachListData.mCreatorId,eachListData.mPhoneNumber
             )
         }
         holder.bind(eachListData, myUserId, mContext.requireContext())

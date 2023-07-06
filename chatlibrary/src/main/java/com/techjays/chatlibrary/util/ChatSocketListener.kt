@@ -31,8 +31,8 @@ class ChatSocketListener(
         }
     }
 
-    fun sendChat(s: String, mToUserId: Int, mGroupName: String, ws: WebSocket) {
-        ws.send(sendChatParams(s, mToUserId, mGroupName))
+    fun sendChat(s: String, mToUserId: Int, mGroupName: String, ws: WebSocket,mCreatorId:Int) {
+        ws.send(sendChatParams(s, mToUserId, mGroupName,mCreatorId))
     }
 
     private fun getConnectionParams(): String {
@@ -51,11 +51,12 @@ class ChatSocketListener(
     }
 
 
-    private fun sendChatParams(message: String, groupId: Int, groupName: String): String {
+    private fun sendChatParams(message: String, groupId: Int, groupName:String, creatorId:Int,): String {
         val obj = JSONObject()
         obj.put("type", "chat")
         obj.put("group_id", groupId)
         obj.put("group_name", groupName)
+        obj.put("creator_id", creatorId)
         obj.put("token", ChatLibrary.instance.chatToken)
         obj.put("chat_type", "group")
         obj.put("message_type", "message")
@@ -74,13 +75,15 @@ class ChatSocketListener(
         message: String,
         groupId: Int,
         chat: LibChatSocketMessages,
-        groupName: String
+        groupName: String,
+        creatorId:Int
     ): String {
         val obj = JSONObject()
         obj.put("type", "chat")
         obj.put("token", ChatLibrary.instance.chatToken)
         obj.put("group_id", groupId)
         obj.put("group_name", groupName)
+        obj.put("creator_id", creatorId)
         obj.put("chat_type", "group")
         obj.put("message_type", "file")
         obj.put("message", chat.mData?.mFile)

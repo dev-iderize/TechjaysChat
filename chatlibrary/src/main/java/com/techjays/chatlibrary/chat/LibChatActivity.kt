@@ -96,6 +96,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     var groupName = ""
     var myId = -1
     var mServerGroupName = ""
+    var aCreatorId=-1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,16 +112,21 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         myId = ChatLibrary.instance.mUserId
 
 
-
+        mServerGroupName = intent.getStringExtra("groupName")!!
         groupId = intent.getIntExtra("groupId", -1)
         val aCreatorId = intent.getIntExtra("creatorId", -1)
         Log.e("creatorId_______>", groupId.toString())
-        groupName = if (aCreatorId == myId)
-            "My Circle"
-        else
-            intent.getStringExtra("groupName")!!
+        groupName = when {
+            aCreatorId == myId -> "My Circle"
+            Utility.getLibContactName(intent.getStringExtra("phone_number"), this)
+                .isNotEmpty() -> {
+                "${Utility.getLibContactName(intent.getStringExtra("phone_number"), this)}'s Circle"
 
-        mServerGroupName = intent.getStringExtra("groupName")!!
+            }
+
+            else -> mServerGroupName
+        }
+
         client = OkHttpClient()
         val groupProfilePic = intent.getStringExtra("groupProfilePic")
         binding.groupName = groupName
@@ -280,8 +286,9 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         listener.sendChat(
                             v.text.toString(),
                             groupId,
-                            intent.getStringExtra("group_name")!!,
-                            ws!!
+                            mServerGroupName,
+                            ws!!,
+                            aCreatorId
                         )
                     v.text = ""
                     v.clearFocus()
@@ -300,6 +307,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         groupId,
                         mServerGroupName,
                         ws!!
+                    ,aCreatorId
                     )
                 v.text = ""
                 v.clearFocus()
@@ -531,9 +539,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     override fun afterTextChanged(s: Editable?) {
         if (s != null && s.trim().isNotEmpty()) {
             binding.send.visibility = View.VISIBLE
-        }
-        else
-        {
+        } else {
             binding.send.visibility = View.GONE
         }
     }
@@ -610,7 +616,8 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                             r.mMessage,
                             groupId,
                             r,
-                            intent.getStringExtra("group_name")!!
+                            mServerGroupName,
+                            aCreatorId
                         )
 
                     } else

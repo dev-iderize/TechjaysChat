@@ -193,7 +193,7 @@ object Utility {
         context: Context,
         second: String = " at "
     ): Spannable {
-        val finalString = first + second + third
+        val finalString = first.replace(".", "") + second + third
         val sb: Spannable = SpannableString(finalString)
 
         val bold = ResourcesCompat.getFont(context, R.font.public_sans_extra_bold) as Typeface

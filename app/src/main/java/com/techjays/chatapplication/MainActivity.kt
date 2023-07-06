@@ -20,7 +20,7 @@ import com.techjays.chatlibrary.util.Utility
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mButton2: Button
-    var UserToken = "6edc8d65e64138a1f4ae41d73f7bef46500e4583"
+    var UserToken = "f3e4bf4d9cf480560f3022379ef129fe7e608095"
     var chatToken = ""
     val baseUrl = "https://stg-api.shieldup.ai/api/portal/"
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             bundle.putString("base_url", baseUrl)
             bundle.putString("socket_url", "wss://stg-api.shieldup.ai/wss")
             bundle.putString("auth_token", UserToken)
-            bundle.putString("phone_number", "6379425860")
+            bundle.putString("phone_number", "8111844743")
             bundle.putInt("user_id", 247)
 
             newFragment.arguments = bundle

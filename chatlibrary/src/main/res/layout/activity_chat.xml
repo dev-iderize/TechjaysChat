@@ -169,7 +169,7 @@
                     android:background="@drawable/bg_edittext_message_input"
                     android:hint="Type a message"
                     android:imeActionLabel="Send"
-                    android:imeOptions="actionSend"
+                    android:imeOptions="actionDone"
                     android:inputType="text"
                     android:maxLines="5"
                     android:paddingHorizontal="10dp"
