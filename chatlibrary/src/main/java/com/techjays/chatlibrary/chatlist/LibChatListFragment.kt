@@ -204,7 +204,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
                         val gson = Gson()
                         val receivedChat = gson.fromJson(value, OthersMessage::class.java)
                         val adapter = binding.recyclerView.adapter as ChatListAdapter
-                        val chat = receivedChat.toChatList(isSent)
+                        val chat = receivedChat.toChatList(false)
                         for (newChat in chat.mData) {
                             adapter.updateItem(newChat)
                         }

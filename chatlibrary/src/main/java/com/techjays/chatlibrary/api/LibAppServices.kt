@@ -15,6 +15,7 @@ import com.techjays.chatlibrary.helpers.ShieldUpChatLibProgressRequestBody
 import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
 import com.techjays.chatlibrary.model.ChatList
+import com.techjays.chatlibrary.model.GroupInfo
 import com.techjays.chatlibrary.model.LibChatMessages
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.User
@@ -56,6 +57,8 @@ class LibAppServices {
         const val web_socket_token = "chat/token/"
 
         const val get_chat_list = "chat/group/list/"
+        const val group_info = "chat/group/info/"
+
         const val get_chats = "chat/group/messages/"
     }
 
@@ -269,6 +272,23 @@ class LibAppServices {
                 val mURL = API.constructUrl(mHashCode)
                 val call = apiService.GET(mURL, getSocketChatHeader(c, token))
                 initService(c, call, User::class.java, mHashCode, listener)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+
+        fun getGroupInfo(
+            c: Context,
+            id: String,
+            listener: ResponseListener
+        ) {
+            try {
+                val apiService = getClient().create(ApiInterface::class.java)
+                val mHashCode = API.group_info
+                val mURL = API.constructUrl("$mHashCode?group_id=$id")
+                val call = apiService.GET(mURL, getAuthHeaderPart(c))
+                initService(c, call, GroupInfo::class.java, mHashCode, listener)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

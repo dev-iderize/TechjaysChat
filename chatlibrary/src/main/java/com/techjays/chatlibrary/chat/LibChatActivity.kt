@@ -47,6 +47,7 @@ import com.techjays.chatlibrary.databinding.ActivityChatBinding
 import com.techjays.chatlibrary.databinding.BottomSheetLayoutBinding
 import com.techjays.chatlibrary.interfaces.FileUploadProgress
 import com.techjays.chatlibrary.model.Chat
+import com.techjays.chatlibrary.model.GroupInfo
 import com.techjays.chatlibrary.model.LibChatSocketMessages
 import com.techjays.chatlibrary.model.MyMessage
 import com.techjays.chatlibrary.model.OthersMessage
@@ -110,35 +111,14 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             ) as ActivityChatBinding
         LibChatUtility.statusBarColor(window, applicationContext, R.color.primary_color_light)
         audioRecorder = AudioRecorder(this, this, packageName + "fileProvider")
-
         myId = ChatLibrary.instance.mUserId
-
-
+        binding.groupName=""
+        binding.groupProfilePic=""
+        getGroupInfo(intent.getIntExtra("groupId", -1).toString())
         mServerGroupName = intent.getStringExtra("groupName")!!
         groupId = intent.getIntExtra("groupId", -1)
-        val aCreatorId = intent.getIntExtra("creatorId", -1)
-        Log.e("creatorId_______>", groupId.toString())
-        groupName = when {
-            aCreatorId == myId -> "My Circle"
-            LibChatUtility.getLibContactName(intent.getStringExtra("phone_number"), this)
-                .isNotEmpty() -> {
-                "${
-                    LibChatUtility.getLibContactName(
-                        intent.getStringExtra("phone_number"),
-                        this
-                    )
-                }'s Circle"
-
-            }
-
-            else -> mServerGroupName
-        }
-
         client = OkHttpClient()
-        val groupProfilePic = intent.getStringExtra("groupProfilePic")
-        binding.groupName = groupName
         listener = ChatSocketListener(this, ws, this)
-        binding.groupProfilePic = groupProfilePic
         webSocketStart()
         imagePickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -180,6 +160,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             }
 
 
+    }
+
+
+    private fun getGroupInfo(id: String) {
+        if (LibChatUtility.checkInternet(this))
+            LibAppServices.getGroupInfo(this, id, this)
     }
 
 
@@ -621,6 +607,23 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                             aCreatorId
                         )
 
+                    } else
+                        AppDialogs.showToastshort(this, r.responseMessage)
+                }
+
+                LibAppServices.API.group_info.hashCode() -> {
+                    if (r.responseStatus!!) {
+                        r as GroupInfo
+                        groupName = binding.groupName!!
+                        aCreatorId = r.mData!!.mCreatorId
+                        binding.groupProfilePic = r.mData?.mDisplayPicture!!
+                        val contactName =
+                            LibChatUtility.getLibContactName(r.mData!!.mPhoneNumber, this)
+                        binding.groupName = when {
+                            r.mData!!.mGroupId == myId -> "My Circle"
+                            contactName.isNotEmpty() -> "$contactName's Circle"
+                            else -> r.mData!!.mGroupName
+                        }
                     } else
                         AppDialogs.showToastshort(this, r.responseMessage)
                 }
