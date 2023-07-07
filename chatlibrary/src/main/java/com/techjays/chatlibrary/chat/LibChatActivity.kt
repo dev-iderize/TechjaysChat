@@ -112,8 +112,8 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         LibChatUtility.statusBarColor(window, applicationContext, R.color.primary_color_light)
         audioRecorder = AudioRecorder(this, this, packageName + "fileProvider")
         myId = ChatLibrary.instance.mUserId
-        binding.groupName=""
-        binding.groupProfilePic=""
+        binding.groupName = ""
+        binding.groupProfilePic = ""
         getGroupInfo(intent.getIntExtra("groupId", -1).toString())
         mServerGroupName = intent.getStringExtra("groupName")!!
         groupId = intent.getIntExtra("groupId", -1)
