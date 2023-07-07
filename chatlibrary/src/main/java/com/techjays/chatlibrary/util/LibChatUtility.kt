@@ -322,7 +322,7 @@ object LibChatUtility {
         third: String,
         color: Int,
         context: Context,
-        second: String = " at "
+        second: String = " on "
     ): Spannable {
         val finalString = first + second + third
         val sb: Spannable = SpannableString(finalString)
