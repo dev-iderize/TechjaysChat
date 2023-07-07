@@ -111,7 +111,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             ) as ActivityChatBinding
         LibChatUtility.statusBarColor(window, applicationContext, R.color.primary_color_light)
         audioRecorder = AudioRecorder(this, this, packageName + "fileProvider")
-        myId = ChatLibrary.instance.mUserId
         binding.groupName = ""
         binding.groupProfilePic = ""
         getGroupInfo(intent.getIntExtra("groupId", -1).toString())
@@ -620,7 +619,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         val contactName =
                             LibChatUtility.getLibContactName(r.mData!!.mPhoneNumber, this)
                         binding.groupName = when {
-                            r.mData!!.mGroupId == myId -> "My Circle"
+                            r.mData!!.mGroupId == ChatLibrary.instance.mUserId -> "My Circle"
                             contactName.isNotEmpty() -> "$contactName's Circle"
                             else -> r.mData!!.mGroupName
                         }

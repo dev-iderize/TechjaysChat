@@ -180,7 +180,7 @@ object LibChatUtility {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendLocalNotification(notification: OthersMessage?, activity: Activity) {
-        val mTime = System.currentTimeMillis().toInt()
+        val mTime = notification?.data?.messageId
         if (notification == null) return
 
         val intent = Intent(activity, LibChatActivity::class.java)
@@ -246,7 +246,7 @@ object LibChatUtility {
             .build()
         channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), att)
         notificationManager.createNotificationChannel(channel)
-        notificationManager.notify(mTime, notificationBuilder.build())
+        notificationManager.notify(mTime!!, notificationBuilder.build())
     }
 
     private fun getMatchedStars(text: String): Matcher? {
@@ -326,7 +326,6 @@ object LibChatUtility {
     ): Spannable {
         val finalString = first + second + third
         val sb: Spannable = SpannableString(finalString)
-
         val bold = ResourcesCompat.getFont(context, R.font.public_sans_extra_bold) as Typeface
         sb.setSpan(
             bold,
