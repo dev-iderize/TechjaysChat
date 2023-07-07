@@ -9,7 +9,7 @@ import com.techjays.chatlibrary.chatlist.LibChatListFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mButton2: Button
-    var UserToken = "9c0f75e42c08e14bea130cf718a92d21d6dfa906"
+    var UserToken = "b05452cf5a437c09770c06ccad4e93236dab7964"
     var chatToken = ""
     val baseUrl = "https://stg-api.shieldup.ai/api/portal/"
 
