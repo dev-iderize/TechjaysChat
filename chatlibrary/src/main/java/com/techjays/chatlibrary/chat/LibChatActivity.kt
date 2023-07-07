@@ -328,8 +328,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             override fun onFinish(recordTime: Long, limitReached: Boolean) {
                 showHideLayouts(false)
                 audioRecorder.stopRecording()
-
-
             }
 
             override fun onLessThanSecond() {
@@ -338,19 +336,17 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                     audioRecorder.stopRecording()
             }
 
-
             override fun onLock() {
             }
 
         })
-
     }
 
 
     fun openMicDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Permission denied")
-        builder.setMessage("Please enable microphone permission to record your audio")
+        builder.setTitle("")
+        builder.setMessage("This lets you record and share voice messages and have audio during video communication.")
         builder.setPositiveButton("Go to settings") { _, _ ->
             Helper.navigateAppSetting(this)
         }
