@@ -11,6 +11,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -24,6 +25,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -96,7 +98,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     var groupName = ""
     var myId = -1
     var mServerGroupName = ""
-    var aCreatorId=-1
+    var aCreatorId = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,7 +122,12 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             aCreatorId == myId -> "My Circle"
             LibChatUtility.getLibContactName(intent.getStringExtra("phone_number"), this)
                 .isNotEmpty() -> {
-                "${LibChatUtility.getLibContactName(intent.getStringExtra("phone_number"), this)}'s Circle"
+                "${
+                    LibChatUtility.getLibContactName(
+                        intent.getStringExtra("phone_number"),
+                        this
+                    )
+                }'s Circle"
 
             }
 
@@ -275,7 +282,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
         }
         binding.isMicPermissionAvailable = PermissionChecker().checkPermission(
             applicationContext,
-            android.Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO
         )
         binding.recordView.visibility = View.GONE
         binding.etMessage.visibility = View.VISIBLE
@@ -306,8 +313,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         v.text.toString(),
                         groupId,
                         mServerGroupName,
-                        ws!!
-                    ,aCreatorId
+                        ws!!, aCreatorId
                     )
                 v.text = ""
                 v.clearFocus()
@@ -322,7 +328,6 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
             override fun onCancel() {
                 showHideLayouts(false)
                 audioRecorder.stopRecording()
-
             }
 
             override fun onFinish(recordTime: Long, limitReached: Boolean) {
@@ -677,6 +682,7 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
     }
 
     private val chatWebSocketBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
+        @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(
             context: Context?, intent: Intent
@@ -696,7 +702,8 @@ class LibChatActivity : AppCompatActivity(), TextWatcher, ResponseListener,
                         if (receivedChat.data.groupId == groupId) {
                             val chat = receivedChat.toChat(false)
                             binding.chatdata!!.mData.addAll(0, chat.mData)
-                        }
+                        } else
+                            LibChatUtility.sendLocalNotification(receivedChat, this@LibChatActivity)
                     }
                     binding.chatRecyclerView.adapter!!.notifyDataSetChanged()
                     scrollToBottom()

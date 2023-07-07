@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,7 +46,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     var mNextLink = false
     private var ws: WebSocket? = null
 
-    private  var listener: ChatSocketListener?=null
+    private var listener: ChatSocketListener? = null
     private lateinit var client: OkHttpClient
 
     override fun onCreateView(
@@ -102,7 +104,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
         groupName: String,
         groupProfilePic: String,
         groupCreatorId: Int,
-        phone:String
+        phone: String
     ) {
         val i = Intent(requireActivity(), LibChatActivity::class.java)
         i.putExtra("groupName", groupName)
@@ -188,6 +190,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
     }
 
     private val chatWebSocketBroadcast: BroadcastReceiver = object : BroadcastReceiver() {
+        @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(
             context: Context?, intent: Intent
@@ -206,6 +209,7 @@ class LibChatListFragment : Fragment(), ResponseListener, ChatSocketListener.Soc
                             adapter.updateItem(newChat)
                         }
                         binding.recyclerView.adapter!!.notifyDataSetChanged()
+                        LibChatUtility.sendLocalNotification(receivedChat, requireActivity())
                     }
 
                 }

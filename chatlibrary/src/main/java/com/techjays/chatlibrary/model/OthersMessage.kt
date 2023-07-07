@@ -16,7 +16,7 @@ data class OthersMessage(
         @SerializedName("message_id") val messageId: Int,
         @SerializedName("phone_number") var mPhoneNumber: String = "",
         @SerializedName("message_type") val messageType: String,
-        @SerializedName("message") val message: String,
+        @SerializedName("message") var message: String,
         @SerializedName("file_type") val fileType: String,
         @SerializedName("medium_image") val mediumImage: String,
         @SerializedName("thumbnail_image") val thumbnailImage: String,

@@ -2,12 +2,19 @@ package com.techjays.chatlibrary.util
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
@@ -32,16 +39,21 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.gson.Gson
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.techjays.chatlibrary.ChatLibrary
 import com.techjays.chatlibrary.R
+import com.techjays.chatlibrary.chat.LibChatActivity
+import com.techjays.chatlibrary.model.OthersMessage
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -108,7 +120,7 @@ object LibChatUtility {
                     val matcher = getMatchedStars(message)
                     while (matcher!!.find()) {
                         replacedMessage =
-                            matcher!!.replaceAll(if (message.contains(":")) "$contactName:" else contactName)
+                            matcher.replaceAll(if (message.contains(":")) "$contactName:" else contactName)
                     }
                     if (replacedMessage != "") return replacedMessage
                 }
@@ -117,6 +129,124 @@ object LibChatUtility {
             return getBolded(message, getMatchedStars(message)!!, context).toString()
         } else
             return ""
+    }
+
+    private fun findChatTitle(data: OthersMessage, context: Context): String {
+        val title = when (data.data.messageType) {
+            "message" -> replaceContactName(
+                "*${data.data.sender.firstName + " " + data.data.sender.lastName}* has sent a ${data.data.messageType}",
+                data.data.sender.mPhoneNumber!!,
+                context
+            )
+
+            "notification" -> replaceContactName(
+                "*${data.data.sender.firstName + " " + data.data.sender.lastName}* has sent a ${data.data.messageType}",
+                data.data.sender.mPhoneNumber!!,
+                context
+            )
+
+            else -> {
+                when (data.data.fileType) {
+                    "image" -> replaceContactName(
+                        "*${data.data.sender.firstName + " " + data.data.sender.lastName}* has sent an ${data.data.fileType}",
+                        data.data.sender.mPhoneNumber!!,
+                        context
+                    )
+
+                    "audio" -> replaceContactName(
+                        "*${data.data.sender.firstName + " " + data.data.sender.lastName}* has sent an ${data.data.fileType}",
+                        data.data.sender.mPhoneNumber!!,
+                        context
+                    )
+
+                    "video" -> replaceContactName(
+                        "*${data.data.sender.firstName + " " + data.data.sender.lastName}* has sent a ${data.data.fileType}",
+                        data.data.sender.mPhoneNumber!!,
+                        context
+                    )
+
+                    else -> replaceContactName(
+                        "*${data.data.sender.firstName + " " + data.data.sender.lastName}* has sent an ${data.data.fileType}",
+                        data.data.sender.mPhoneNumber!!,
+                        context
+                    )
+
+                }
+            }
+        }
+        return title
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sendLocalNotification(notification: OthersMessage?, activity: Activity) {
+        val mTime = System.currentTimeMillis().toInt()
+        if (notification == null) return
+
+        val intent = Intent(activity, LibChatActivity::class.java)
+        intent.putExtra("groupName", notification.data.groupId.toString())
+        intent.putExtra("groupProfilePic", "")
+        intent.putExtra("groupId", notification.data.groupId)
+        intent.putExtra("creatorId", -1)
+        intent.putExtra("phone_number ", "")
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.action = "Chat_notification"
+
+        //intent.putExtra("chat_data", Gson().toJson(notification))
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(
+                activity,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+        try {
+            notification.data.message = replaceContactName(
+                notification.data.message,
+                notification.data?.sender?.mPhoneNumber!!,
+                activity.applicationContext
+            )
+
+        } catch (_: Exception) {
+            notification.data.message = notification.data.message
+        }
+        val channelId = notification.data.groupId.toString()
+        val notificationBuilder = NotificationCompat.Builder(activity, channelId)
+            .setSmallIcon(R.drawable.ic_firebasenotification)
+            .setContentTitle(findChatTitle(notification, activity.applicationContext))
+            .setContentText(if (notification.data?.fileType!!.isEmpty()) notification.data?.message else "")
+            .setColor(ContextCompat.getColor(activity.applicationContext, R.color.firebase_color))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(findChatTitle(notification, activity.applicationContext))
+            )
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(if (notification.data?.fileType!!.isEmpty()) notification.data?.message else "")
+            )
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager =
+            activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val channel = NotificationChannel(
+            channelId,
+            "ForceField Notification",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        channel.enableLights(true)
+        channel.lightColor = LibChatUtility.getColor(activity, R.color.app_blue)
+        // notification type SOS trigger -7
+        val att = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+            .build()
+        channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), att)
+        notificationManager.createNotificationChannel(channel)
+        notificationManager.notify(mTime, notificationBuilder.build())
     }
 
     private fun getMatchedStars(text: String): Matcher? {
